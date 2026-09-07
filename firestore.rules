@@ -1,0 +1,86 @@
+rules_version = '2';
+
+service cloud.firestore {
+  match /databases/{database}/documents {
+
+    function isSignedIn() {
+      return request.auth != null;
+    }
+
+    function isBlockedBy(recipientId, senderId) {
+      return senderId in
+        get(/databases/$(database)/documents/users/$(recipientId)).data.get('blockedUserIds', []);
+    }
+
+    match /users/{uid} {
+      allow read: if true;
+      allow create: if isSignedIn() && request.auth.uid == uid;
+      allow update: if isSignedIn() && request.auth.uid == uid;
+      allow delete: if isSignedIn() && request.auth.uid == uid;
+    }
+
+    match /ads/{adId} {
+      allow read: if true;
+      allow create: if isSignedIn()
+        && request.resource.data.ownerId == request.auth.uid;
+      allow update: if isSignedIn() && (
+        resource.data.ownerId == request.auth.uid ||
+        (
+          request.resource.data.diff(resource.data).affectedKeys().hasOnly(['bidCount', 'updatedAt']) &&
+          request.resource.data.bidCount == resource.data.bidCount + 1
+        )
+      );
+      allow delete: if isSignedIn() && resource.data.ownerId == request.auth.uid;
+    }
+
+    match /bids/{bidId} {
+      allow read: if true;
+      allow create: if isSignedIn()
+        && request.resource.data.providerId == request.auth.uid;
+      allow update: if isSignedIn() && (
+        resource.data.providerId == request.auth.uid ||
+        get(/databases/$(database)/documents/ads/$(resource.data.adId)).data.ownerId == request.auth.uid
+      );
+      allow delete: if isSignedIn() && resource.data.providerId == request.auth.uid;
+    }
+
+    match /messages/{messageId} {
+      allow read: if isSignedIn() && request.auth.uid in resource.data.participantIds;
+      allow create: if isSignedIn()
+        && request.auth.uid in request.resource.data.participantIds
+        && request.resource.data.senderId == request.auth.uid
+        && !isBlockedBy(request.resource.data.recipientId, request.auth.uid);
+      allow update: if false;
+      allow delete: if false;
+    }
+
+    match /notifications/{notificationId} {
+      allow read: if isSignedIn() && request.auth.uid == resource.data.recipientId;
+      allow create: if isSignedIn() && request.resource.data.actorId == request.auth.uid;
+      allow update: if isSignedIn()
+        && request.auth.uid == resource.data.recipientId
+        && request.resource.data.diff(resource.data).affectedKeys().hasOnly(['read']);
+      allow delete: if false;
+    }
+
+    match /reports/{reportId} {
+      allow read: if false;
+      allow create: if isSignedIn()
+        && request.resource.data.reporterId == request.auth.uid;
+      allow update: if false;
+      allow delete: if false;
+    }
+
+    match /reviews/{reviewId} {
+      allow read: if true;
+      allow create: if isSignedIn()
+        && request.resource.data.reviewerId == request.auth.uid
+        && request.resource.data.revieweeId != request.auth.uid
+        && request.resource.data.rating is int
+        && request.resource.data.rating >= 1
+        && request.resource.data.rating <= 5;
+      allow update: if false;
+      allow delete: if false;
+    }
+  }
+}

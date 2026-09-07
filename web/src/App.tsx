@@ -1,0 +1,125 @@
+import { Route, Routes } from "react-router-dom";
+import { Footer } from "./components/layout/Footer";
+import { Navbar } from "./components/layout/Navbar";
+import { ProtectedRoute } from "./components/layout/ProtectedRoute";
+import { LanguageSync } from "./i18n/LanguageSync";
+import { ThemeSync } from "./theme/ThemeSync";
+import { AccountActivationPage } from "./pages/AccountActivationPage";
+import { AdDetailPage } from "./pages/AdDetailPage";
+import { AdListPage } from "./pages/AdListPage";
+import { CreateAdPage } from "./pages/CreateAdPage";
+import { FavoritesPage } from "./pages/FavoritesPage";
+import { FinancesPage } from "./pages/FinancesPage";
+import { FollowListPage } from "./pages/FollowListPage";
+import { HomePage } from "./pages/HomePage";
+import { LoginPage } from "./pages/LoginPage";
+import { MessagesPage } from "./pages/MessagesPage";
+import { MyAdsPage } from "./pages/MyAdsPage";
+import { MyBidsPage } from "./pages/MyBidsPage";
+import { PrivacyPage } from "./pages/PrivacyPage";
+import { PrivacySettingsPage } from "./pages/PrivacySettingsPage";
+import { PaymentPage } from "./pages/PaymentPage";
+import { PublicProfilePage } from "./pages/PublicProfilePage";
+import { RegisterPage } from "./pages/RegisterPage";
+import { SettingsPage } from "./pages/SettingsPage";
+import { TermsPage } from "./pages/TermsPage";
+
+function App() {
+  return (
+    <div className="flex min-h-screen flex-col bg-white dark:bg-gray-900">
+      <LanguageSync />
+      <ThemeSync />
+      <Navbar />
+      <main className="flex-1">
+        <Routes>
+          <Route path="/" element={<HomePage />} />
+          <Route path="/login" element={<LoginPage />} />
+          <Route path="/register" element={<RegisterPage />} />
+          <Route path="/konto-aktivieren" element={<AccountActivationPage />} />
+          <Route path="/ads" element={<AdListPage />} />
+          <Route path="/ads/:adId" element={<AdDetailPage />} />
+          <Route path="/profile/:uid" element={<PublicProfilePage />} />
+          <Route path="/profile/:uid/:kind" element={<FollowListPage />} />
+          <Route path="/datenschutz" element={<PrivacyPage />} />
+          <Route path="/nutzungsbedingungen" element={<TermsPage />} />
+          <Route path="/datenschutzeinstellungen" element={<PrivacySettingsPage />} />
+          <Route
+            path="/ads/new"
+            element={
+              <ProtectedRoute>
+                <CreateAdPage />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/ads/:adId/payment"
+            element={
+              <ProtectedRoute>
+                <PaymentPage />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/my-ads"
+            element={
+              <ProtectedRoute>
+                <MyAdsPage />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/my-bids"
+            element={
+              <ProtectedRoute>
+                <MyBidsPage />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/messages"
+            element={
+              <ProtectedRoute>
+                <MessagesPage />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/messages/:conversationId"
+            element={
+              <ProtectedRoute>
+                <MessagesPage />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/settings"
+            element={
+              <ProtectedRoute>
+                <SettingsPage />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/favorites"
+            element={
+              <ProtectedRoute>
+                <FavoritesPage />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/finanzen"
+            element={
+              <ProtectedRoute>
+                <FinancesPage />
+              </ProtectedRoute>
+            }
+          />
+        </Routes>
+      </main>
+      <Footer />
+    </div>
+  );
+}
+
+export default App;

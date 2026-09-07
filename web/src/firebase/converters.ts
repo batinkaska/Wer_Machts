@@ -1,0 +1,60 @@
+import {
+  type FirestoreDataConverter,
+  type QueryDocumentSnapshot,
+  collection,
+} from "firebase/firestore";
+import type { Ad } from "../types/ad";
+import type { Bid } from "../types/bid";
+import type { ChatMessage } from "../types/message";
+import type { Notification } from "../types/notification";
+import type { Report } from "../types/report";
+import type { Review } from "../types/review";
+import type { AppUser } from "../types/user";
+import { db } from "./config";
+
+function makeConverter<T extends { id: string }>(): FirestoreDataConverter<T> {
+  return {
+    toFirestore(value: T) {
+      const { id: _id, ...rest } = value;
+      return rest;
+    },
+    fromFirestore(snapshot: QueryDocumentSnapshot) {
+      return { id: snapshot.id, ...snapshot.data() } as T;
+    },
+  };
+}
+
+export const userConverter: FirestoreDataConverter<AppUser> = {
+  toFirestore(value: AppUser) {
+    const { uid: _uid, ...rest } = value;
+    return rest;
+  },
+  fromFirestore(snapshot: QueryDocumentSnapshot) {
+    return { uid: snapshot.id, ...snapshot.data() } as AppUser;
+  },
+};
+export const adConverter: FirestoreDataConverter<Ad> = {
+  toFirestore(value: Ad) {
+    const { id: _id, ...rest } = value;
+    return rest;
+  },
+  fromFirestore(snapshot: QueryDocumentSnapshot) {
+    const data = snapshot.data() as Ad & { category?: string };
+    const categories = data.categories ?? (data.category ? [data.category] : []);
+    const photoUrls = data.photoUrls ?? [];
+    return { ...data, id: snapshot.id, categories, photoUrls };
+  },
+};
+export const bidConverter = makeConverter<Bid>();
+export const messageConverter = makeConverter<ChatMessage>();
+export const reportConverter = makeConverter<Report>();
+export const notificationConverter = makeConverter<Notification>();
+export const reviewConverter = makeConverter<Review>();
+
+export const usersCol = collection(db, "users").withConverter<AppUser>(userConverter);
+export const adsCol = collection(db, "ads").withConverter(adConverter);
+export const bidsCol = collection(db, "bids").withConverter(bidConverter);
+export const messagesCol = collection(db, "messages").withConverter(messageConverter);
+export const reportsCol = collection(db, "reports").withConverter(reportConverter);
+export const notificationsCol = collection(db, "notifications").withConverter(notificationConverter);
+export const reviewsCol = collection(db, "reviews").withConverter(reviewConverter);

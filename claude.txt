@@ -1,0 +1,210 @@
+Web MVP Implementation Plan — Service Marketplace (Firebase + React + Vercel)
+0. Scope Recap
+Building Stage 1–2 only: web-only MVP with Firebase Auth (Google + Email/Password), Firestore (Users, Ads, Bids, Messages), Firebase Storage (photos), deployed to Vercel. Mobile (Stage 3) and advanced features (real-time messaging polish, push notifications, ratings — Stage 4) are explicitly deferred; the schema below is designed so those phases can bolt on without restructuring data.
+
+This is a genuinely greenfield repo (only the two planning docs + empty reaad_me.txt exist), so everything below is new scaffolding.
+
+1. Project Scaffolding & Tooling
+Stack choice: Vite + React + TypeScript. TypeScript is worth the small upfront cost here because Firestore documents are untyped at the SDK level — typed converters catch a large class of bugs (wrong field names, bid on wrong ad, etc.) that are easy to introduce when a solo dev is moving fast across auth/ads/bids/messages simultaneously.
+
+Setup commands (for the build phase, not now):
+
+
+npm create vite@latest web -- --template react-ts
+cd web
+npm install firebase react-router-dom
+npm install -D tailwindcss postcss autoprefixer   # or plain CSS modules if preferring simplicity
+Recommend Tailwind for speed on a solo-dev MVP (utility classes = fast responsive layout without hand-rolling a component library), but plain CSS/CSS Modules is a fine fallback if the user prefers fewer dependencies — judgment call, not load-bearing.
+
+Repo root structure (project root C:\Users\Batinkaska\Desktop\wermacht becomes the repo root, with the app in a web/ subfolder so mobile can later live alongside as mobile/):
+
+
+wermacht/
+├── hizmet_pazaryeri_plani.md
+├── service_marketplace_plan.md
+├── reaad_me.txt              (rename/fill in as README.md eventually — separate decision)
+├── web/
+│   ├── index.html
+│   ├── vite.config.ts
+│   ├── tsconfig.json
+│   ├── package.json
+│   ├── .env.local            (Firebase config, gitignored)
+│   ├── .env.example
+│   ├── public/
+│   └── src/
+│       ├── main.tsx
+│       ├── App.tsx
+│       ├── routes.tsx
+│       ├── firebase/
+│       │   ├── config.ts         # initializeApp, exports auth/db/storage
+│       │   ├── converters.ts     # Firestore typed data converters
+│       │   └── firestore.rules   # kept in repo, deployed via CLI
+│       ├── types/
+│       │   ├── user.ts
+│       │   ├── ad.ts
+│       │   ├── bid.ts
+│       │   └── message.ts
+│       ├── contexts/
+│       │   └── AuthContext.tsx   # wraps onAuthStateChanged, exposes user+role
+│       ├── hooks/
+│       │   ├── useAds.ts
+│       │   ├── useAd.ts
+│       │   ├── useBids.ts
+│       │   └── useMessages.ts
+│       ├── components/
+│       │   ├── layout/ (Navbar.tsx, Footer.tsx, ProtectedRoute.tsx)
+│       │   ├── ads/ (AdCard.tsx, AdList.tsx, CategoryFilter.tsx, AdForm.tsx)
+│       │   ├── bids/ (BidForm.tsx, BidList.tsx)
+│       │   └── messaging/ (ConversationList.tsx, MessageThread.tsx, MessageInput.tsx)
+│       ├── pages/
+│       │   ├── HomePage.tsx
+│       │   ├── LoginPage.tsx
+│       │   ├── RegisterPage.tsx
+│       │   ├── AdListPage.tsx
+│       │   ├── AdDetailPage.tsx
+│       │   ├── CreateAdPage.tsx
+│       │   ├── MyAdsPage.tsx
+│       │   ├── MyBidsPage.tsx
+│       │   ├── ConversationsPage.tsx
+│       │   └── ProfilePage.tsx
+│       ├── lib/
+│       │   └── categories.ts     # static category list (boyacı, bahçıvan, elektrikçi, ...)
+│       └── styles/ (or Tailwind config)
+├── firebase.json
+├── .firebaserc
+└── firestore.indexes.json
+Keep firebase.json/firestore.rules/firestore.indexes.json at the repo root, not inside web/, since Firebase CLI deploys (rules, indexes) are a project-level concern independent of the frontend build tool, and this keeps the door open for a future mobile/ app sharing the same Firebase project.
+
+2. Firestore Data Model
+Root-level collections (flat, not nested) — this is the right call here because Bids and Messages both need independent queries (e.g., "all my bids across ads", "all my conversations") that subcollections would make awkward without collection-group queries.
+
+users/{uid}
+
+{
+  uid: string;                // == doc id, == Firebase Auth uid
+  email: string;
+  displayName: string;
+  photoURL?: string;
+  role: 'customer' | 'provider';   // Hizmet Alan / Hizmet Veren
+  phone?: string;
+  city?: string;               // for basic location filtering later
+  createdAt: Timestamp;
+  // Stage 4 placeholders (not built now, just reserved fields to avoid migration pain):
+  // ratingAvg?: number; ratingCount?: number;
+}
+Notes:
+
+Doc ID = Auth UID always — avoids a lookup step everywhere.
+role decided at first-login/registration via a "I am a Customer / I am a Provider" step. Keep it simple for MVP: a user has one role. Don't over-engineer multi-role support now — plan calls for keeping scope tight.
+ads/{adId}
+
+{
+  id: string;
+  title: string;
+  description: string;
+  category: string;            // 'painter' | 'gardener' | ... — string enum from lib/categories.ts
+  city: string;                // for basic filtering
+  budget?: number;             // optional customer-stated budget
+  photoUrls: string[];         // Storage download URLs
+  ownerId: string;             // customer's uid
+  ownerName: string;           // denormalized for list rendering without extra reads
+  status: 'open' | 'in_progress' | 'closed';
+  bidCount: number;            // denormalized counter, incremented via transaction on bid create
+  createdAt: Timestamp;
+  updatedAt: Timestamp;
+}
+Denormalizing ownerName and bidCount is deliberate: the ad list page must render fast without N+1 reads to users or a full bids scan per card. Increment bidCount inside the same transaction that creates a bid document.
+
+bids/{bidId}
+
+{
+  id: string;
+  adId: string;                 // reference to ads/{adId}
+  providerId: string;           // uid of bidder
+  providerName: string;         // denormalized
+  amount: number;
+  message?: string;             // short note with the bid
+  status: 'pending' | 'accepted' | 'rejected';
+  createdAt: Timestamp;
+}
+Query pattern: where('adId','==',adId) for the ad detail page, and where('providerId','==',uid) for "My Bids". Both need a composite index only if combined with orderBy — plan to add orderBy('createdAt','desc') on both, so create the two matching composite indexes (adId + createdAt, providerId + createdAt) in firestore.indexes.json.
+
+messages/{messageId}
+Simplest MVP-viable model: one flat collection with a synthetic conversationId so both a full-thread query and a "my conversations" query are cheap.
+
+
+{
+  id: string;
+  conversationId: string;   // deterministic: `${adId}_${customerId}_${providerId}` or sorted uid pair + adId
+  adId: string;
+  senderId: string;
+  recipientId: string;
+  text: string;
+  createdAt: Timestamp;
+  read: boolean;
+}
+A conversation is scoped to (ad, customer, provider) — messaging happens in the context of a specific ad/bid, which matches the product ("customer and provider discuss this job"). Deriving conversationId deterministically (e.g. sort the two uids, append adId) means you never need a separate conversations collection to look one up — just compute the ID client-side before querying/writing. This is intentionally the simplest thing that works for MVP; a proper conversations summary collection (for unread counts, last-message preview) is a reasonable Stage-4-adjacent enhancement, not required now.
+
+For "my conversations" list without a summary collection, the pragmatic MVP approach: query messages where senderId == uid OR recipientId == uid (Firestore doesn't support OR directly — do two queries and merge client-side, or store participantIds: string[] array field and use array-contains). Recommend participantIds: [customerId, providerId] array field + array-contains query — cleaner than two merged queries.
+
+Security Rules considerations (firestore.rules)
+Key rules to design for (write actual rules during Step 3 of the build, but the shape to plan for):
+
+users/{uid}: readable by anyone authenticated (needed to show ownerName/provider profile basics); writable only by the owning uid; role should be immutable after creation (or only settable once) to prevent a user flipping roles to bid on their own ad or similar abuse.
+ads/{adId}: readable by anyone (public listings, even unauthenticated for SEO/browsing — decide if login-gated or not; recommend public read, auth-gated write); create requires request.auth.uid == request.resource.data.ownerId and role == 'customer' (only customers post ads, per the marketplace model — provider posting an ad may or may not be desired; MVP: restrict to customers per the "Hizmet Alan" role) — actually the plan explicitly separates the two roles by function, so it's reasonable to only allow role == 'customer' to create ads, and only role == 'provider' to create bids. Confirm this restriction with the user before hard-coding it, since some marketplaces let anyone post if roles are fluid — flag as an open decision.
+bids/{bidId}: create requires auth + providerId == request.auth.uid; update restricted to ad owner changing status (accept/reject) or the bidder before acceptance; never let a provider edit amount after the ad owner has seen it without at least an updatedAt/edited flag — MVP can just disallow bid edits entirely (delete+recreate if needed) to keep rules simple.
+messages/{messageId}: create/read requires request.auth.uid to be in participantIds.
+Storage rules mirror this: photos under ads/{adId}/{fileName} writable only by the ad's owner, readable publicly (or by authenticated users) since ad photos are meant to be seen by all bidders.
+3. Firebase Authentication Setup
+Create Firebase project in console (or via firebase init CLI) — enable Authentication → Sign-in method → Email/Password and Google.
+src/firebase/config.ts initializes the app once from .env.local (VITE_FIREBASE_API_KEY, etc.) and exports auth, db, storage singletons.
+AuthContext (React Context + onAuthStateChanged) is the single source of truth for "who is logged in" — wraps <App/> at the root, exposes { user, userDoc, loading } where userDoc is the Firestore users/{uid} doc (fetched once auth state resolves) so role is available app-wide without prop drilling.
+Registration flow specifics (since Firebase Auth alone doesn't know "role"): after createUserWithEmailAndPassword or Google sign-in, check if users/{uid} exists; if not, redirect to a one-time "Complete your profile" step (choose Customer or Provider, enter display name) that writes the users/{uid} doc. This is the standard pattern for BaaS auth + custom profile fields and should be built as its own small piece of logic, not bolted onto the login form.
+ProtectedRoute component wraps pages requiring auth (CreateAdPage, MyAdsPage, messaging, bidding) and optionally requires a specific role (e.g., only providers can access the "place a bid" action).
+4. Ordered Build Steps
+Firebase project + CLI setup — create project, enable Auth providers, create Firestore (production mode) and Storage, install firebase-tools, firebase init to wire up firebase.json/rules/indexes locally, get web app config into .env.local.
+Vite + React + TS scaffold — base app shell, routing skeleton (react-router-dom), Tailwind/CSS setup, Navbar/Footer layout.
+Auth: registration + login (Email/Password + Google) + AuthContext + role-selection step — this unblocks everything else since every subsequent feature depends on knowing who's logged in and their role. Build LoginPage, RegisterPage, the profile-completion flow, ProtectedRoute.
+Firestore security rules v1 (users + ads collections only, minimal) so ad creation can be tested safely from the start rather than bolted on at the end.
+Ad creation (CreateAdPage + AdForm) — text fields first, then Storage photo upload (multiple files → photoUrls[]). Test as a customer-role user.
+Ad listing + category filtering (AdListPage, AdCard, CategoryFilter) — useAds hook with onSnapshot (see architecture notes below) filtered by category/city query params.
+Ad detail page (AdDetailPage) — single ad fetch + display, shows existing bids, shows "Place a bid" form to provider-role users, shows "your ad" management (close/edit) to the owner.
+Bidding (BidForm, BidList, useBids) — create bid (transaction incrementing ads.bidCount), list bids per ad, accept/reject action for ad owner (updates bid.status and ad.status).
+Messaging (ConversationsPage, MessageThread, MessageInput, useMessages) — start a conversation from an accepted (or even pending) bid context; simple onSnapshot-driven thread view, no read receipts/typing indicators (Stage 4).
+Full security rules pass — tighten rules for bids/messages/storage now that all write paths are known; write these against real usage, not speculatively.
+Profile page + My Ads / My Bids pages — the "dashboard" views tying a user's own data together; straightforward where(ownerId/providerId == uid) queries.
+Responsive polish pass — mobile breakpoints across ad list/detail/forms since "responsive design" is an explicit MVP requirement, not an afterthought.
+Vercel deployment — connect repo (or vercel CLI), set environment variables (Firebase config) in Vercel project settings, verify build (vite build → dist/), confirm Firestore/Storage rules are deployed (firebase deploy --only firestore:rules,storage:rules) before going live, smoke-test the full flow (register → post ad → bid → message) against production Firebase project.
+This ordering front-loads auth (nothing else is testable without it) and defers messaging to last among the four core features because it's the most complex data-flow (bidirectional, needs a conversation identity scheme) and least useful without ads/bids already existing to anchor conversations to.
+
+5. Routes Summary
+Path	Page	Access
+/	HomePage (marketing/landing + featured ads)	public
+/login	LoginPage	public
+/register	RegisterPage (+ role selection)	public
+/ads	AdListPage (filterable by ?category=&city=)	public
+/ads/:adId	AdDetailPage	public read; bid/message actions gated
+/ads/new	CreateAdPage	auth + role=customer
+/my-ads	MyAdsPage	auth + role=customer
+/my-bids	MyBidsPage	auth + role=provider
+/messages	ConversationsPage	auth
+/messages/:conversationId	MessageThread (could be nested route)	auth + participant check
+/profile	ProfilePage	auth
+6. Key Architectural Decisions
+Real-time listeners vs one-time fetches: Use onSnapshot for anything genuinely collaborative/live within a session — ad detail's bid list (so a customer sees new bids without refresh) and the message thread (core to "messaging" feeling real). Use one-time getDocs/getDoc for the main ad list page (category-filtered browse) since live-updating a paginated list adds complexity (re-sorting under your cursor) for little MVP value — a manual refresh or refetch-on-filter-change is fine there. This mixed approach avoids the two failure modes: over-subscribing (cost/complexity) and under-subscribing (stale bidding/messaging feels broken).
+State management: No Redux/Zustand needed. React Context for auth/role (global, low-frequency-change) + local component state / custom hooks (useAds, useBids, useMessages) wrapping Firestore listeners for everything else. Firestore itself is the source of truth and its listeners already provide "global state sync" across tabs — adding a client state library on top would be redundant for this MVP's scale.
+Routing: react-router-dom v6 (standard, well-documented, works cleanly with Vite/Vercel SPA routing — remember to add a vercel.json rewrite-all-to-index.html rule since Vercel needs to know this is a client-side-routed SPA).
+Data fetching layer: Custom hooks per collection (useAds(filters), useBids(adId), useMessages(conversationId)) rather than a generic Firestore wrapper — keeps query logic (composite index requirements, converters) colocated and typed per use case rather than abstracted prematurely.
+Typed Firestore converters: Use withConverter() on each collection reference (converters.ts) so useAds etc. return typed Ad[]/Bid[]/Message[] rather than raw DocumentData — cheap to add now, saves real debugging time given four interrelated collections.
+Denormalization over joins: Firestore has no joins; the schema above intentionally denormalizes ownerName/providerName/bidCount onto parent docs to keep list-rendering to a single collection read. This is the standard, correct Firestore pattern and should be treated as a deliberate architectural choice, not a shortcut — just be consistent about updating denormalized fields (e.g., if displayName changes, existing ad/bid records won't retroactively update, which is an acceptable MVP tradeoff).
+Categories as static config, not a Firestore collection: lib/categories.ts is a hardcoded list (painter, gardener, electrician, plumber, etc.) for MVP simplicity — no admin UI needed to manage a categories collection at this stage.
+Vercel SPA config: Add web/vercel.json with a catch-all rewrite to index.html, and set the Firebase env vars (VITE_FIREBASE_*) in Vercel's project settings, mirroring .env.local.
+7. Open Decisions to Confirm Before/During Build
+Should ad browsing (/ads, /ads/:id) be visible to unauthenticated visitors, or is the whole app login-gated? (Recommendation: public browse, auth-gated actions — better for growth/SEO per the plan doc's "test in a niche, then expand" strategy.)
+Can a provider-role user also post an ad (i.e., are roles strictly exclusive), or should any authenticated user be able to do either action regardless of role? The source doc frames roles as fixed identity types, so the plan above assumes exclusivity, but this is worth a quick confirm since it directly shapes the security rules.
+Critical Files for Implementation
+web/src/firebase/config.ts — Firebase app/auth/db/storage initialization; everything else depends on this existing correctly first.
+web/src/contexts/AuthContext.tsx — the auth+role source of truth every protected route and role-gated action reads from.
+firestore.rules (repo root) — encodes the customer/provider permission model described in Section 2; get this wrong and either data leaks or legitimate writes get blocked.
+web/src/types/{user,ad,bid,message}.ts and web/src/firebase/converters.ts — the shared schema contract used by every hook, form, and page; defining these early prevents drift across the four collections.
+web/src/hooks/{useAds,useBids,useMessages}.ts — the real-time/one-time query logic that every page (list, detail, my-ads, my-bids, conversations) is built on top of.
