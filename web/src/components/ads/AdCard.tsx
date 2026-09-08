@@ -7,11 +7,15 @@ import { categoryLabels } from "../../lib/categories";
 import type { Ad } from "../../types/ad";
 
 function priceLabel(t: TFunction, ad: Ad): string {
-  if (ad.priceType === "gift") return t("adForm.priceTypeGift");
-  if (ad.priceType === "on_request") return t("common.priceOnRequest");
-  if (ad.priceType === "negotiable")
-    return ad.budget ? `${ad.budget} € ${t("common.negotiableSuffix")}` : t("common.negotiableSuffix");
-  return ad.budget ? `${ad.budget} € · ${t("adForm.priceTypeFixed")}` : t("adForm.priceTypeFixed");
+  let label: string;
+  if (ad.priceType === "gift") label = t("adForm.priceTypeGift");
+  else if (ad.priceType === "on_request") label = t("common.priceOnRequest");
+  else if (ad.priceType === "hourly")
+    label = ad.budget ? `${ad.budget} € · ${t("adForm.priceTypeHourly")}` : t("adForm.priceTypeHourly");
+  else if (ad.priceType === "negotiable")
+    label = ad.budget ? `${ad.budget} € ${t("common.negotiableSuffix")}` : t("common.negotiableSuffix");
+  else label = ad.budget ? `${ad.budget} € · ${t("adForm.priceTypeFixed")}` : t("adForm.priceTypeFixed");
+  return ad.shipping ? `${label} ${t("common.plusShipping")}` : label;
 }
 
 export function AdCard({ ad }: { ad: Ad }) {

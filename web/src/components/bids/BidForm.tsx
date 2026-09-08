@@ -46,6 +46,7 @@ export function BidForm({ onSubmit, submitting }: BidFormProps) {
         <label className="mb-1 block text-sm font-medium text-gray-700 dark:text-gray-300" htmlFor="bid-message">
           {t("bids.noteLabel")}
         </label>
+        <p className="mb-1 text-xs text-gray-500 dark:text-gray-400">{t("bids.noteHint")}</p>
         <textarea
           id="bid-message"
           rows={2}

@@ -34,14 +34,19 @@ function statusLabel(t: TFunction, status: string): string {
   return t(`adDetail.status.${status}`);
 }
 
-function priceLabel(t: TFunction, ad: { priceType: string; budget?: number }): string {
-  if (ad.priceType === "gift") return t("adForm.priceTypeGift");
-  if (ad.priceType === "on_request") return t("common.priceOnRequest");
-  if (ad.priceType === "negotiable")
-    return ad.budget ? `${ad.budget} € ${t("common.negotiableSuffix")}` : t("common.negotiableSuffix");
-  return ad.budget
-    ? `${ad.budget} € · ${t("adForm.priceTypeFixed")}`
-    : t("adDetail.noPriceGiven");
+function priceLabel(t: TFunction, ad: { priceType: string; budget?: number; shipping?: boolean }): string {
+  let label: string;
+  if (ad.priceType === "gift") label = t("adForm.priceTypeGift");
+  else if (ad.priceType === "on_request") label = t("common.priceOnRequest");
+  else if (ad.priceType === "hourly")
+    label = ad.budget ? `${ad.budget} € · ${t("adForm.priceTypeHourly")}` : t("adForm.priceTypeHourly");
+  else if (ad.priceType === "negotiable")
+    label = ad.budget ? `${ad.budget} € ${t("common.negotiableSuffix")}` : t("common.negotiableSuffix");
+  else
+    label = ad.budget
+      ? `${ad.budget} € · ${t("adForm.priceTypeFixed")}`
+      : t("adDetail.noPriceGiven");
+  return ad.shipping ? `${label} ${t("common.plusShipping")}` : label;
 }
 
 export function AdDetailPage() {

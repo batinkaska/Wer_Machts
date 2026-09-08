@@ -477,3 +477,71 @@ export function DotsGridIcon(props: SVGProps<SVGSVGElement>) {
     </svg>
   );
 }
+
+export function CloseIcon(props: SVGProps<SVGSVGElement>) {
+  return (
+    <svg
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth={2}
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      {...props}
+    >
+      <path d="M18 6 6 18M6 6l12 12" />
+    </svg>
+  );
+}
+
+export function UtensilsIcon(props: SVGProps<SVGSVGElement>) {
+  return (
+    <svg
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth={2}
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      {...props}
+    >
+      <path d="M6 3v7a2 2 0 0 0 2 2v9M6 3v7M8 3v7M17 3c-1.5 1-2 3-2 5s.5 3 2 4v9" />
+    </svg>
+  );
+}
+
+export function CarIcon(props: SVGProps<SVGSVGElement>) {
+  return (
+    <svg
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth={2}
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      {...props}
+    >
+      <path d="M3 16V12l2.2-5A2 2 0 0 1 7.1 6h9.8a2 2 0 0 1 1.9 1.4L21 12v4" />
+      <path d="M3 16h18M5 16v2M19 16v2" />
+      <circle cx="7.5" cy="16" r="1.5" />
+      <circle cx="16.5" cy="16" r="1.5" />
+    </svg>
+  );
+}
+
+export function SmartphoneIcon(props: SVGProps<SVGSVGElement>) {
+  return (
+    <svg
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth={2}
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      {...props}
+    >
+      <rect x="6" y="2" width="12" height="20" rx="2" />
+      <path d="M11 18h2" />
+    </svg>
+  );
+}

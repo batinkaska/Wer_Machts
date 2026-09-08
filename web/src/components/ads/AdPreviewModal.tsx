@@ -11,6 +11,7 @@ interface AdPreviewModalProps {
   adKind: AdKind;
   priceType: PriceType;
   budget: string;
+  shipping: boolean;
   city: string;
   postalCode: string;
   street: string;
@@ -22,13 +23,17 @@ interface AdPreviewModalProps {
 
 function previewPriceLabel(
   t: TFunction,
-  { priceType, budget }: { priceType: PriceType; budget: string },
+  { priceType, budget, shipping }: { priceType: PriceType; budget: string; shipping: boolean },
 ): string {
-  if (priceType === "gift") return t("adForm.priceTypeGift");
-  if (priceType === "on_request") return t("common.priceOnRequest");
-  if (priceType === "negotiable")
-    return budget ? `${budget} € ${t("common.negotiableSuffix")}` : t("common.negotiableSuffix");
-  return budget ? `${budget} € · ${t("adForm.priceTypeFixed")}` : t("adForm.priceTypeFixed");
+  let label: string;
+  if (priceType === "gift") label = t("adForm.priceTypeGift");
+  else if (priceType === "on_request") label = t("common.priceOnRequest");
+  else if (priceType === "hourly")
+    label = budget ? `${budget} € · ${t("adForm.priceTypeHourly")}` : t("adForm.priceTypeHourly");
+  else if (priceType === "negotiable")
+    label = budget ? `${budget} € ${t("common.negotiableSuffix")}` : t("common.negotiableSuffix");
+  else label = budget ? `${budget} € · ${t("adForm.priceTypeFixed")}` : t("adForm.priceTypeFixed");
+  return shipping ? `${label} ${t("common.plusShipping")}` : label;
 }
 
 export function AdPreviewModal({
@@ -39,6 +44,7 @@ export function AdPreviewModal({
   adKind,
   priceType,
   budget,
+  shipping,
   city,
   postalCode,
   street,
@@ -89,7 +95,7 @@ export function AdPreviewModal({
           {title || t("adForm.noTitle")}
         </h1>
         <p className="mt-1 text-xl font-bold text-[#5fac5e]">
-          {previewPriceLabel(t, { priceType, budget })}
+          {previewPriceLabel(t, { priceType, budget, shipping })}
         </p>
         {categoryNote && (
           <p className="mt-1 text-sm text-gray-500 dark:text-gray-400">

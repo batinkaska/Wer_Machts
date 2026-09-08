@@ -33,6 +33,7 @@ export function AdForm({ onSubmit, submitting }: AdFormProps) {
   const [categoryNote, setCategoryNote] = useState("");
   const [priceType, setPriceType] = useState<PriceType>("fixed");
   const [budget, setBudget] = useState("");
+  const [shipping, setShipping] = useState(false);
 
   const [postalCode, setPostalCode] = useState("");
   const [city, setCity] = useState("");
@@ -190,6 +191,7 @@ export function AdForm({ onSubmit, submitting }: AdFormProps) {
           priceType,
           photoUrls,
           ...(budget ? { budget: Number(budget) } : {}),
+          ...(shipping ? { shipping: true } : {}),
         },
         action,
       );
@@ -259,6 +261,7 @@ export function AdForm({ onSubmit, submitting }: AdFormProps) {
               note={categoryNote}
               onNoteChange={setCategoryNote}
               placeholder={t("adForm.categoryPlaceholder")}
+              allowGroupSelect
             />
           </div>
 
@@ -306,12 +309,23 @@ export function AdForm({ onSubmit, submitting }: AdFormProps) {
                 className="w-full rounded border border-gray-300 px-3 py-2 dark:border-gray-600 dark:bg-gray-800 dark:text-gray-100"
               >
                 <option value="fixed">{t("adForm.priceTypeFixed")}</option>
+                <option value="hourly">{t("adForm.priceTypeHourly")}</option>
                 <option value="negotiable">{t("adForm.priceTypeNegotiable")}</option>
                 <option value="on_request">{t("common.priceOnRequest")}</option>
                 <option value="gift">{t("adForm.priceTypeGift")}</option>
               </select>
             </div>
           </div>
+
+          <label className="flex items-center gap-2 text-sm text-gray-700 dark:text-gray-300">
+            <input
+              type="checkbox"
+              checked={shipping}
+              onChange={(e) => setShipping(e.target.checked)}
+              className="h-4 w-4 accent-[#5fac5e]"
+            />
+            {t("common.plusShipping")}
+          </label>
 
           <div>
             <p className="mb-1 text-sm font-medium text-gray-700 dark:text-gray-300">{t("adForm.photosLabel")}</p>
@@ -481,6 +495,7 @@ export function AdForm({ onSubmit, submitting }: AdFormProps) {
           adKind={adKind}
           priceType={priceType}
           budget={budget}
+          shipping={shipping}
           city={city}
           postalCode={postalCode}
           street={street}

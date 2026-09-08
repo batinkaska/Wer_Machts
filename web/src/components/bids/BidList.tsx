@@ -1,4 +1,5 @@
 import { useTranslation } from "react-i18next";
+import { Link } from "react-router-dom";
 import type { Bid, BidStatus } from "../../types/bid";
 
 const STATUS_CLASS: Record<BidStatus, string> = {
@@ -6,6 +7,11 @@ const STATUS_CLASS: Record<BidStatus, string> = {
   accepted: "bg-green-100 text-green-700 dark:bg-green-950 dark:text-green-400",
   rejected: "bg-red-100 text-red-700 dark:bg-red-950 dark:text-red-400",
 };
+
+function maskName(name: string): string {
+  if (!name) return name;
+  return name[0] + "*".repeat(name.length - 1);
+}
 
 interface BidListProps {
   bids: Bid[];
@@ -26,13 +32,28 @@ export function BidList({ bids, isOwner, onAccept, onReject }: BidListProps) {
       {bids.map((bid) => (
         <li key={bid.id} className="rounded border border-gray-200 p-3 dark:border-gray-700">
           <div className="flex items-center justify-between">
-            <span className="font-medium text-gray-900 dark:text-gray-100">{bid.providerName}</span>
+            {isOwner ? (
+              <Link
+                to={`/profile/${bid.providerId}`}
+                className="font-medium text-gray-900 hover:underline dark:text-gray-100"
+              >
+                {bid.providerName}
+              </Link>
+            ) : (
+              <span className="font-medium text-gray-900 dark:text-gray-100">
+                {maskName(bid.providerName)}
+              </span>
+            )}
             <span className={`rounded px-2 py-0.5 text-xs ${STATUS_CLASS[bid.status]}`}>
               {t(`bids.status.${bid.status}`)}
             </span>
           </div>
-          <p className="mt-1 text-sm text-gray-700 dark:text-gray-300">{bid.amount} €</p>
-          {bid.message && <p className="mt-1 text-sm text-gray-600 dark:text-gray-400">{bid.message}</p>}
+          <p className="mt-1 text-sm text-gray-700 dark:text-gray-300">
+            {isOwner ? `${bid.amount} €` : t("bids.hiddenAmount")}
+          </p>
+          {isOwner && bid.message && (
+            <p className="mt-1 text-sm text-gray-600 dark:text-gray-400">{bid.message}</p>
+          )}
           {isOwner && bid.status === "pending" && (
             <div className="mt-2 flex gap-2">
               <button

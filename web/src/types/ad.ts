@@ -2,7 +2,7 @@ import type { Timestamp } from "firebase/firestore";
 
 export type AdStatus = "draft" | "open" | "in_progress" | "closed";
 export type AdKind = "biete" | "suche";
-export type PriceType = "fixed" | "negotiable" | "on_request" | "gift";
+export type PriceType = "fixed" | "hourly" | "negotiable" | "on_request" | "gift";
 
 export interface Ad {
   id: string;
@@ -19,6 +19,7 @@ export interface Ad {
   lng: number;
   budget?: number;
   priceType: PriceType;
+  shipping?: boolean;
   photoUrls: string[];
   ownerId: string;
   ownerName: string;
