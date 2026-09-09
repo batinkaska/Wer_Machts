@@ -29,8 +29,9 @@ function notificationPath(n: Notification): string {
   switch (n.type) {
     case "message":
       return `/messages/${n.conversationId}`;
-    case "bid_placed":
     case "bid_accepted":
+      return n.bidId ? `/ads/${n.adId}/payment?bidId=${n.bidId}` : `/ads/${n.adId}`;
+    case "bid_placed":
     case "bid_rejected":
       return `/ads/${n.adId}`;
     case "new_follower":

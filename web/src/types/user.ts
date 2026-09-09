@@ -3,6 +3,7 @@ import type { LanguageCode } from "../i18n";
 import type { ThemePreference } from "../theme";
 
 export type ProfileVisibility = "public" | "private";
+export type AccountType = "private" | "business";
 
 export interface ProfileSectionVisibility {
   bio?: ProfileVisibility;
@@ -18,6 +19,12 @@ export interface AppUser {
   displayName: string;
   photoURL?: string;
   bio?: string;
+  accountType?: AccountType;
+  businessName?: string;
+  impressum?: string;
+  taxId?: string;
+  withdrawalPolicy?: string;
+  businessTerms?: string;
   galleryUrls?: string[];
   phone?: string;
   phoneVerified?: boolean;

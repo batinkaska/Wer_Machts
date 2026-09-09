@@ -114,6 +114,86 @@ function EditableRow({
   );
 }
 
+function EditableTextareaRow({
+  label,
+  value,
+  placeholder,
+  onSave,
+}: {
+  label: string;
+  value: string;
+  placeholder: string;
+  onSave: (next: string) => Promise<void>;
+}) {
+  const { t } = useTranslation();
+  const [editing, setEditing] = useState(false);
+  const [draft, setDraft] = useState(value);
+  const [saving, setSaving] = useState(false);
+
+  function startEditing() {
+    setDraft(value);
+    setEditing(true);
+  }
+
+  async function handleSave(e: FormEvent) {
+    e.preventDefault();
+    setSaving(true);
+    try {
+      await onSave(draft.trim());
+      setEditing(false);
+    } finally {
+      setSaving(false);
+    }
+  }
+
+  if (editing) {
+    return (
+      <form onSubmit={handleSave} className="space-y-2 px-4 py-3">
+        <span className="text-sm text-gray-500 dark:text-gray-400">{label}</span>
+        <textarea
+          autoFocus
+          rows={5}
+          value={draft}
+          onChange={(e) => setDraft(e.target.value)}
+          className="w-full rounded border border-gray-300 px-2 py-1 text-sm dark:border-gray-600 dark:bg-gray-800 dark:text-gray-100"
+        />
+        <div className="flex gap-3">
+          <button
+            type="submit"
+            disabled={saving}
+            className="text-sm font-medium text-[#5fac5e] hover:underline disabled:opacity-50"
+          >
+            {t("common.save")}
+          </button>
+          <button
+            type="button"
+            onClick={() => setEditing(false)}
+            className="text-sm text-gray-500 hover:underline dark:text-gray-400"
+          >
+            {t("common.cancel")}
+          </button>
+        </div>
+      </form>
+    );
+  }
+
+  return (
+    <div className="flex items-start justify-between gap-3 px-4 py-3">
+      <div>
+        <p className="text-sm text-gray-500 dark:text-gray-400">{label}</p>
+        <p className="whitespace-pre-wrap text-sm text-gray-900 dark:text-gray-100">{value || placeholder}</p>
+      </div>
+      <button
+        type="button"
+        onClick={startEditing}
+        className="shrink-0 text-sm font-medium text-[#5fac5e] hover:underline"
+      >
+        {t("common.edit")}
+      </button>
+    </div>
+  );
+}
+
 function EmailRow({
   email,
   isGoogleUser,
@@ -516,6 +596,7 @@ export function SettingsPage() {
     { to: "/datenschutzeinstellungen", label: t("legal.privacySettings") },
     { to: "/datenschutz", label: t("legal.privacy") },
     { to: "/nutzungsbedingungen", label: t("legal.terms") },
+    { to: "/agb", label: t("legal.agb") },
   ];
 
   const isGoogleUser = firebaseUser.providerData.some((p) => p.providerId === "google.com");
@@ -547,6 +628,45 @@ export function SettingsPage() {
           />
         </SettingsCard>
       </div>
+
+      {appUser.accountType === "business" && (
+        <div className="space-y-2">
+          <h2 className="text-base font-semibold text-gray-900 dark:text-gray-100">{t("settings.businessInfoHeading")}</h2>
+          <p className="text-xs text-gray-500 dark:text-gray-400">{t("settings.businessInfoNotice")}</p>
+          <SettingsCard>
+            <EditableRow
+              label={t("settings.businessNameLabel")}
+              value={appUser.businessName ?? ""}
+              placeholder={t("settings.noBusinessNamePlaceholder")}
+              onSave={(v) => updateProfile({ businessName: v })}
+            />
+            <EditableTextareaRow
+              label={t("settings.impressumLabel")}
+              value={appUser.impressum ?? ""}
+              placeholder={t("settings.noImpressumPlaceholder")}
+              onSave={(v) => updateProfile({ impressum: v })}
+            />
+            <EditableRow
+              label={t("settings.taxIdLabel")}
+              value={appUser.taxId ?? ""}
+              placeholder={t("settings.noTaxIdPlaceholder")}
+              onSave={(v) => updateProfile({ taxId: v })}
+            />
+            <EditableTextareaRow
+              label={t("settings.withdrawalPolicyLabel")}
+              value={appUser.withdrawalPolicy ?? ""}
+              placeholder={t("settings.noWithdrawalPolicyPlaceholder")}
+              onSave={(v) => updateProfile({ withdrawalPolicy: v })}
+            />
+            <EditableTextareaRow
+              label={t("settings.businessTermsLabel")}
+              value={appUser.businessTerms ?? ""}
+              placeholder={t("settings.noBusinessTermsPlaceholder")}
+              onSave={(v) => updateProfile({ businessTerms: v })}
+            />
+          </SettingsCard>
+        </div>
+      )}
 
       <div className="space-y-2">
         <h2 className="text-base font-semibold text-gray-900 dark:text-gray-100">{t("settings.accountSettingsHeading")}</h2>

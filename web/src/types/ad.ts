@@ -25,6 +25,7 @@ export interface Ad {
   ownerName: string;
   status: AdStatus;
   bidCount: number;
+  hiddenFromProfile?: boolean;
   createdAt: Timestamp;
   updatedAt: Timestamp;
 }

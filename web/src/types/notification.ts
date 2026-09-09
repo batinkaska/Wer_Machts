@@ -18,4 +18,5 @@ export interface Notification {
   adId?: string;
   adTitle?: string;
   conversationId?: string;
+  bidId?: string;
 }

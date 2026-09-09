@@ -10,6 +10,7 @@ export async function createNotification(data: {
   adId?: string;
   adTitle?: string;
   conversationId?: string;
+  bidId?: string;
 }) {
   try {
     await addDoc(notificationsCol, {

@@ -31,7 +31,7 @@ import { usersCol } from "../firebase/converters";
 import type { LanguageCode } from "../i18n";
 import type { ThemePreference } from "../theme";
 import { createNotification } from "../lib/notify";
-import type { AppUser, ProfileSectionVisibility } from "../types/user";
+import type { AccountType, AppUser, ProfileSectionVisibility } from "../types/user";
 
 interface AuthContextValue {
   firebaseUser: FirebaseUser | null;
@@ -49,6 +49,7 @@ interface AuthContextValue {
   completeProfile: (
     input: {
       displayName: string;
+      accountType: AccountType;
       city?: string;
       phone?: string;
       marketingOptIn?: boolean;
@@ -75,6 +76,11 @@ interface AuthContextValue {
     theme?: ThemePreference;
     sectionVisibility?: ProfileSectionVisibility;
     followersVisible?: boolean;
+    businessName?: string;
+    impressum?: string;
+    taxId?: string;
+    withdrawalPolicy?: string;
+    businessTerms?: string;
   }) => Promise<void>;
   addGalleryPhoto: (url: string) => Promise<void>;
   removeGalleryPhoto: (url: string) => Promise<void>;
@@ -159,6 +165,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   async function completeProfile(
     input: {
       displayName: string;
+      accountType: AccountType;
       city?: string;
       phone?: string;
       marketingOptIn?: boolean;
@@ -171,6 +178,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       uid: user.uid,
       email: user.email ?? "",
       displayName: input.displayName,
+      accountType: input.accountType,
       createdAt: serverTimestamp() as unknown as AppUser["createdAt"],
       ...(input.city ? { city: input.city } : {}),
       ...(input.phone ? { phone: input.phone } : {}),
@@ -239,6 +247,11 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     theme?: ThemePreference;
     sectionVisibility?: ProfileSectionVisibility;
     followersVisible?: boolean;
+    businessName?: string;
+    impressum?: string;
+    taxId?: string;
+    withdrawalPolicy?: string;
+    businessTerms?: string;
   }) {
     if (!firebaseUser) return;
     await updateDoc(doc(db, "users", firebaseUser.uid), { ...input });

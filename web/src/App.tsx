@@ -6,10 +6,10 @@ import { LanguageSync } from "./i18n/LanguageSync";
 import { ThemeSync } from "./theme/ThemeSync";
 import { AccountActivationPage } from "./pages/AccountActivationPage";
 import { AdDetailPage } from "./pages/AdDetailPage";
+import { AgbPage } from "./pages/AgbPage";
 import { AdListPage } from "./pages/AdListPage";
 import { CreateAdPage } from "./pages/CreateAdPage";
 import { FavoritesPage } from "./pages/FavoritesPage";
-import { FinancesPage } from "./pages/FinancesPage";
 import { FollowListPage } from "./pages/FollowListPage";
 import { HomePage } from "./pages/HomePage";
 import { LoginPage } from "./pages/LoginPage";
@@ -42,6 +42,7 @@ function App() {
           <Route path="/profile/:uid/:kind" element={<FollowListPage />} />
           <Route path="/datenschutz" element={<PrivacyPage />} />
           <Route path="/nutzungsbedingungen" element={<TermsPage />} />
+          <Route path="/agb" element={<AgbPage />} />
           <Route path="/datenschutzeinstellungen" element={<PrivacySettingsPage />} />
           <Route
             path="/ads/new"
@@ -104,14 +105,6 @@ function App() {
             element={
               <ProtectedRoute>
                 <FavoritesPage />
-              </ProtectedRoute>
-            }
-          />
-          <Route
-            path="/finanzen"
-            element={
-              <ProtectedRoute>
-                <FinancesPage />
               </ProtectedRoute>
             }
           />

@@ -41,7 +41,10 @@ service cloud.firestore {
         resource.data.providerId == request.auth.uid ||
         get(/databases/$(database)/documents/ads/$(resource.data.adId)).data.ownerId == request.auth.uid
       );
-      allow delete: if isSignedIn() && resource.data.providerId == request.auth.uid;
+      allow delete: if isSignedIn() && (
+        resource.data.providerId == request.auth.uid ||
+        get(/databases/$(database)/documents/ads/$(resource.data.adId)).data.ownerId == request.auth.uid
+      );
     }
 
     match /messages/{messageId} {

@@ -15,6 +15,7 @@
     "addToFavorites": "Add to favorites",
     "removeFromFavorites": "Remove from favorites",
     "saved": "Saved",
+    "apply": "Apply",
     "draft": "Draft",
     "offering": "Offering",
     "seeking": "Seeking",
@@ -40,7 +41,6 @@
     "menuMessages": "Messages",
     "menuSettings": "Settings",
     "menuFavorites": "Saved",
-    "menuFinances": "Income & Expenses",
     "menuMine": "Mine"
   },
   "search": {
@@ -185,7 +185,16 @@
   },
   "adList": {
     "pageTitle": "Listings",
-    "emptyDefault": "No listings found matching these criteria."
+    "emptyDefault": "No listings found matching these criteria.",
+    "priceFilterLabel": "Price",
+    "priceMin": "Min. €",
+    "priceMax": "Max. €",
+    "adKindAll": "All",
+    "shippingOnly": "Shipping available",
+    "sortLabel": "Sort by",
+    "sortNewest": "Newest",
+    "sortPriceAsc": "Lowest price",
+    "sortPriceDesc": "Highest price"
   },
   "myAds": {
     "pageTitle": "My listings",
@@ -193,6 +202,7 @@
     "activeHeading": "Active",
     "reservedHeading": "Reserved",
     "draftsHeading": "Drafts",
+    "emptyGroup": "Nothing here yet.",
     "reserve": "Reserve listing",
     "close": "Close listing",
     "reopen": "Reopen",
@@ -202,7 +212,9 @@
   "myBids": {
     "pageTitle": "My offers",
     "empty": "You haven't placed any offers yet.",
-    "toAd": "To listing"
+    "toAd": "To listing",
+    "withdraw": "Withdraw offer",
+    "withdrawConfirm": "Really withdraw this offer?"
   },
   "favorites": {
     "pageTitle": "Saved listings",
@@ -229,7 +241,9 @@
     "detailsHeading": "Listing details",
     "offerOrSeek": "Offering / Seeking",
     "iOffer": "I'm offering",
+    "iOfferHint": "You're a provider showcasing your service.",
     "iSeek": "I'm looking for",
+    "iSeekHint": "You're a customer looking for a service.",
     "titleLabel": "Title",
     "categoryLabel": "Category",
     "categoryPlaceholder": "Choose your category/categories",
@@ -301,6 +315,12 @@
     "offersCount": "Offers ({{count}})",
     "chatHint": "To chat with a provider, click their name in the offers list.",
     "chatWith": "Chat with {{name}}",
+    "legalInfoHeading": "Legal information",
+    "businessNameLabel": "Company name",
+    "impressumHeading": "Legal notice (Impressum)",
+    "taxIdLabel": "VAT ID (USt-IdNr.)",
+    "withdrawalPolicyHeading": "Right of withdrawal",
+    "businessTermsHeading": "Terms and conditions (AGB)",
     "shareAd": "Share listing",
     "linkCopied": "Link copied!",
     "activeSince": "Active since {{date}}",
@@ -368,20 +388,10 @@
     "completedWork": "Completed jobs",
     "roleClient": "As client",
     "roleProvider": "As provider",
+    "removeCompletedWork": "Remove from completed work",
+    "removeCompletedWorkConfirm": "Really remove this?",
     "visibilityPublic": "Public",
     "visibilityPrivate": "Private"
-  },
-  "finances": {
-    "pageTitle": "Income & Expenses",
-    "balance": "Balance",
-    "totalIncome": "Income: {{amount}} €",
-    "totalExpenses": "Expenses: {{amount}} €",
-    "incomeHeading": "Income",
-    "expensesHeading": "Expenses",
-    "noIncome": "No income yet.",
-    "noExpenses": "No expenses yet.",
-    "unknownAd": "Unknown listing",
-    "paidTo": "Paid to {{name}}"
   },
   "reviews": {
     "sectionTitle": "Reviews",
@@ -395,9 +405,11 @@
     "notAuthorized": "You don't have access to this payment.",
     "chooseMethod": "How would you like to pay?",
     "chosen": "Payment method chosen: {{method}}",
+    "changeMethod": "Change",
+    "waitingForPayer": "The customer still needs to choose a payment method.",
     "method": {
       "card": "Pay by card",
-      "cash": "Pay by cash"
+      "cash": "Pay cash on site"
     },
     "backToAd": "Back to listing"
   },
@@ -405,6 +417,9 @@
     "login": "Sign in",
     "loginFailed": "Sign in failed.",
     "registerFailed": "Registration failed.",
+    "acceptTermsBefore": "I have read the",
+    "acceptTermsMiddle": "(AGB) and the",
+    "acceptTermsAfter": "and accept them.",
     "completeProfile": "Complete profile",
     "continueWithGoogle": "Sign in with Google",
     "continueWithGoogleAlt": "Continue with Google",
@@ -413,6 +428,8 @@
     "emailPlaceholder": "Email",
     "passwordPlaceholder": "Password",
     "namePlaceholder": "Profile name",
+    "accountTypePrivate": "Private",
+    "accountTypeBusiness": "Business",
     "cityPlaceholder": "City (optional)",
     "phonePlaceholder": "Phone (optional)",
     "registerHeading": "Register in 30 seconds",
@@ -449,7 +466,8 @@
   },
   "verifiedBadges": {
     "email": "Email confirmed",
-    "phone": "Phone confirmed"
+    "phone": "Phone confirmed",
+    "business": "Business"
   },
   "settings": {
     "pageTitle": "Settings",
@@ -458,6 +476,18 @@
     "noNamePlaceholder": "No name set.",
     "deliveryAddressLabel": "Delivery address",
     "noDeliveryAddressPlaceholder": "No delivery address set.",
+    "businessInfoHeading": "Business information",
+    "businessInfoNotice": "This information is shown publicly on your listings.",
+    "businessNameLabel": "Company name",
+    "noBusinessNamePlaceholder": "No company name set.",
+    "impressumLabel": "Legal notice (Impressum)",
+    "noImpressumPlaceholder": "Owner name, full address and contact details.",
+    "taxIdLabel": "VAT ID (USt-IdNr.)",
+    "noTaxIdPlaceholder": "No VAT ID set.",
+    "withdrawalPolicyLabel": "Right of withdrawal",
+    "noWithdrawalPolicyPlaceholder": "No right-of-withdrawal text set.",
+    "businessTermsLabel": "Terms and conditions (AGB)",
+    "noBusinessTermsPlaceholder": "No terms and conditions set.",
     "accountSettingsHeading": "Account settings",
     "visibleOnlyToYou": "All information is only visible to you",
     "phoneLabel": "Phone number",
@@ -505,6 +535,7 @@
   "legal": {
     "privacy": "Privacy Policy",
     "terms": "Terms of Use",
+    "agb": "Terms and conditions (AGB)",
     "privacySettings": "Privacy Settings,\nMeasurement & Analytics"
   }
 }

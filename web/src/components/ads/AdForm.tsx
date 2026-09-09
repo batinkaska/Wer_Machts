@@ -133,21 +133,26 @@ export function AdForm({ onSubmit, submitting }: AdFormProps) {
     );
   }
 
+  function failWith(message: string) {
+    setError(message);
+    window.scrollTo({ top: 0, behavior: "smooth" });
+  }
+
   async function handleAction(action: SubmitAction) {
     setError(null);
 
     if (!title.trim()) {
-      setError(t("adForm.errorTitleRequired"));
+      failWith(t("adForm.errorTitleRequired"));
       return;
     }
 
     if (action === "publish") {
       if (categories.length === 0) {
-        setError(t("adForm.errorCategoryRequired"));
+        failWith(t("adForm.errorCategoryRequired"));
         return;
       }
       if (!description.trim()) {
-        setError(t("adForm.errorDescriptionRequired"));
+        failWith(t("adForm.errorDescriptionRequired"));
         return;
       }
       if (!isValidPlzFormat(postalCode)) {
@@ -197,7 +202,7 @@ export function AdForm({ onSubmit, submitting }: AdFormProps) {
       );
     } catch (err) {
       setUploading(false);
-      setError(err instanceof Error ? err.message : t("adForm.errorSaveFailed"));
+      failWith(err instanceof Error ? err.message : t("adForm.errorSaveFailed"));
     }
   }
 
@@ -218,26 +223,32 @@ export function AdForm({ onSubmit, submitting }: AdFormProps) {
           <div>
             <p className="mb-2 text-sm font-medium text-gray-700 dark:text-gray-300">{t("adForm.offerOrSeek")}</p>
             <div className="flex gap-6">
-              <label className="flex items-center gap-2 text-sm text-gray-900 dark:text-gray-100">
-                <input
-                  type="radio"
-                  name="adKind"
-                  checked={adKind === "biete"}
-                  onChange={() => setAdKind("biete")}
-                  className="h-4 w-4 accent-[#5fac5e]"
-                />
-                {t("adForm.iOffer")}
-              </label>
-              <label className="flex items-center gap-2 text-sm text-gray-900 dark:text-gray-100">
-                <input
-                  type="radio"
-                  name="adKind"
-                  checked={adKind === "suche"}
-                  onChange={() => setAdKind("suche")}
-                  className="h-4 w-4 accent-[#5fac5e]"
-                />
-                {t("adForm.iSeek")}
-              </label>
+              <div>
+                <label className="flex items-center gap-2 text-sm text-gray-900 dark:text-gray-100">
+                  <input
+                    type="radio"
+                    name="adKind"
+                    checked={adKind === "biete"}
+                    onChange={() => setAdKind("biete")}
+                    className="h-4 w-4 accent-[#5fac5e]"
+                  />
+                  {t("adForm.iOffer")}
+                </label>
+                <p className="mt-0.5 pl-6 text-xs text-gray-500 dark:text-gray-400">{t("adForm.iOfferHint")}</p>
+              </div>
+              <div>
+                <label className="flex items-center gap-2 text-sm text-gray-900 dark:text-gray-100">
+                  <input
+                    type="radio"
+                    name="adKind"
+                    checked={adKind === "suche"}
+                    onChange={() => setAdKind("suche")}
+                    className="h-4 w-4 accent-[#5fac5e]"
+                  />
+                  {t("adForm.iSeek")}
+                </label>
+                <p className="mt-0.5 pl-6 text-xs text-gray-500 dark:text-gray-400">{t("adForm.iSeekHint")}</p>
+              </div>
             </div>
           </div>
 

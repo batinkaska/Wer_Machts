@@ -15,6 +15,7 @@
     "addToFavorites": "В избранное",
     "removeFromFavorites": "Убрать из избранного",
     "saved": "Сохранено",
+    "apply": "Применить",
     "draft": "Черновик",
     "offering": "Предлагаю",
     "seeking": "Ищу",
@@ -42,7 +43,6 @@
     "menuMessages": "Сообщения",
     "menuSettings": "Настройки",
     "menuFavorites": "Избранное",
-    "menuFinances": "Доходы и расходы",
     "menuMine": "Моё"
   },
   "search": {
@@ -187,12 +187,22 @@
   },
   "adList": {
     "pageTitle": "Заказы",
-    "emptyDefault": "По вашим критериям заказы не найдены."
+    "emptyDefault": "По вашим критериям заказы не найдены.",
+    "priceFilterLabel": "Цена",
+    "priceMin": "Мин. €",
+    "priceMax": "Макс. €",
+    "adKindAll": "Все",
+    "shippingOnly": "Возможна доставка",
+    "sortLabel": "Сортировать по",
+    "sortNewest": "Сначала новые",
+    "sortPriceAsc": "Сначала дешевле",
+    "sortPriceDesc": "Сначала дороже"
   },
   "myAds": {
     "activeHeading": "Активные",
     "reservedHeading": "Забронировано",
     "draftsHeading": "Черновики",
+    "emptyGroup": "Здесь пока ничего нет.",
     "reserve": "Забронировать заказ",
     "close": "Закрыть заказ",
     "reopen": "Снова открыть",
@@ -204,7 +214,9 @@
   "myBids": {
     "pageTitle": "Мои предложения",
     "empty": "Вы ещё не сделали ни одного предложения.",
-    "toAd": "К заказу"
+    "toAd": "К заказу",
+    "withdraw": "Отозвать предложение",
+    "withdrawConfirm": "Действительно отозвать это предложение?"
   },
   "favorites": {
     "pageTitle": "Избранное",
@@ -231,7 +243,9 @@
     "detailsHeading": "Детали объявления",
     "offerOrSeek": "Предложение / Запрос",
     "iOffer": "Я предлагаю",
+    "iOfferHint": "Вы исполнитель и предлагаете свою услугу.",
     "iSeek": "Я ищу",
+    "iSeekHint": "Вы заказчик и ищете услугу.",
     "titleLabel": "Заголовок",
     "categoryLabel": "Категория",
     "categoryPlaceholder": "Выберите категорию(и)",
@@ -305,6 +319,12 @@
     "offersCount": "Предложения ({{count}})",
     "chatHint": "Чтобы начать чат с исполнителем, нажмите на его имя в списке предложений.",
     "chatWith": "Написать {{name}}",
+    "legalInfoHeading": "Правовая информация",
+    "businessNameLabel": "Название компании",
+    "impressumHeading": "Выходные данные (Impressum)",
+    "taxIdLabel": "Номер плательщика НДС (USt-IdNr.)",
+    "withdrawalPolicyHeading": "Право на отказ от договора",
+    "businessTermsHeading": "Условия предоставления услуг (AGB)",
     "shareAd": "Поделиться объявлением",
     "linkCopied": "Ссылка скопирована!",
     "activeSince": "На платформе с {{date}}",
@@ -378,20 +398,10 @@
     "completedWork": "Завершённые заказы",
     "roleClient": "Как заказчик",
     "roleProvider": "Как исполнитель",
+    "removeCompletedWork": "Убрать из завершённых заказов",
+    "removeCompletedWorkConfirm": "Действительно убрать?",
     "visibilityPublic": "Публично",
     "visibilityPrivate": "Приватно"
-  },
-  "finances": {
-    "pageTitle": "Доходы и расходы",
-    "balance": "Баланс",
-    "totalIncome": "Доходы: {{amount}} €",
-    "totalExpenses": "Расходы: {{amount}} €",
-    "incomeHeading": "Доходы",
-    "expensesHeading": "Расходы",
-    "noIncome": "Пока нет доходов.",
-    "noExpenses": "Пока нет расходов.",
-    "unknownAd": "Неизвестный заказ",
-    "paidTo": "Оплачено {{name}}"
   },
   "reviews": {
     "sectionTitle": "Отзывы",
@@ -407,9 +417,11 @@
     "notAuthorized": "У вас нет доступа к этому платежу.",
     "chooseMethod": "Как вы хотите оплатить?",
     "chosen": "Выбран способ оплаты: {{method}}",
+    "changeMethod": "Изменить",
+    "waitingForPayer": "Заказчику ещё нужно выбрать способ оплаты.",
     "method": {
       "card": "Оплатить картой",
-      "cash": "Оплатить наличными"
+      "cash": "Оплатить наличными на месте"
     },
     "backToAd": "Назад к заказу"
   },
@@ -417,6 +429,9 @@
     "login": "Войти",
     "loginFailed": "Не удалось войти.",
     "registerFailed": "Не удалось зарегистрироваться.",
+    "acceptTermsBefore": "Я ознакомился(-лась) с документами:",
+    "acceptTermsMiddle": "(AGB) и",
+    "acceptTermsAfter": "и принимаю их условия.",
     "completeProfile": "Заполнить профиль",
     "continueWithGoogle": "Войти через Google",
     "continueWithGoogleAlt": "Продолжить через Google",
@@ -425,6 +440,8 @@
     "emailPlaceholder": "Эл. почта",
     "passwordPlaceholder": "Пароль",
     "namePlaceholder": "Имя профиля",
+    "accountTypePrivate": "Частное лицо",
+    "accountTypeBusiness": "Организация",
     "cityPlaceholder": "Город (необязательно)",
     "phonePlaceholder": "Телефон (необязательно)",
     "registerHeading": "Регистрация за 30 секунд",
@@ -461,7 +478,8 @@
   },
   "verifiedBadges": {
     "email": "Email подтверждён",
-    "phone": "Телефон подтверждён"
+    "phone": "Телефон подтверждён",
+    "business": "Организация"
   },
   "settings": {
     "pageTitle": "Настройки",
@@ -470,6 +488,18 @@
     "noNamePlaceholder": "Имя не указано.",
     "deliveryAddressLabel": "Адрес доставки",
     "noDeliveryAddressPlaceholder": "Адрес доставки не указан.",
+    "businessInfoHeading": "Данные организации",
+    "businessInfoNotice": "Эта информация будет публично показана в ваших объявлениях.",
+    "businessNameLabel": "Название компании",
+    "noBusinessNamePlaceholder": "Название компании не указано.",
+    "impressumLabel": "Выходные данные (Impressum)",
+    "noImpressumPlaceholder": "Имя владельца, полный адрес и контактные данные.",
+    "taxIdLabel": "Номер плательщика НДС (USt-IdNr.)",
+    "noTaxIdPlaceholder": "Номер плательщика НДС не указан.",
+    "withdrawalPolicyLabel": "Право на отказ от договора",
+    "noWithdrawalPolicyPlaceholder": "Текст о праве на отказ не указан.",
+    "businessTermsLabel": "Условия предоставления услуг (AGB)",
+    "noBusinessTermsPlaceholder": "Условия предоставления услуг не указаны.",
     "accountSettingsHeading": "Настройки аккаунта",
     "visibleOnlyToYou": "Вся информация видна только вам",
     "phoneLabel": "Номер телефона",
@@ -521,6 +551,7 @@
   "legal": {
     "privacy": "Политика конфиденциальности",
     "terms": "Условия использования",
+    "agb": "Условия предоставления услуг (AGB)",
     "privacySettings": "Настройки конфиденциальности,\nизмерение и аналитика"
   }
 }

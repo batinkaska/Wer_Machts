@@ -1,4 +1,4 @@
-import { doc, getDoc } from "firebase/firestore";
+import { doc, getDoc, updateDoc } from "firebase/firestore";
 import { getDownloadURL, ref, uploadBytes } from "firebase/storage";
 import { type ChangeEvent, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
@@ -6,17 +6,19 @@ import { Link, useParams } from "react-router-dom";
 import { AdList } from "../components/ads/AdList";
 import { CategoryMultiPicker } from "../components/categories/CategoryMultiPicker";
 import { PhotoIcon, StarIcon } from "../components/icons";
+import { ReviewBox } from "../components/reviews/ReviewBox";
 import { StarRatingDisplay } from "../components/reviews/StarRating";
 import { VerifiedBadge } from "../components/VerifiedBadge";
 import { useAuth } from "../contexts/AuthContext";
 import { storage } from "../firebase/config";
-import { usersCol } from "../firebase/converters";
+import { adsCol, bidsCol, usersCol } from "../firebase/converters";
 import { useAds } from "../hooks/useAds";
 import { useMyBids } from "../hooks/useBids";
 import { useFollowerCount } from "../hooks/useFollowerCount";
 import { useReviewsForUser } from "../hooks/useReviewsForUser";
 import { SONSTIGES_SLUG, categoryLabel } from "../lib/categories";
 import { useDateFormatter } from "../lib/useDateFormatter";
+import { makeConversationId } from "../types/message";
 import type { AppUser, ProfileSectionVisibility, ProfileVisibility } from "../types/user";
 
 function VisibilitySelect({
@@ -55,6 +57,7 @@ export function PublicProfilePage() {
   const [avatarUploading, setAvatarUploading] = useState(false);
   const [galleryUploading, setGalleryUploading] = useState(false);
   const [previewMode, setPreviewMode] = useState(false);
+  const [confirmingRemoveKey, setConfirmingRemoveKey] = useState<string | null>(null);
 
   const isOwnProfile = firebaseUser?.uid === uid;
   const showOwnerControls = isOwnProfile && !previewMode;
@@ -69,9 +72,22 @@ export function PublicProfilePage() {
   const isFollowing = appUser?.followingIds?.includes(uid ?? "") ?? false;
   const canViewFollows = isOwnProfile || (displayedUser?.followersVisible ?? true);
 
-  const completedAsClient = ads.filter((a) => a.status === "in_progress" || a.status === "closed");
-  const completedAsProvider = providerBids.filter((b) => b.status === "accepted");
+  const completedAsClient = ads.filter(
+    (a) => (a.status === "in_progress" || a.status === "closed") && !a.hiddenFromProfile,
+  );
+  const completedAsProvider = providerBids.filter((b) => b.status === "accepted" && !b.hiddenFromProfile);
   const hasCompletedWork = completedAsClient.length > 0 || completedAsProvider.length > 0;
+  const isBlocked = !!uid && (appUser?.blockedUserIds?.includes(uid) ?? false);
+
+  async function hideCompletedAd(adId: string) {
+    await updateDoc(doc(adsCol, adId), { hiddenFromProfile: true });
+    setConfirmingRemoveKey(null);
+  }
+
+  async function hideCompletedBid(bidId: string) {
+    await updateDoc(doc(bidsCol, bidId), { hiddenFromProfile: true });
+    setConfirmingRemoveKey(null);
+  }
 
   const sectionVisibility = displayedUser?.sectionVisibility ?? {};
   function isVisible(section: keyof ProfileSectionVisibility): boolean {
@@ -199,6 +215,7 @@ export function PublicProfilePage() {
             <h1 className="text-2xl font-semibold text-gray-900 dark:text-gray-100">{displayedUser.displayName}</h1>
             {displayedUser.emailVerified && <VerifiedBadge label={t("verifiedBadges.email")} />}
             {displayedUser.phoneVerified && <VerifiedBadge label={t("verifiedBadges.phone")} />}
+            {displayedUser.accountType === "business" && <VerifiedBadge label={t("verifiedBadges.business")} />}
           </div>
           {displayedUser.city && <p className="text-sm text-gray-500 dark:text-gray-400">{displayedUser.city}</p>}
           <div className="mt-1 flex gap-4 text-sm text-gray-600 dark:text-gray-400">
@@ -314,55 +331,18 @@ export function PublicProfilePage() {
         </div>
       )}
 
-      {hasCompletedWork && isVisible("completedWork") && (
-        <div className="mt-6">
-          <div className="mb-2 flex items-center justify-between">
-            <h2 className="text-lg font-medium text-gray-900 dark:text-gray-100">{t("profile.completedWork")}</h2>
-            {showOwnerControls && (
-              <VisibilitySelect
-                value={sectionVisibility.completedWork ?? "public"}
-                onChange={(v) => setSectionVisibility("completedWork", v)}
-              />
-            )}
-          </div>
-          <hr className="mb-3 border-gray-200 dark:border-gray-700" />
-          <ul className="space-y-2">
-            {completedAsClient.map((ad) => (
-              <li
-                key={`client-${ad.id}`}
-                className="flex items-center justify-between gap-3 rounded border border-gray-200 px-4 py-2.5 dark:border-gray-700"
-              >
-                <Link to={`/ads/${ad.id}`} className="truncate text-sm font-medium text-gray-900 hover:underline dark:text-gray-100">
-                  {ad.title}
-                </Link>
-                <span className="shrink-0 rounded-full bg-blue-50 px-2 py-0.5 text-xs font-medium text-blue-700 dark:bg-blue-950 dark:text-blue-400">
-                  {t("profile.roleClient")}
-                </span>
-              </li>
-            ))}
-            {completedAsProvider.map((bid) => (
-              <li
-                key={`provider-${bid.id}`}
-                className="flex items-center justify-between gap-3 rounded border border-gray-200 px-4 py-2.5 dark:border-gray-700"
-              >
-                <Link
-                  to={`/ads/${bid.adId}`}
-                  className="truncate text-sm font-medium text-gray-900 hover:underline dark:text-gray-100"
-                >
-                  {bid.adTitle ?? t("finances.unknownAd")}
-                </Link>
-                <span className="shrink-0 rounded-full bg-green-50 px-2 py-0.5 text-xs font-medium text-[#4d9a4c] dark:bg-green-950">
-                  {t("profile.roleProvider")}
-                </span>
-              </li>
-            ))}
-          </ul>
-        </div>
-      )}
-
       <div className="mt-6">
         <h2 className="text-lg font-medium text-gray-900 dark:text-gray-100">{t("reviews.sectionTitle")}</h2>
         <hr className="mb-3 mt-2 border-gray-200 dark:border-gray-700" />
+        {firebaseUser && !isOwnProfile && !isBlocked && uid && (
+          <div className="mb-4 rounded border border-gray-200 p-3 dark:border-gray-700">
+            <ReviewBox
+              conversationId={makeConversationId("profile", firebaseUser.uid, uid)}
+              revieweeId={uid}
+              revieweeName={displayedUser.displayName}
+            />
+          </div>
+        )}
         {reviews.length === 0 ? (
           <p className="text-gray-500 dark:text-gray-400">{t("reviews.none")}</p>
         ) : (
@@ -434,6 +414,126 @@ export function PublicProfilePage() {
               ))}
             </div>
           )}
+        </div>
+      )}
+
+      {hasCompletedWork && isVisible("completedWork") && (
+        <div className="mt-6">
+          <div className="mb-2 flex items-center justify-between">
+            <h2 className="text-lg font-medium text-gray-900 dark:text-gray-100">{t("profile.completedWork")}</h2>
+            {showOwnerControls && (
+              <VisibilitySelect
+                value={sectionVisibility.completedWork ?? "public"}
+                onChange={(v) => setSectionVisibility("completedWork", v)}
+              />
+            )}
+          </div>
+          <hr className="mb-3 border-gray-200 dark:border-gray-700" />
+          <ul className="space-y-2">
+            {completedAsClient.map((ad) => {
+              const key = `client-${ad.id}`;
+              return (
+                <li
+                  key={key}
+                  className="flex items-center justify-between gap-3 rounded border border-gray-200 px-4 py-2.5 dark:border-gray-700"
+                >
+                  <Link to={`/ads/${ad.id}`} className="truncate text-sm font-medium text-gray-900 hover:underline dark:text-gray-100">
+                    {ad.title}
+                  </Link>
+                  {confirmingRemoveKey === key ? (
+                    <div className="flex shrink-0 items-center gap-2">
+                      <span className="text-xs font-medium text-red-600 dark:text-red-400">
+                        {t("profile.removeCompletedWorkConfirm")}
+                      </span>
+                      <button
+                        type="button"
+                        onClick={() => hideCompletedAd(ad.id)}
+                        className="rounded-full bg-red-600 px-2.5 py-1 text-xs font-medium text-white hover:bg-red-700"
+                      >
+                        {t("common.delete")}
+                      </button>
+                      <button
+                        type="button"
+                        onClick={() => setConfirmingRemoveKey(null)}
+                        className="rounded-full border border-gray-300 px-2.5 py-1 text-xs font-medium text-gray-700 hover:bg-gray-50 dark:border-gray-600 dark:text-gray-300 dark:hover:bg-gray-800"
+                      >
+                        {t("common.cancel")}
+                      </button>
+                    </div>
+                  ) : (
+                    <div className="flex shrink-0 items-center gap-2">
+                      <span className="rounded-full bg-blue-50 px-2 py-0.5 text-xs font-medium text-blue-700 dark:bg-blue-950 dark:text-blue-400">
+                        {t("profile.roleClient")}
+                      </span>
+                      {showOwnerControls && (
+                        <button
+                          type="button"
+                          onClick={() => setConfirmingRemoveKey(key)}
+                          className="text-gray-400 hover:text-red-600 dark:text-gray-500 dark:hover:text-red-400"
+                          aria-label={t("profile.removeCompletedWork")}
+                        >
+                          ×
+                        </button>
+                      )}
+                    </div>
+                  )}
+                </li>
+              );
+            })}
+            {completedAsProvider.map((bid) => {
+              const key = `provider-${bid.id}`;
+              return (
+                <li
+                  key={key}
+                  className="flex items-center justify-between gap-3 rounded border border-gray-200 px-4 py-2.5 dark:border-gray-700"
+                >
+                  <Link
+                    to={`/ads/${bid.adId}`}
+                    className="truncate text-sm font-medium text-gray-900 hover:underline dark:text-gray-100"
+                  >
+                    {bid.adTitle ?? t("finances.unknownAd")}
+                  </Link>
+                  {confirmingRemoveKey === key ? (
+                    <div className="flex shrink-0 items-center gap-2">
+                      <span className="text-xs font-medium text-red-600 dark:text-red-400">
+                        {t("profile.removeCompletedWorkConfirm")}
+                      </span>
+                      <button
+                        type="button"
+                        onClick={() => hideCompletedBid(bid.id)}
+                        className="rounded-full bg-red-600 px-2.5 py-1 text-xs font-medium text-white hover:bg-red-700"
+                      >
+                        {t("common.delete")}
+                      </button>
+                      <button
+                        type="button"
+                        onClick={() => setConfirmingRemoveKey(null)}
+                        className="rounded-full border border-gray-300 px-2.5 py-1 text-xs font-medium text-gray-700 hover:bg-gray-50 dark:border-gray-600 dark:text-gray-300 dark:hover:bg-gray-800"
+                      >
+                        {t("common.cancel")}
+                      </button>
+                    </div>
+                  ) : (
+                    <div className="flex shrink-0 items-center gap-2">
+                      <span className="rounded-full bg-green-50 px-2 py-0.5 text-xs font-medium text-[#4d9a4c] dark:bg-green-950">
+                        {t("profile.roleProvider")}
+                      </span>
+                      {showOwnerControls && (
+                        <button
+                          type="button"
+                          onClick={() => setConfirmingRemoveKey(key)}
+                          className="text-gray-400 hover:text-red-600 dark:text-gray-500 dark:hover:text-red-400"
+                          aria-label={t("profile.removeCompletedWork")}
+                        >
+                          ×
+                        </button>
+                      )}
+                    </div>
+                  )}
+                </li>
+              );
+            })}
+          </ul>
         </div>
       )}
 

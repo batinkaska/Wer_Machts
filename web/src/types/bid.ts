@@ -13,5 +13,6 @@ export interface Bid {
   message?: string;
   status: BidStatus;
   paymentMethod?: PaymentMethod;
+  hiddenFromProfile?: boolean;
   createdAt: Timestamp;
 }

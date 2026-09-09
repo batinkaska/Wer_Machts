@@ -15,6 +15,7 @@
     "addToFavorites": "إضافة إلى المفضلة",
     "removeFromFavorites": "إزالة من المفضلة",
     "saved": "تم الحفظ",
+    "apply": "تطبيق",
     "draft": "مسودة",
     "offering": "أعرض",
     "seeking": "أبحث",
@@ -41,7 +42,6 @@
     "menuMessages": "الرسائل",
     "menuSettings": "الإعدادات",
     "menuFavorites": "المفضلة",
-    "menuFinances": "الإيرادات والمصروفات",
     "menuMine": "حسابي"
   },
   "search": {
@@ -186,7 +186,16 @@
   },
   "adList": {
     "pageTitle": "الإعلانات",
-    "emptyDefault": "لم يتم العثور على إعلانات مطابقة لهذه المعايير."
+    "emptyDefault": "لم يتم العثور على إعلانات مطابقة لهذه المعايير.",
+    "priceFilterLabel": "السعر",
+    "priceMin": "الحد الأدنى €",
+    "priceMax": "الحد الأقصى €",
+    "adKindAll": "الكل",
+    "shippingOnly": "الشحن متاح",
+    "sortLabel": "الترتيب حسب",
+    "sortNewest": "الأحدث",
+    "sortPriceAsc": "الأقل سعراً",
+    "sortPriceDesc": "الأعلى سعراً"
   },
   "myAds": {
     "pageTitle": "إعلاناتي",
@@ -194,6 +203,7 @@
     "activeHeading": "نشط",
     "reservedHeading": "محجوز",
     "draftsHeading": "المسودات",
+    "emptyGroup": "لا يوجد شيء هنا بعد.",
     "reserve": "حجز الإعلان",
     "close": "إغلاق الإعلان",
     "reopen": "إعادة الفتح",
@@ -203,7 +213,9 @@
   "myBids": {
     "pageTitle": "عروضي",
     "empty": "لم تقدّم أي عرض بعد.",
-    "toAd": "إلى الإعلان"
+    "toAd": "إلى الإعلان",
+    "withdraw": "سحب العرض",
+    "withdrawConfirm": "هل تريد فعلاً سحب هذا العرض؟"
   },
   "favorites": {
     "pageTitle": "المفضلة",
@@ -230,7 +242,9 @@
     "detailsHeading": "تفاصيل الإعلان",
     "offerOrSeek": "أعرض / أبحث",
     "iOffer": "أنا أعرض",
+    "iOfferHint": "أنت مقدّم خدمة وتعرض خدمتك.",
     "iSeek": "أنا أبحث",
+    "iSeekHint": "أنت عميل وتبحث عن خدمة.",
     "titleLabel": "العنوان",
     "categoryLabel": "الفئة",
     "categoryPlaceholder": "اختر فئة أو أكثر",
@@ -302,6 +316,12 @@
     "offersCount": "العروض ({{count}})",
     "chatHint": "للدردشة مع مقدّم خدمة، اضغط على اسمه في قائمة العروض.",
     "chatWith": "الدردشة مع {{name}}",
+    "legalInfoHeading": "المعلومات القانونية",
+    "businessNameLabel": "اسم الشركة",
+    "impressumHeading": "البيانات القانونية (Impressum)",
+    "taxIdLabel": "الرقم الضريبي (USt-IdNr.)",
+    "withdrawalPolicyHeading": "حق الانسحاب",
+    "businessTermsHeading": "الشروط والأحكام العامة (AGB)",
     "shareAd": "مشاركة الإعلان",
     "linkCopied": "تم نسخ الرابط!",
     "activeSince": "نشط منذ {{date}}",
@@ -372,20 +392,10 @@
     "completedWork": "الأعمال المُنجزة",
     "roleClient": "كعميل",
     "roleProvider": "كمقدّم خدمة",
+    "removeCompletedWork": "إزالة من الأعمال المنجزة",
+    "removeCompletedWorkConfirm": "هل تريد فعلاً إزالة هذا؟",
     "visibilityPublic": "عام",
     "visibilityPrivate": "خاص"
-  },
-  "finances": {
-    "pageTitle": "الإيرادات والمصروفات",
-    "balance": "الرصيد",
-    "totalIncome": "الإيرادات: {{amount}} €",
-    "totalExpenses": "المصروفات: {{amount}} €",
-    "incomeHeading": "الإيرادات",
-    "expensesHeading": "المصروفات",
-    "noIncome": "لا توجد إيرادات بعد.",
-    "noExpenses": "لا توجد مصروفات بعد.",
-    "unknownAd": "إعلان غير معروف",
-    "paidTo": "مدفوع لـ {{name}}"
   },
   "reviews": {
     "sectionTitle": "التقييمات",
@@ -402,9 +412,11 @@
     "notAuthorized": "ليس لديك صلاحية الوصول إلى هذه الدفعة.",
     "chooseMethod": "كيف تريد الدفع؟",
     "chosen": "طريقة الدفع المختارة: {{method}}",
+    "changeMethod": "تغيير",
+    "waitingForPayer": "لا يزال يتعين على العميل اختيار طريقة الدفع.",
     "method": {
       "card": "الدفع بالبطاقة",
-      "cash": "الدفع نقدًا"
+      "cash": "الدفع نقدًا في الموقع"
     },
     "backToAd": "العودة إلى الإعلان"
   },
@@ -412,6 +424,9 @@
     "login": "تسجيل الدخول",
     "loginFailed": "فشل تسجيل الدخول.",
     "registerFailed": "فشل إنشاء الحساب.",
+    "acceptTermsBefore": "لقد قرأت",
+    "acceptTermsMiddle": "(AGB) و",
+    "acceptTermsAfter": "وأوافق عليها.",
     "completeProfile": "إكمال الملف الشخصي",
     "continueWithGoogle": "تسجيل الدخول عبر Google",
     "continueWithGoogleAlt": "المتابعة عبر Google",
@@ -420,6 +435,8 @@
     "emailPlaceholder": "البريد الإلكتروني",
     "passwordPlaceholder": "كلمة المرور",
     "namePlaceholder": "اسم الملف الشخصي",
+    "accountTypePrivate": "فردي",
+    "accountTypeBusiness": "تجاري",
     "cityPlaceholder": "المدينة (اختياري)",
     "phonePlaceholder": "الهاتف (اختياري)",
     "registerHeading": "التسجيل خلال 30 ثانية",
@@ -456,7 +473,8 @@
   },
   "verifiedBadges": {
     "email": "تم تأكيد البريد الإلكتروني",
-    "phone": "تم تأكيد الهاتف"
+    "phone": "تم تأكيد الهاتف",
+    "business": "تجاري"
   },
   "settings": {
     "pageTitle": "الإعدادات",
@@ -465,6 +483,18 @@
     "noNamePlaceholder": "لم يتم تحديد اسم.",
     "deliveryAddressLabel": "عنوان التوصيل",
     "noDeliveryAddressPlaceholder": "لم يتم تحديد عنوان توصيل.",
+    "businessInfoHeading": "بيانات النشاط التجاري",
+    "businessInfoNotice": "تُعرض هذه المعلومات للعامة على إعلاناتك.",
+    "businessNameLabel": "اسم الشركة",
+    "noBusinessNamePlaceholder": "لم يتم تحديد اسم الشركة.",
+    "impressumLabel": "البيانات القانونية (Impressum)",
+    "noImpressumPlaceholder": "اسم المالك والعنوان الكامل وبيانات التواصل.",
+    "taxIdLabel": "الرقم الضريبي (USt-IdNr.)",
+    "noTaxIdPlaceholder": "لم يتم تحديد رقم ضريبي.",
+    "withdrawalPolicyLabel": "حق الانسحاب",
+    "noWithdrawalPolicyPlaceholder": "لم يتم إدخال نص حق الانسحاب.",
+    "businessTermsLabel": "الشروط والأحكام العامة (AGB)",
+    "noBusinessTermsPlaceholder": "لم يتم إدخال الشروط والأحكام العامة.",
     "accountSettingsHeading": "إعدادات الحساب",
     "visibleOnlyToYou": "جميع المعلومات مرئية لك فقط",
     "phoneLabel": "رقم الهاتف",
@@ -514,6 +544,7 @@
   "legal": {
     "privacy": "سياسة الخصوصية",
     "terms": "شروط الاستخدام",
+    "agb": "الشروط والأحكام العامة (AGB)",
     "privacySettings": "إعدادات الخصوصية،\nالقياس والتحليلات"
   }
 }

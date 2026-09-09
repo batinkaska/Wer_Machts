@@ -5,6 +5,7 @@ import logo from "../assets/logo.png";
 import wordmark from "../assets/wordmark.png";
 import { EyeIcon, EyeOffIcon, GoogleIcon } from "../components/icons";
 import { useAuth } from "../contexts/AuthContext";
+import type { AccountType } from "../types/user";
 
 export function RegisterPage() {
   const { t } = useTranslation();
@@ -23,7 +24,9 @@ export function RegisterPage() {
   const [password, setPassword] = useState("");
   const [showPassword, setShowPassword] = useState(false);
   const [displayName, setDisplayName] = useState("");
+  const [accountType, setAccountType] = useState<AccountType | "">("");
   const [marketingOptIn, setMarketingOptIn] = useState(false);
+  const [acceptedTerms, setAcceptedTerms] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [submitting, setSubmitting] = useState(false);
 
@@ -38,7 +41,7 @@ export function RegisterPage() {
     setSubmitting(true);
     try {
       const user = firebaseUser ?? (await registerWithEmail(email, password));
-      await completeProfile({ displayName, marketingOptIn }, user);
+      await completeProfile({ displayName, accountType: accountType as AccountType, marketingOptIn }, user);
       // No explicit navigate() here — the `firebaseUser && appUser` guard above
       // redirects declaratively once the profile is set. An explicit navigate("/")
       // here can fire late (after the user has already clicked elsewhere) and yank
@@ -81,6 +84,44 @@ export function RegisterPage() {
                 {t("auth.credentialsHeading")}
               </h2>
             )}
+            <div className="grid grid-cols-2 gap-3">
+              <label
+                className={`flex items-center gap-2 rounded-lg border px-4 py-3 text-sm font-medium cursor-pointer ${
+                  accountType === "private"
+                    ? "border-[#5fac5e] bg-green-50 text-[#4d9a4c] dark:bg-green-950"
+                    : "border-gray-300 text-gray-700 dark:border-gray-600 dark:text-gray-300"
+                }`}
+              >
+                <input
+                  type="radio"
+                  name="accountType"
+                  required
+                  value="private"
+                  checked={accountType === "private"}
+                  onChange={() => setAccountType("private")}
+                  className="h-4 w-4 accent-[#5fac5e]"
+                />
+                {t("auth.accountTypePrivate")}
+              </label>
+              <label
+                className={`flex items-center gap-2 rounded-lg border px-4 py-3 text-sm font-medium cursor-pointer ${
+                  accountType === "business"
+                    ? "border-[#5fac5e] bg-green-50 text-[#4d9a4c] dark:bg-green-950"
+                    : "border-gray-300 text-gray-700 dark:border-gray-600 dark:text-gray-300"
+                }`}
+              >
+                <input
+                  type="radio"
+                  name="accountType"
+                  required
+                  value="business"
+                  checked={accountType === "business"}
+                  onChange={() => setAccountType("business")}
+                  className="h-4 w-4 accent-[#5fac5e]"
+                />
+                {t("auth.accountTypeBusiness")}
+              </label>
+            </div>
             <input
               required
               placeholder={t("auth.namePlaceholder")}
@@ -119,6 +160,27 @@ export function RegisterPage() {
                 </div>
               </>
             )}
+
+            <label className="flex items-start gap-2 text-sm text-gray-700 dark:text-gray-300">
+              <input
+                type="checkbox"
+                required
+                checked={acceptedTerms}
+                onChange={(e) => setAcceptedTerms(e.target.checked)}
+                className="mt-0.5 h-4 w-4 accent-[#5fac5e]"
+              />
+              <span>
+                {t("auth.acceptTermsBefore")}{" "}
+                <Link to="/nutzungsbedingungen" target="_blank" className="text-[#5fac5e] underline">
+                  {t("legal.terms")}
+                </Link>{" "}
+                {t("auth.acceptTermsMiddle")}{" "}
+                <Link to="/datenschutz" target="_blank" className="text-[#5fac5e] underline">
+                  {t("legal.privacy")}
+                </Link>{" "}
+                {t("auth.acceptTermsAfter")}
+              </span>
+            </label>
 
             <label className="flex items-start gap-2 text-sm text-gray-700 dark:text-gray-300">
               <input

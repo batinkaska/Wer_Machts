@@ -22,7 +22,6 @@ export function AccountMenu() {
 
   const items = [
     { to: `/profile/${firebaseUser?.uid}`, label: t("nav.menuProfile") },
-    { to: "/finanzen", label: t("nav.menuFinances") },
     { to: "/my-ads", label: t("nav.menuMyAds") },
     { to: "/my-bids", label: t("nav.menuMyBids") },
     { to: "/messages", label: t("nav.menuMessages") },

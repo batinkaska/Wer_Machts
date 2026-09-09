@@ -7,6 +7,7 @@ import { TrashIcon } from "../components/icons";
 import { useAuth } from "../contexts/AuthContext";
 import { adsCol } from "../firebase/converters";
 import { useAds } from "../hooks/useAds";
+import { republishAd } from "../lib/republishAd";
 import type { Ad, AdStatus } from "../types/ad";
 
 function AdActions({
@@ -98,7 +99,11 @@ export function MyAdsPage() {
   const { ads, loading } = useAds({ ownerId: firebaseUser?.uid, includeDrafts: true });
 
   async function handleSetStatus(adId: string, status: AdStatus) {
-    await updateDoc(doc(adsCol, adId), { status, updatedAt: serverTimestamp() });
+    if (status === "open") {
+      await republishAd(adId);
+    } else {
+      await updateDoc(doc(adsCol, adId), { status, updatedAt: serverTimestamp() });
+    }
   }
 
   async function handleDelete(adId: string) {
@@ -129,26 +134,25 @@ export function MyAdsPage() {
 
       {loading ? (
         <p className="text-center text-gray-500 dark:text-gray-400">{t("common.loading")}</p>
-      ) : ads.length === 0 ? (
-        <p className="text-center text-gray-500 dark:text-gray-400">{t("adList.emptyDefault")}</p>
       ) : (
         <div className="space-y-8">
-          {groups.map(
-            (group) =>
-              group.items.length > 0 && (
-                <section key={group.heading}>
-                  <h2 className="mb-3 text-lg font-medium text-gray-900 dark:text-gray-100">{group.heading}</h2>
-                  <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
-                    {group.items.map((ad) => (
-                      <div key={ad.id} className="space-y-2">
-                        <AdCard ad={ad} />
-                        <AdActions ad={ad} onSetStatus={handleSetStatus} onDelete={handleDelete} />
-                      </div>
-                    ))}
-                  </div>
-                </section>
-              ),
-          )}
+          {groups.map((group) => (
+            <section key={group.heading}>
+              <h2 className="mb-3 text-lg font-medium text-gray-900 dark:text-gray-100">{group.heading}</h2>
+              {group.items.length > 0 ? (
+                <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
+                  {group.items.map((ad) => (
+                    <div key={ad.id} className="space-y-2">
+                      <AdCard ad={ad} />
+                      <AdActions ad={ad} onSetStatus={handleSetStatus} onDelete={handleDelete} />
+                    </div>
+                  ))}
+                </div>
+              ) : (
+                <p className="text-sm text-gray-500 dark:text-gray-400">{t("myAds.emptyGroup")}</p>
+              )}
+            </section>
+          ))}
         </div>
       )}
     </div>

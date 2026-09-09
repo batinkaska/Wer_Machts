@@ -15,6 +15,7 @@
     "addToFavorites": "Zur Merkliste hinzufügen",
     "removeFromFavorites": "Von der Merkliste entfernen",
     "saved": "Gespeichert",
+    "apply": "Übernehmen",
     "draft": "Entwurf",
     "offering": "Biete",
     "seeking": "Suche",
@@ -40,7 +41,6 @@
     "menuMessages": "Nachrichten",
     "menuSettings": "Einstellungen",
     "menuFavorites": "Merkliste",
-    "menuFinances": "Einnahmen & Ausgaben",
     "menuMine": "Meins"
   },
   "search": {
@@ -185,7 +185,16 @@
   },
   "adList": {
     "pageTitle": "Aufträge",
-    "emptyDefault": "Keine Aufträge gefunden, die diesen Kriterien entsprechen."
+    "emptyDefault": "Keine Aufträge gefunden, die diesen Kriterien entsprechen.",
+    "priceFilterLabel": "Preis",
+    "priceMin": "Min. €",
+    "priceMax": "Max. €",
+    "adKindAll": "Alle",
+    "shippingOnly": "Versand möglich",
+    "sortLabel": "Sortieren nach",
+    "sortNewest": "Neueste",
+    "sortPriceAsc": "Niedrigster Preis",
+    "sortPriceDesc": "Höchster Preis"
   },
   "myAds": {
     "pageTitle": "Meine Aufträge",
@@ -193,6 +202,7 @@
     "activeHeading": "Aktiv",
     "reservedHeading": "Reserviert",
     "draftsHeading": "Entwürfe",
+    "emptyGroup": "Hier gibt es noch nichts.",
     "reserve": "Auftrag reservieren",
     "close": "Auftrag schließen",
     "reopen": "Wieder öffnen",
@@ -202,7 +212,9 @@
   "myBids": {
     "pageTitle": "Meine Angebote",
     "empty": "Sie haben noch kein Angebot abgegeben.",
-    "toAd": "Zum Auftrag"
+    "toAd": "Zum Auftrag",
+    "withdraw": "Angebot zurückziehen",
+    "withdrawConfirm": "Angebot wirklich zurückziehen?"
   },
   "favorites": {
     "pageTitle": "Merkliste",
@@ -229,7 +241,9 @@
     "detailsHeading": "Anzeigendetails",
     "offerOrSeek": "Gebot / Gesuch",
     "iOffer": "Ich biete",
+    "iOfferHint": "Du bist Anbieter und stellst deine Dienstleistung vor.",
     "iSeek": "Ich suche",
+    "iSeekHint": "Du bist Auftraggeber und suchst eine Dienstleistung.",
     "titleLabel": "Titel",
     "categoryLabel": "Kategorie",
     "categoryPlaceholder": "Wähle deine Kategorie(n)",
@@ -301,6 +315,12 @@
     "offersCount": "Angebote ({{count}})",
     "chatHint": "Um mit einem Anbieter zu chatten, klicken Sie auf seinen Namen in der Angebotsliste.",
     "chatWith": "Mit {{name}} chatten",
+    "legalInfoHeading": "Rechtliche Angaben",
+    "businessNameLabel": "Firmenname",
+    "impressumHeading": "Impressum",
+    "taxIdLabel": "Umsatzsteuer-ID (USt-IdNr.)",
+    "withdrawalPolicyHeading": "Widerrufsrecht",
+    "businessTermsHeading": "Allgemeine Geschäftsbedingungen (AGB)",
     "shareAd": "Anzeige teilen",
     "linkCopied": "Link kopiert!",
     "activeSince": "Aktiv seit {{date}}",
@@ -368,20 +388,10 @@
     "completedWork": "Abgeschlossene Aufträge",
     "roleClient": "Als Auftraggeber",
     "roleProvider": "Als Anbieter",
+    "removeCompletedWork": "Aus abgeschlossenen Aufträgen entfernen",
+    "removeCompletedWorkConfirm": "Wirklich entfernen?",
     "visibilityPublic": "Öffentlich",
     "visibilityPrivate": "Privat"
-  },
-  "finances": {
-    "pageTitle": "Einnahmen & Ausgaben",
-    "balance": "Kontostand",
-    "totalIncome": "Einnahmen: {{amount}} €",
-    "totalExpenses": "Ausgaben: {{amount}} €",
-    "incomeHeading": "Einnahmen",
-    "expensesHeading": "Ausgaben",
-    "noIncome": "Noch keine Einnahmen.",
-    "noExpenses": "Noch keine Ausgaben.",
-    "unknownAd": "Unbekannter Auftrag",
-    "paidTo": "Bezahlt an {{name}}"
   },
   "reviews": {
     "sectionTitle": "Bewertungen",
@@ -395,9 +405,11 @@
     "notAuthorized": "Du hast keinen Zugriff auf diese Zahlung.",
     "chooseMethod": "Wie möchtest du bezahlen?",
     "chosen": "Zahlungsart gewählt: {{method}}",
+    "changeMethod": "Ändern",
+    "waitingForPayer": "Der Auftraggeber muss noch eine Zahlungsart wählen.",
     "method": {
       "card": "Mit Karte bezahlen",
-      "cash": "Bar bezahlen"
+      "cash": "Vor Ort bar bezahlen"
     },
     "backToAd": "Zurück zum Auftrag"
   },
@@ -405,6 +417,9 @@
     "login": "Anmelden",
     "loginFailed": "Anmeldung fehlgeschlagen.",
     "registerFailed": "Registrierung fehlgeschlagen.",
+    "acceptTermsBefore": "Ich habe die",
+    "acceptTermsMiddle": "(AGB) und die",
+    "acceptTermsAfter": "gelesen und akzeptiere sie.",
     "completeProfile": "Profil vervollständigen",
     "continueWithGoogle": "Mit Google anmelden",
     "continueWithGoogleAlt": "Mit Google fortfahren",
@@ -413,6 +428,8 @@
     "emailPlaceholder": "E-Mail",
     "passwordPlaceholder": "Passwort",
     "namePlaceholder": "Profilname",
+    "accountTypePrivate": "Privat",
+    "accountTypeBusiness": "Gewerblich",
     "cityPlaceholder": "Stadt (optional)",
     "phonePlaceholder": "Telefon (optional)",
     "registerHeading": "Registrieren in 30 Sekunden",
@@ -449,7 +466,8 @@
   },
   "verifiedBadges": {
     "email": "E-Mail bestätigt",
-    "phone": "Telefon bestätigt"
+    "phone": "Telefon bestätigt",
+    "business": "Gewerblich"
   },
   "settings": {
     "pageTitle": "Einstellungen",
@@ -458,6 +476,18 @@
     "noNamePlaceholder": "Kein Name hinterlegt.",
     "deliveryAddressLabel": "Lieferadresse",
     "noDeliveryAddressPlaceholder": "Keine Lieferadresse hinterlegt.",
+    "businessInfoHeading": "Gewerbliche Angaben",
+    "businessInfoNotice": "Diese Angaben werden auf deinen Anzeigen öffentlich angezeigt.",
+    "businessNameLabel": "Firmenname",
+    "noBusinessNamePlaceholder": "Kein Firmenname hinterlegt.",
+    "impressumLabel": "Impressum",
+    "noImpressumPlaceholder": "Name, Anschrift und Kontaktdaten des Unternehmens.",
+    "taxIdLabel": "Umsatzsteuer-ID (USt-IdNr.)",
+    "noTaxIdPlaceholder": "Keine Umsatzsteuer-ID hinterlegt.",
+    "withdrawalPolicyLabel": "Widerrufsrecht",
+    "noWithdrawalPolicyPlaceholder": "Kein Widerrufsrecht-Text hinterlegt.",
+    "businessTermsLabel": "Allgemeine Geschäftsbedingungen (AGB)",
+    "noBusinessTermsPlaceholder": "Keine AGB hinterlegt.",
     "accountSettingsHeading": "Kontoeinstellungen",
     "visibleOnlyToYou": "Alle Informationen sind nur für dich sichtbar",
     "phoneLabel": "Telefonnummer",
@@ -505,6 +535,7 @@
   "legal": {
     "privacy": "Datenschutzerklärung",
     "terms": "Nutzungsbedingungen",
+    "agb": "Allgemeine Geschäftsbedingungen (AGB)",
     "privacySettings": "Datenschutzeinstellungen,\nMessung & Analyse"
   }
 }

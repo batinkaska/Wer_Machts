@@ -15,6 +15,7 @@
     "addToFavorites": "Favorilere ekle",
     "removeFromFavorites": "Favorilerden kaldır",
     "saved": "Kaydedildi",
+    "apply": "Uygula",
     "draft": "Taslak",
     "offering": "Sunuyorum",
     "seeking": "Arıyorum",
@@ -40,7 +41,6 @@
     "menuMessages": "Mesajlar",
     "menuSettings": "Ayarlar",
     "menuFavorites": "Favorilerim",
-    "menuFinances": "Gelir & Gider",
     "menuMine": "Benim"
   },
   "search": {
@@ -185,7 +185,16 @@
   },
   "adList": {
     "pageTitle": "İlanlar",
-    "emptyDefault": "Bu kriterlere uyan ilan bulunamadı."
+    "emptyDefault": "Bu kriterlere uyan ilan bulunamadı.",
+    "priceFilterLabel": "Fiyat",
+    "priceMin": "Min. €",
+    "priceMax": "Maks. €",
+    "adKindAll": "Tümü",
+    "shippingOnly": "Kargo mümkün",
+    "sortLabel": "Sırala",
+    "sortNewest": "En yeni",
+    "sortPriceAsc": "En düşük fiyat",
+    "sortPriceDesc": "En yüksek fiyat"
   },
   "myAds": {
     "pageTitle": "İlanlarım",
@@ -193,6 +202,7 @@
     "activeHeading": "Aktif",
     "reservedHeading": "Rezerve edildi",
     "draftsHeading": "Taslaklar",
+    "emptyGroup": "Burada henüz bir şey yok.",
     "reserve": "İlanı rezerve et",
     "close": "İlanı kapat",
     "reopen": "Yeniden aç",
@@ -202,7 +212,9 @@
   "myBids": {
     "pageTitle": "Tekliflerim",
     "empty": "Henüz bir teklif vermedin.",
-    "toAd": "İlana git"
+    "toAd": "İlana git",
+    "withdraw": "Teklifi geri çek",
+    "withdrawConfirm": "Teklifi gerçekten geri çekmek istiyor musun?"
   },
   "favorites": {
     "pageTitle": "Favorilerim",
@@ -229,7 +241,9 @@
     "detailsHeading": "İlan detayları",
     "offerOrSeek": "Sunuyorum / Arıyorum",
     "iOffer": "Sunuyorum",
+    "iOfferHint": "Bir hizmet sağlayıcısısın, kendi hizmetini tanıtıyorsun.",
     "iSeek": "Arıyorum",
+    "iSeekHint": "Bir müşterisin, bir hizmet için ilan veriyorsun.",
     "titleLabel": "Başlık",
     "categoryLabel": "Kategori",
     "categoryPlaceholder": "Kategori(ler)ini seç",
@@ -301,6 +315,12 @@
     "offersCount": "Teklifler ({{count}})",
     "chatHint": "Bir hizmet sağlayıcıyla sohbet etmek için teklif listesinde adına tıkla.",
     "chatWith": "{{name}} ile sohbet et",
+    "legalInfoHeading": "Yasal Bilgiler",
+    "businessNameLabel": "Firma Adı",
+    "impressumHeading": "Impressum (Künye)",
+    "taxIdLabel": "Vergi Numarası (USt-IdNr.)",
+    "withdrawalPolicyHeading": "Cayma Hakkı",
+    "businessTermsHeading": "Genel İşlem Şartları (AGB)",
     "shareAd": "İlanı paylaş",
     "linkCopied": "Bağlantı kopyalandı!",
     "activeSince": "{{date}} tarihinden beri aktif",
@@ -368,20 +388,10 @@
     "completedWork": "Tamamlanan işler",
     "roleClient": "Alıcı olarak",
     "roleProvider": "Hizmet sağlayıcı olarak",
+    "removeCompletedWork": "Tamamlanan işlerden kaldır",
+    "removeCompletedWorkConfirm": "Gerçekten kaldırmak istiyor musun?",
     "visibilityPublic": "Herkese açık",
     "visibilityPrivate": "Gizli"
-  },
-  "finances": {
-    "pageTitle": "Gelir & Gider",
-    "balance": "Bakiye",
-    "totalIncome": "Gelir: {{amount}} €",
-    "totalExpenses": "Gider: {{amount}} €",
-    "incomeHeading": "Gelirler",
-    "expensesHeading": "Giderler",
-    "noIncome": "Henüz gelir yok.",
-    "noExpenses": "Henüz gider yok.",
-    "unknownAd": "Bilinmeyen ilan",
-    "paidTo": "{{name}} kişisine ödendi"
   },
   "reviews": {
     "sectionTitle": "Değerlendirmeler",
@@ -395,9 +405,11 @@
     "notAuthorized": "Bu ödemeye erişimin yok.",
     "chooseMethod": "Nasıl ödemek istersin?",
     "chosen": "Seçilen ödeme yöntemi: {{method}}",
+    "changeMethod": "Değiştir",
+    "waitingForPayer": "Ödemeyi yapacak kişi henüz bir ödeme yöntemi seçmedi.",
     "method": {
       "card": "Kartla öde",
-      "cash": "Nakit öde"
+      "cash": "Yerinde nakit öde"
     },
     "backToAd": "İlana dön"
   },
@@ -405,6 +417,9 @@
     "login": "Giriş yap",
     "loginFailed": "Giriş başarısız oldu.",
     "registerFailed": "Kayıt başarısız oldu.",
+    "acceptTermsBefore": "",
+    "acceptTermsMiddle": "(AGB) ve",
+    "acceptTermsAfter": "hükümlerini okudum ve kabul ediyorum.",
     "completeProfile": "Profili tamamla",
     "continueWithGoogle": "Google ile giriş yap",
     "continueWithGoogleAlt": "Google ile devam et",
@@ -413,6 +428,8 @@
     "emailPlaceholder": "E-posta",
     "passwordPlaceholder": "Şifre",
     "namePlaceholder": "Profil adı",
+    "accountTypePrivate": "Bireysel",
+    "accountTypeBusiness": "Kurumsal",
     "cityPlaceholder": "Şehir (opsiyonel)",
     "phonePlaceholder": "Telefon (opsiyonel)",
     "registerHeading": "30 saniyede kayıt ol",
@@ -449,7 +466,8 @@
   },
   "verifiedBadges": {
     "email": "E-posta onaylandı",
-    "phone": "Telefon onaylandı"
+    "phone": "Telefon onaylandı",
+    "business": "Kurumsal"
   },
   "settings": {
     "pageTitle": "Ayarlar",
@@ -458,6 +476,18 @@
     "noNamePlaceholder": "İsim girilmemiş.",
     "deliveryAddressLabel": "Teslimat adresi",
     "noDeliveryAddressPlaceholder": "Teslimat adresi girilmemiş.",
+    "businessInfoHeading": "Kurumsal Bilgiler",
+    "businessInfoNotice": "Bu bilgiler ilanlarında herkese açık olarak gösterilir.",
+    "businessNameLabel": "Firma Adı",
+    "noBusinessNamePlaceholder": "Firma adı girilmemiş.",
+    "impressumLabel": "Impressum (Künye)",
+    "noImpressumPlaceholder": "İşletme sahibinin adı, tam adresi ve iletişim bilgileri.",
+    "taxIdLabel": "Vergi Numarası (USt-IdNr.)",
+    "noTaxIdPlaceholder": "Vergi numarası girilmemiş.",
+    "withdrawalPolicyLabel": "Cayma Hakkı",
+    "noWithdrawalPolicyPlaceholder": "Cayma hakkı metni girilmemiş.",
+    "businessTermsLabel": "Genel İşlem Şartları (AGB)",
+    "noBusinessTermsPlaceholder": "Genel işlem şartları girilmemiş.",
     "accountSettingsHeading": "Hesap ayarları",
     "visibleOnlyToYou": "Tüm bilgiler yalnızca sana görünür",
     "phoneLabel": "Telefon numarası",
@@ -505,6 +535,7 @@
   "legal": {
     "privacy": "Gizlilik Politikası",
     "terms": "Kullanım Koşulları",
+    "agb": "Genel İşlem Şartları (AGB)",
     "privacySettings": "Gizlilik Ayarları,\nÖlçüm & Analiz"
   }
 }

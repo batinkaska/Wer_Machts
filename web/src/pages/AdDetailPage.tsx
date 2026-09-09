@@ -26,6 +26,7 @@ import { useBids } from "../hooks/useBids";
 import { categoryLabels } from "../lib/categories";
 import { useDateFormatter } from "../lib/useDateFormatter";
 import { createNotification } from "../lib/notify";
+import { republishAd } from "../lib/republishAd";
 import { makeConversationId } from "../types/message";
 import type { AppUser } from "../types/user";
 import type { Bid } from "../types/bid";
@@ -147,19 +148,23 @@ export function AdDetailPage() {
   }
 
   async function handleAccept(bid: Bid) {
-    await updateDoc(doc(bidsCol, bid.id), { status: "accepted" });
-    await updateDoc(doc(adsCol, ad!.id), { status: "in_progress", updatedAt: serverTimestamp() });
-    if (firebaseUser && ad && bid.providerId !== firebaseUser.uid) {
-      await createNotification({
-        recipientId: bid.providerId,
-        type: "bid_accepted",
-        actorId: firebaseUser.uid,
-        actorName: appUser?.displayName ?? ad.ownerName,
-        adId: ad.id,
-        adTitle: ad.title,
-      });
+    if (ad!.adKind === "biete") {
+      await updateDoc(doc(bidsCol, bid.id), { status: "accepted" });
+      await updateDoc(doc(adsCol, ad!.id), { status: "in_progress", updatedAt: serverTimestamp() });
+      if (firebaseUser && ad && bid.providerId !== firebaseUser.uid) {
+        await createNotification({
+          recipientId: bid.providerId,
+          type: "bid_accepted",
+          actorId: firebaseUser.uid,
+          actorName: appUser?.displayName ?? ad.ownerName,
+          adId: ad.id,
+          adTitle: ad.title,
+          bidId: bid.id,
+        });
+      }
+    } else {
+      navigate(`/ads/${ad!.id}/payment?bidId=${bid.id}`);
     }
-    navigate(`/ads/${ad!.id}/payment?bidId=${bid.id}`);
   }
 
   async function handleReject(bid: Bid) {
@@ -178,7 +183,7 @@ export function AdDetailPage() {
 
   async function handleSetOpen() {
     if (!ad) return;
-    await updateDoc(doc(adsCol, ad.id), { status: "open", updatedAt: serverTimestamp() });
+    await republishAd(ad.id);
   }
 
   function goToConversation(otherUid: string) {
@@ -421,6 +426,54 @@ export function AdDetailPage() {
                 {t("adDetail.chatWith", { name: bid.providerName })}
               </button>
             ))}
+
+          {owner?.accountType === "business" && (
+            <div className="mt-8 border-t border-gray-200 pt-6 dark:border-gray-700">
+              <h2 className="mb-3 text-lg font-medium text-gray-900 dark:text-gray-100">
+                {t("adDetail.legalInfoHeading")}
+              </h2>
+              <div className="space-y-3 text-sm text-gray-700 dark:text-gray-300">
+                {owner.businessName && (
+                  <div>
+                    <p className="font-medium text-gray-900 dark:text-gray-100">
+                      {t("adDetail.businessNameLabel")}
+                    </p>
+                    <p>{owner.businessName}</p>
+                  </div>
+                )}
+                {owner.impressum && (
+                  <div>
+                    <p className="font-medium text-gray-900 dark:text-gray-100">
+                      {t("adDetail.impressumHeading")}
+                    </p>
+                    <p className="whitespace-pre-wrap">{owner.impressum}</p>
+                  </div>
+                )}
+                {owner.taxId && (
+                  <div>
+                    <p className="font-medium text-gray-900 dark:text-gray-100">{t("adDetail.taxIdLabel")}</p>
+                    <p>{owner.taxId}</p>
+                  </div>
+                )}
+                {owner.withdrawalPolicy && (
+                  <div>
+                    <p className="font-medium text-gray-900 dark:text-gray-100">
+                      {t("adDetail.withdrawalPolicyHeading")}
+                    </p>
+                    <p className="whitespace-pre-wrap">{owner.withdrawalPolicy}</p>
+                  </div>
+                )}
+                {owner.businessTerms && (
+                  <div>
+                    <p className="font-medium text-gray-900 dark:text-gray-100">
+                      {t("adDetail.businessTermsHeading")}
+                    </p>
+                    <p className="whitespace-pre-wrap">{owner.businessTerms}</p>
+                  </div>
+                )}
+              </div>
+            </div>
+          )}
         </div>
 
         {/* Sidebar */}
@@ -473,6 +526,7 @@ export function AdDetailPage() {
                 <span className="font-medium text-gray-900 dark:text-gray-100">{ad.ownerName}</span>
                 {owner?.emailVerified && <VerifiedBadge label={t("verifiedBadges.email")} />}
                 {owner?.phoneVerified && <VerifiedBadge label={t("verifiedBadges.phone")} />}
+                {owner?.accountType === "business" && <VerifiedBadge label={t("verifiedBadges.business")} />}
               </span>
             </Link>
             {owner && (
