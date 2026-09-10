@@ -593,9 +593,7 @@ export function SettingsPage() {
   if (!appUser || !firebaseUser) return null;
 
   const PRIVACY_LINKS = [
-    { to: "/datenschutzeinstellungen", label: t("legal.privacySettings") },
     { to: "/datenschutz", label: t("legal.privacy") },
-    { to: "/nutzungsbedingungen", label: t("legal.terms") },
     { to: "/agb", label: t("legal.agb") },
   ];
 
