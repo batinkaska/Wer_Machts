@@ -3,6 +3,7 @@ import { Link } from "react-router-dom";
 import heroPeople from "../assets/hero-people.png";
 import logo from "../assets/logo.png";
 import { CheckCircleIcon, ClockIcon, DiamondIcon, LightbulbIcon } from "../components/icons";
+import { IntroAnimation } from "../components/home/IntroAnimation";
 import { CATEGORY_GROUPS, categoryGroupName, categoryLabel } from "../lib/categories";
 
 const BENEFITS = [
@@ -17,6 +18,7 @@ export function HomePage() {
 
   return (
     <div>
+      <IntroAnimation />
       <section className="bg-[#0b5b7a]">
         <div className="mx-auto max-w-5xl px-4 pt-8 text-center">
           <img src={logo} alt="" className="mx-auto mb-4 h-20 w-20 rounded-xl" />
