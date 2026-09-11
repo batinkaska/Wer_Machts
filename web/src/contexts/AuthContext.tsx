@@ -8,7 +8,6 @@ import {
   reauthenticateWithCredential,
   reauthenticateWithPopup,
   reload,
-  sendPasswordResetEmail,
   signInWithEmailAndPassword,
   signInWithPopup,
   signOut,
@@ -95,6 +94,7 @@ interface AuthContextValue {
 const AuthContext = createContext<AuthContextValue | undefined>(undefined);
 
 const sendVerificationEmailFn = httpsCallable(functions, "sendVerificationEmail");
+const sendPasswordResetEmailFn = httpsCallable(functions, "sendPasswordResetEmail");
 
 export function AuthProvider({ children }: { children: ReactNode }) {
   const [firebaseUser, setFirebaseUser] = useState<FirebaseUser | null>(null);
@@ -163,7 +163,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   }
 
   async function resetPassword(email: string) {
-    await sendPasswordResetEmail(auth, email);
+    await sendPasswordResetEmailFn({ email });
   }
 
   async function logout() {

@@ -458,6 +458,18 @@
       "successBody": "Falls ein Konto mit dieser E-Mail-Adresse existiert, haben wir dir einen Link zum Zurücksetzen deines Passworts geschickt. Bitte prüfe auch deinen Spam-Ordner.",
       "backToLogin": "Zurück zur Anmeldung",
       "error": "Etwas ist schiefgelaufen. Bitte versuche es erneut."
+    },
+    "resetPassword": {
+      "checking": "Wird überprüft...",
+      "heading": "Neues Passwort festlegen",
+      "forEmail": "Neues Passwort für",
+      "newPasswordPlaceholder": "Neues Passwort",
+      "submit": "Passwort speichern",
+      "successTitle": "Passwort geändert!",
+      "successBody": "Dein Passwort wurde erfolgreich geändert. Du kannst dich jetzt damit anmelden.",
+      "errorTitle": "Link ungültig",
+      "errorBody": "Dieser Link ist abgelaufen oder wurde bereits verwendet. Fordere einen neuen Link an.",
+      "error": "Etwas ist schiefgelaufen. Bitte versuche es erneut."
     }
   },
   "emailAction": {

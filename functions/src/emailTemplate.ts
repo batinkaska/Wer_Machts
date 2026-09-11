@@ -71,6 +71,67 @@ export function verificationEmailHtml(params: { name: string; link: string; rese
 </html>`;
 }
 
+export function passwordResetEmailHtml(params: { link: string }): string {
+  const { link } = params;
+
+  return `<!doctype html>
+<html lang="de">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Passwort zurücksetzen</title>
+  </head>
+  <body style="margin:0;padding:0;background-color:#f3f4f6;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Helvetica,Arial,sans-serif;">
+    <table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="background-color:#f3f4f6;padding:32px 16px;">
+      <tr>
+        <td align="center">
+          <table role="presentation" width="480" cellpadding="0" cellspacing="0" style="max-width:480px;width:100%;background-color:#ffffff;border-radius:12px;overflow:hidden;border:1px solid #e5e7eb;">
+            <tr>
+              <td style="height:6px;background-color:#5fac5e;line-height:6px;font-size:0;">&nbsp;</td>
+            </tr>
+            <tr>
+              <td style="padding:32px 32px 8px 32px;text-align:center;">
+                <img src="${LOGO_URL}" alt="" width="40" height="40" style="display:inline-block;vertical-align:middle;border-radius:8px;border:0;" />
+                <img src="${WORDMARK_URL}" alt="Wer Macht" height="28" style="display:inline-block;vertical-align:middle;margin-left:10px;border:0;" />
+              </td>
+            </tr>
+            <tr>
+              <td style="padding:16px 32px 0 32px;color:#374151;font-size:15px;line-height:1.6;">
+                <p style="margin:0 0 16px 0;">Hallo,</p>
+                <p style="margin:0 0 24px 0;">
+                  wir haben eine Anfrage erhalten, das Passwort für dein Wer Macht Konto
+                  zurückzusetzen. Klicke auf den Button, um ein neues Passwort festzulegen.
+                </p>
+              </td>
+            </tr>
+            <tr>
+              <td style="padding:0 32px 24px 32px;text-align:center;">
+                <a href="${link}" style="display:inline-block;background-color:#5fac5e;color:#ffffff;text-decoration:none;font-size:15px;font-weight:600;padding:12px 28px;border-radius:9999px;">
+                  Passwort zurücksetzen
+                </a>
+              </td>
+            </tr>
+            <tr>
+              <td style="padding:0 32px 32px 32px;color:#6b7280;font-size:13px;line-height:1.6;">
+                <p style="margin:0 0 8px 0;">Falls der Button nicht funktioniert, kopiere diesen Link in deinen Browser:</p>
+                <p style="margin:0;word-break:break-all;"><a href="${link}" style="color:#5fac5e;">${link}</a></p>
+              </td>
+            </tr>
+            <tr>
+              <td style="padding:20px 32px;background-color:#f9fafb;border-top:1px solid #f0f0f0;color:#9ca3af;font-size:12px;line-height:1.6;text-align:center;">
+                Falls du das nicht angefordert hast, kannst du diese E-Mail ignorieren – dein Passwort bleibt unverändert.<br />
+                Fragen? Schreib uns an
+                <a href="mailto:info@wermacht.app" style="color:#5fac5e;">info@wermacht.app</a>
+              </td>
+            </tr>
+          </table>
+        </td>
+      </tr>
+    </table>
+  </body>
+</html>`;
+}
+
 function escapeHtml(value: string): string {
   return value
     .replace(/&/g, "&amp;")

@@ -23,6 +23,7 @@ import { PrivacySettingsPage } from "./pages/PrivacySettingsPage";
 import { PaymentPage } from "./pages/PaymentPage";
 import { PublicProfilePage } from "./pages/PublicProfilePage";
 import { RegisterPage } from "./pages/RegisterPage";
+import { ResetPasswordPage } from "./pages/ResetPasswordPage";
 import { SettingsPage } from "./pages/SettingsPage";
 import { TermsPage } from "./pages/TermsPage";
 
@@ -38,6 +39,7 @@ function App() {
           <Route path="/login" element={<LoginPage />} />
           <Route path="/register" element={<RegisterPage />} />
           <Route path="/passwort-vergessen" element={<ForgotPasswordPage />} />
+          <Route path="/passwort-zuruecksetzen" element={<ResetPasswordPage />} />
           <Route path="/konto-aktivieren" element={<AccountActivationPage />} />
           <Route path="/email-bestaetigen" element={<EmailActionPage />} />
           <Route path="/ads" element={<AdListPage />} />

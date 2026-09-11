@@ -458,6 +458,18 @@
       "successBody": "Bu e-posta adresine sahip bir hesap varsa, şifreni sıfırlaman için bir bağlantı gönderdik. Lütfen spam klasörünü de kontrol et.",
       "backToLogin": "Girişe dön",
       "error": "Bir şeyler ters gitti. Lütfen tekrar dene."
+    },
+    "resetPassword": {
+      "checking": "Kontrol ediliyor...",
+      "heading": "Yeni şifre belirle",
+      "forEmail": "Yeni şifre:",
+      "newPasswordPlaceholder": "Yeni şifre",
+      "submit": "Şifreyi kaydet",
+      "successTitle": "Şifre değiştirildi!",
+      "successBody": "Şifren başarıyla değiştirildi. Artık bu şifreyle giriş yapabilirsin.",
+      "errorTitle": "Geçersiz bağlantı",
+      "errorBody": "Bu bağlantının süresi dolmuş veya zaten kullanılmış. Yeni bir bağlantı iste.",
+      "error": "Bir şeyler ters gitti. Lütfen tekrar dene."
     }
   },
   "emailAction": {

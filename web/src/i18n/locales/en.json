@@ -458,6 +458,18 @@
       "successBody": "If an account with this email address exists, we've sent you a link to reset your password. Please also check your spam folder.",
       "backToLogin": "Back to login",
       "error": "Something went wrong. Please try again."
+    },
+    "resetPassword": {
+      "checking": "Checking...",
+      "heading": "Set a new password",
+      "forEmail": "New password for",
+      "newPasswordPlaceholder": "New password",
+      "submit": "Save password",
+      "successTitle": "Password changed!",
+      "successBody": "Your password has been changed successfully. You can now sign in with it.",
+      "errorTitle": "Invalid link",
+      "errorBody": "This link has expired or was already used. Please request a new one.",
+      "error": "Something went wrong. Please try again."
     }
   },
   "emailAction": {
