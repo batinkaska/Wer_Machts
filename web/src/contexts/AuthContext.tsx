@@ -8,6 +8,7 @@ import {
   reauthenticateWithCredential,
   reauthenticateWithPopup,
   reload,
+  sendPasswordResetEmail,
   signInWithEmailAndPassword,
   signInWithPopup,
   signOut,
@@ -45,6 +46,7 @@ interface AuthContextValue {
   registerWithEmail: (email: string, password: string) => Promise<FirebaseUser>;
   loginWithEmail: (email: string, password: string) => Promise<void>;
   loginWithGoogle: () => Promise<void>;
+  resetPassword: (email: string) => Promise<void>;
   logout: () => Promise<void>;
   completeProfile: (
     input: {
@@ -158,6 +160,10 @@ export function AuthProvider({ children }: { children: ReactNode }) {
 
   async function loginWithGoogle() {
     await signInWithPopup(auth, new GoogleAuthProvider());
+  }
+
+  async function resetPassword(email: string) {
+    await sendPasswordResetEmail(auth, email);
   }
 
   async function logout() {
@@ -362,6 +368,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     registerWithEmail,
     loginWithEmail,
     loginWithGoogle,
+    resetPassword,
     logout,
     completeProfile,
     toggleFavorite,

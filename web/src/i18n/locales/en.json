@@ -448,6 +448,16 @@
       "resendSent": "Sent again!",
       "confirmRefresh": "I've confirmed it – refresh",
       "emailVerifiedBadge": "Email confirmed!"
+    },
+    "forgotPasswordLink": "Forgot password?",
+    "forgotPassword": {
+      "heading": "Reset password",
+      "description": "Enter your email address. We'll send you a link to reset your password.",
+      "submit": "Send link",
+      "successTitle": "Email sent!",
+      "successBody": "If an account with this email address exists, we've sent you a link to reset your password. Please also check your spam folder.",
+      "backToLogin": "Back to login",
+      "error": "Something went wrong. Please try again."
     }
   },
   "emailAction": {

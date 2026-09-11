@@ -72,6 +72,11 @@ export function LoginPage() {
               onChange={(e) => setPassword(e.target.value)}
               className="w-full rounded border border-gray-300 px-3 py-2 dark:border-gray-600 dark:bg-gray-800 dark:text-gray-100"
             />
+            <div className="text-right">
+              <Link to="/passwort-vergessen" className="text-sm text-purple-700 hover:underline">
+                {t("auth.forgotPasswordLink")}
+              </Link>
+            </div>
             <button
               type="submit"
               disabled={submitting}

@@ -448,6 +448,16 @@
       "resendSent": "Erneut gesendet!",
       "confirmRefresh": "Ich habe bestätigt – aktualisieren",
       "emailVerifiedBadge": "E-Mail bestätigt!"
+    },
+    "forgotPasswordLink": "Passwort vergessen?",
+    "forgotPassword": {
+      "heading": "Passwort zurücksetzen",
+      "description": "Gib deine E-Mail-Adresse ein. Wir senden dir einen Link zum Zurücksetzen deines Passworts.",
+      "submit": "Link senden",
+      "successTitle": "E-Mail gesendet!",
+      "successBody": "Falls ein Konto mit dieser E-Mail-Adresse existiert, haben wir dir einen Link zum Zurücksetzen deines Passworts geschickt. Bitte prüfe auch deinen Spam-Ordner.",
+      "backToLogin": "Zurück zur Anmeldung",
+      "error": "Etwas ist schiefgelaufen. Bitte versuche es erneut."
     }
   },
   "emailAction": {

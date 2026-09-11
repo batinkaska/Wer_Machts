@@ -12,6 +12,7 @@ import { CreateAdPage } from "./pages/CreateAdPage";
 import { EmailActionPage } from "./pages/EmailActionPage";
 import { FavoritesPage } from "./pages/FavoritesPage";
 import { FollowListPage } from "./pages/FollowListPage";
+import { ForgotPasswordPage } from "./pages/ForgotPasswordPage";
 import { HomePage } from "./pages/HomePage";
 import { LoginPage } from "./pages/LoginPage";
 import { MessagesPage } from "./pages/MessagesPage";
@@ -36,6 +37,7 @@ function App() {
           <Route path="/" element={<HomePage />} />
           <Route path="/login" element={<LoginPage />} />
           <Route path="/register" element={<RegisterPage />} />
+          <Route path="/passwort-vergessen" element={<ForgotPasswordPage />} />
           <Route path="/konto-aktivieren" element={<AccountActivationPage />} />
           <Route path="/email-bestaetigen" element={<EmailActionPage />} />
           <Route path="/ads" element={<AdListPage />} />

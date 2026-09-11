@@ -448,6 +448,16 @@
       "resendSent": "Tekrar gönderildi!",
       "confirmRefresh": "Onayladım – güncelle",
       "emailVerifiedBadge": "E-posta onaylandı!"
+    },
+    "forgotPasswordLink": "Şifremi unuttum",
+    "forgotPassword": {
+      "heading": "Şifreyi sıfırla",
+      "description": "E-posta adresini gir. Sana şifreni sıfırlaman için bir bağlantı göndereceğiz.",
+      "submit": "Bağlantı gönder",
+      "successTitle": "E-posta gönderildi!",
+      "successBody": "Bu e-posta adresine sahip bir hesap varsa, şifreni sıfırlaman için bir bağlantı gönderdik. Lütfen spam klasörünü de kontrol et.",
+      "backToLogin": "Girişe dön",
+      "error": "Bir şeyler ters gitti. Lütfen tekrar dene."
     }
   },
   "emailAction": {
