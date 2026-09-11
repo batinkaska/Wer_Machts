@@ -2,7 +2,7 @@ import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { useLayoutEffect, useRef } from "react";
 import logo from "../../assets/logo.png";
-import teamPhoto from "../../assets/logo-blueprint2.png";
+import teamPhoto from "../../assets/kapak3-Photoroom.png";
 import wordmark from "../../assets/wordmark.png";
 
 gsap.registerPlugin(ScrollTrigger);
