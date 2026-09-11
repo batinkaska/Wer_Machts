@@ -450,6 +450,15 @@
       "emailVerifiedBadge": "E-posta onaylandı!"
     }
   },
+  "emailAction": {
+    "verifying": "Kontrol ediliyor...",
+    "successTitle": "E-posta adresi onaylandı!",
+    "successBody": "E-posta adresin başarıyla onaylandı. Artık devam edebilirsin.",
+    "continueButton": "Wer Macht'a devam et",
+    "errorTitle": "Tekrar dene",
+    "errorBody": "Bu onay linkinin süresi dolmuş veya daha önce kullanılmış.",
+    "requestNewLink": "Yeni link iste"
+  },
   "phoneVerify": {
     "title": "Telefon numarasını onayla",
     "privacyNote": "Telefon numaran asla yayınlanmaz veya başka kullanıcılarla paylaşılmaz.",

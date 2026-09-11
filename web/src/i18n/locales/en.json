@@ -450,6 +450,15 @@
       "emailVerifiedBadge": "Email confirmed!"
     }
   },
+  "emailAction": {
+    "verifying": "Checking...",
+    "successTitle": "Email address confirmed!",
+    "successBody": "Your email address has been confirmed. You can continue now.",
+    "continueButton": "Continue to Wer Macht",
+    "errorTitle": "Try again",
+    "errorBody": "This confirmation link has expired or was already used.",
+    "requestNewLink": "Request a new link"
+  },
   "phoneVerify": {
     "title": "Confirm phone number",
     "privacyNote": "Your phone number will never be published or shared with other users.",

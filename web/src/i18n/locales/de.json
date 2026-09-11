@@ -450,6 +450,15 @@
       "emailVerifiedBadge": "E-Mail bestätigt!"
     }
   },
+  "emailAction": {
+    "verifying": "Wird überprüft...",
+    "successTitle": "E-Mail-Adresse bestätigt!",
+    "successBody": "Deine E-Mail-Adresse wurde erfolgreich bestätigt. Du kannst jetzt fortfahren.",
+    "continueButton": "Weiter zu Wer Macht",
+    "errorTitle": "Versuche es erneut",
+    "errorBody": "Dieser Bestätigungslink ist abgelaufen oder wurde bereits verwendet.",
+    "requestNewLink": "Neuen Link anfordern"
+  },
   "phoneVerify": {
     "title": "Telefonnummer bestätigen",
     "privacyNote": "Deine Telefonnummer wird niemals veröffentlicht oder mit anderen Nutzern geteilt.",

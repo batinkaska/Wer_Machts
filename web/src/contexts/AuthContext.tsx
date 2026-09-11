@@ -8,7 +8,6 @@ import {
   reauthenticateWithCredential,
   reauthenticateWithPopup,
   reload,
-  sendEmailVerification,
   signInWithEmailAndPassword,
   signInWithPopup,
   signOut,
@@ -25,8 +24,9 @@ import {
   setDoc,
   updateDoc,
 } from "firebase/firestore";
+import { httpsCallable } from "firebase/functions";
 import { type ReactNode, createContext, useContext, useEffect, useState } from "react";
-import { auth, db } from "../firebase/config";
+import { auth, db, functions } from "../firebase/config";
 import { usersCol } from "../firebase/converters";
 import type { LanguageCode } from "../i18n";
 import type { ThemePreference } from "../theme";
@@ -92,6 +92,8 @@ interface AuthContextValue {
 
 const AuthContext = createContext<AuthContextValue | undefined>(undefined);
 
+const sendVerificationEmailFn = httpsCallable(functions, "sendVerificationEmail");
+
 export function AuthProvider({ children }: { children: ReactNode }) {
   const [firebaseUser, setFirebaseUser] = useState<FirebaseUser | null>(null);
   const [appUser, setAppUser] = useState<AppUser | null>(null);
@@ -129,13 +131,13 @@ export function AuthProvider({ children }: { children: ReactNode }) {
 
   async function registerWithEmail(email: string, password: string) {
     const credential = await createUserWithEmailAndPassword(auth, email, password);
-    await sendEmailVerification(credential.user);
+    await sendVerificationEmailFn();
     return credential.user;
   }
 
   async function resendVerificationEmail() {
     if (!auth.currentUser) return;
-    await sendEmailVerification(auth.currentUser);
+    await sendVerificationEmailFn();
   }
 
   async function refreshEmailVerified() {

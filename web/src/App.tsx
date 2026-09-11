@@ -9,6 +9,7 @@ import { AdDetailPage } from "./pages/AdDetailPage";
 import { AgbPage } from "./pages/AgbPage";
 import { AdListPage } from "./pages/AdListPage";
 import { CreateAdPage } from "./pages/CreateAdPage";
+import { EmailActionPage } from "./pages/EmailActionPage";
 import { FavoritesPage } from "./pages/FavoritesPage";
 import { FollowListPage } from "./pages/FollowListPage";
 import { HomePage } from "./pages/HomePage";
@@ -36,6 +37,7 @@ function App() {
           <Route path="/login" element={<LoginPage />} />
           <Route path="/register" element={<RegisterPage />} />
           <Route path="/konto-aktivieren" element={<AccountActivationPage />} />
+          <Route path="/email-bestaetigen" element={<EmailActionPage />} />
           <Route path="/ads" element={<AdListPage />} />
           <Route path="/ads/:adId" element={<AdDetailPage />} />
           <Route path="/profile/:uid" element={<PublicProfilePage />} />

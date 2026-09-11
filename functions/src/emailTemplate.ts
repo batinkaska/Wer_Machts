@@ -1,0 +1,80 @@
+const LOGO_URL =
+  "https://firebasestorage.googleapis.com/v0/b/wermacht-7764c.firebasestorage.app/o/email-assets%2Flogo.png?alt=media&token=9d222d09-6b70-4755-8481-01707faabee0";
+const WORDMARK_URL =
+  "https://firebasestorage.googleapis.com/v0/b/wermacht-7764c.firebasestorage.app/o/email-assets%2Fwordmark.png?alt=media&token=60553b6d-970a-4478-bda3-10d5bbf3a357";
+
+export function verificationEmailHtml(params: { name: string; link: string; resendUrl: string }): string {
+  const { name, link, resendUrl } = params;
+  const greeting = name ? `Hallo ${escapeHtml(name)},` : "Hallo,";
+
+  return `<!doctype html>
+<html lang="de">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>E-Mail-Adresse bestätigen</title>
+  </head>
+  <body style="margin:0;padding:0;background-color:#f3f4f6;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Helvetica,Arial,sans-serif;">
+    <table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="background-color:#f3f4f6;padding:32px 16px;">
+      <tr>
+        <td align="center">
+          <table role="presentation" width="480" cellpadding="0" cellspacing="0" style="max-width:480px;width:100%;background-color:#ffffff;border-radius:12px;overflow:hidden;border:1px solid #e5e7eb;">
+            <tr>
+              <td style="height:6px;background-color:#5fac5e;line-height:6px;font-size:0;">&nbsp;</td>
+            </tr>
+            <tr>
+              <td style="padding:32px 32px 8px 32px;text-align:center;">
+                <img src="${LOGO_URL}" alt="" width="40" height="40" style="display:inline-block;vertical-align:middle;border-radius:8px;border:0;" />
+                <img src="${WORDMARK_URL}" alt="Wer Macht" height="28" style="display:inline-block;vertical-align:middle;margin-left:10px;border:0;" />
+              </td>
+            </tr>
+            <tr>
+              <td style="padding:16px 32px 0 32px;color:#374151;font-size:15px;line-height:1.6;">
+                <p style="margin:0 0 16px 0;">${greeting}</p>
+                <p style="margin:0 0 24px 0;">
+                  schön, dass du dabei bist! Bitte bestätige deine E-Mail-Adresse, damit du Aufträge
+                  veröffentlichen und Angebote abgeben kannst.
+                </p>
+              </td>
+            </tr>
+            <tr>
+              <td style="padding:0 32px 24px 32px;text-align:center;">
+                <a href="${link}" style="display:inline-block;background-color:#5fac5e;color:#ffffff;text-decoration:none;font-size:15px;font-weight:600;padding:12px 28px;border-radius:9999px;">
+                  E-Mail-Adresse bestätigen
+                </a>
+              </td>
+            </tr>
+            <tr>
+              <td style="padding:0 32px 32px 32px;color:#6b7280;font-size:13px;line-height:1.6;">
+                <p style="margin:0 0 8px 0;">Falls der Button nicht funktioniert, kopiere diesen Link in deinen Browser:</p>
+                <p style="margin:0;word-break:break-all;"><a href="${link}" style="color:#5fac5e;">${link}</a></p>
+              </td>
+            </tr>
+            <tr>
+              <td style="padding:0 32px 24px 32px;text-align:center;border-top:1px solid #f0f0f0;">
+                <p style="margin:16px 0 4px 0;color:#9ca3af;font-size:12px;">Link abgelaufen oder schon verwendet?</p>
+                <a href="${resendUrl}" style="color:#5fac5e;font-size:12px;font-weight:600;">Neuen Bestätigungslink anfordern</a>
+              </td>
+            </tr>
+            <tr>
+              <td style="padding:20px 32px;background-color:#f9fafb;border-top:1px solid #f0f0f0;color:#9ca3af;font-size:12px;line-height:1.6;text-align:center;">
+                Falls du kein Konto bei Wer Macht erstellt hast, kannst du diese E-Mail ignorieren.<br />
+                Fragen? Schreib uns an
+                <a href="mailto:info@wermacht.app" style="color:#5fac5e;">info@wermacht.app</a>
+              </td>
+            </tr>
+          </table>
+        </td>
+      </tr>
+    </table>
+  </body>
+</html>`;
+}
+
+function escapeHtml(value: string): string {
+  return value
+    .replace(/&/g, "&amp;")
+    .replace(/</g, "&lt;")
+    .replace(/>/g, "&gt;")
+    .replace(/"/g, "&quot;");
+}
