@@ -2,7 +2,7 @@ import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { useLayoutEffect, useRef } from "react";
 import logo from "../../assets/logo.png";
-import logoBlueprint from "../../assets/logo-blueprint.png";
+import teamPhoto from "../../assets/logo-blueprint2.png";
 import wordmark from "../../assets/wordmark.png";
 
 gsap.registerPlugin(ScrollTrigger);
@@ -11,7 +11,7 @@ export function IntroAnimation() {
   const containerRef = useRef<HTMLDivElement>(null);
   const logoWrapperRef = useRef<HTMLDivElement>(null);
   const normalLogoRef = useRef<HTMLImageElement>(null);
-  const blueprintLogoRef = useRef<HTMLImageElement>(null);
+  const teamPhotoRef = useRef<HTMLImageElement>(null);
   const blueprintBgRef = useRef<HTMLDivElement>(null);
   const gridLinesRef = useRef<HTMLDivElement>(null);
   const techSpecsRef = useRef<HTMLDivElement>(null);
@@ -34,8 +34,8 @@ export function IntroAnimation() {
         .to(blueprintBgRef.current, { opacity: 1, duration: 1.5 }, "-=2")
         .to(gridLinesRef.current, { opacity: 1, duration: 1.5 }, "-=2")
         .to(normalLogoRef.current, { opacity: 0, scale: 0.5, duration: 1.5 }, "-=1")
-        .to(blueprintLogoRef.current, { opacity: 1, duration: 1.5 }, "-=1")
-        .to(blueprintLogoRef.current, { scale: 1.1, duration: 2 })
+        .to(teamPhotoRef.current, { opacity: 1, duration: 1.5 }, "-=1")
+        .to(teamPhotoRef.current, { scale: 1.05, duration: 2 })
         .to(techSpecsRef.current, { opacity: 1, y: 0, duration: 1.5 }, "-=1.5");
     }, containerRef);
 
@@ -70,52 +70,35 @@ export function IntroAnimation() {
           }}
         />
 
-        <div ref={logoWrapperRef} className="relative flex h-[300px] w-[300px] items-center justify-center md:h-[400px] md:w-[400px]">
+        <img
+          ref={teamPhotoRef}
+          src={teamPhoto}
+          alt="Unsere Handwerker und Dienstleister"
+          className="absolute z-10 w-[92%] max-w-4xl rounded-3xl object-cover opacity-0 shadow-2xl md:w-[80%]"
+          style={{ aspectRatio: "21 / 9" }}
+        />
+
+        <div ref={logoWrapperRef} className="relative z-20 flex h-[300px] w-[300px] items-center justify-center md:h-[400px] md:w-[400px]">
           <img
             ref={normalLogoRef}
             src={logo}
             alt="Normal Logo"
             className="absolute z-20 h-[80%] w-[80%] rounded-[40px] bg-white object-contain shadow-2xl"
           />
-          <img
-            ref={blueprintLogoRef}
-            src={logoBlueprint}
-            alt="Blueprint Logo"
-            className="absolute z-10 w-[120%] max-w-none object-contain opacity-0 md:w-[150%]"
-          />
         </div>
 
         <div
           ref={techSpecsRef}
-          className="absolute right-4 bottom-8 z-30 translate-y-10 rounded-xl border border-white/20 bg-white/10 p-6 text-white opacity-0 shadow-2xl backdrop-blur-md md:right-12 md:bottom-12"
+          className="absolute right-4 bottom-8 z-30 translate-y-10 rounded-xl border border-white/20 bg-white/10 px-6 py-4 opacity-0 shadow-2xl backdrop-blur-md md:right-12 md:bottom-12"
         >
-          <h3 className="mb-4 border-b border-white/30 pb-2 text-sm font-bold tracking-widest md:text-base">
-            PROJE DETAYLARI
-          </h3>
-          <div className="space-y-2 font-mono text-sm md:text-base">
-            <p className="flex justify-between gap-8">
-              <span>ÖLÇEK:</span> <span>1:1</span>
-            </p>
-            <p className="flex justify-between gap-8">
-              <span>BİRİM:</span> <span>mm</span>
-            </p>
-            <p className="flex justify-between gap-8">
-              <span>TOLERANS:</span> <span>±0.5</span>
-            </p>
-            <p className="flex justify-between gap-8">
-              <span>TARİH:</span> <span>25.05.2024</span>
-            </p>
-          </div>
-          <div className="mt-6 flex justify-center border-t border-white/30 pt-4">
-            <img src={wordmark} alt="Wer Macht" className="h-8 brightness-0 invert" />
-          </div>
+          <img src={wordmark} alt="Wer Macht" className="h-8 brightness-0 invert" />
         </div>
       </div>
 
       <section className="flex h-screen flex-col items-center justify-center bg-slate-900 px-4 text-center text-white">
         <h2 className="mb-4 text-3xl font-bold md:text-4xl">Finde, wer's macht.</h2>
         <p className="max-w-md text-slate-400">
-          Vertrauenswürdige Handwerker und Dienstleister – jetzt in deiner Nähe entdecken.
+          Kontakt: info@wermacht.app
         </p>
       </section>
     </div>
