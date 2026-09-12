@@ -9,6 +9,7 @@ export function CategoryMegaMenu() {
   const [open, setOpen] = useState(false);
   const [hoveredGroup, setHoveredGroup] = useState<string | null>(null);
   const containerRef = useRef<HTMLDivElement>(null);
+  const closeSubmenuTimeoutRef = useRef<number | null>(null);
 
   useEffect(() => {
     function handleClickOutside(e: MouseEvent) {
@@ -21,9 +22,33 @@ export function CategoryMegaMenu() {
     return () => document.removeEventListener("mousedown", handleClickOutside);
   }, []);
 
+  useEffect(() => {
+    return () => {
+      if (closeSubmenuTimeoutRef.current !== null) {
+        window.clearTimeout(closeSubmenuTimeoutRef.current);
+      }
+    };
+  }, []);
+
   function closeMenu() {
     setOpen(false);
     setHoveredGroup(null);
+  }
+
+  function cancelSubmenuClose() {
+    if (closeSubmenuTimeoutRef.current !== null) {
+      window.clearTimeout(closeSubmenuTimeoutRef.current);
+      closeSubmenuTimeoutRef.current = null;
+    }
+  }
+
+  function scheduleSubmenuClose(groupKey: string) {
+    cancelSubmenuClose();
+    // Grace period so moving the cursor diagonally toward the submenu (crossing the
+    // gap between the row and the panel) doesn't close it before the click lands.
+    closeSubmenuTimeoutRef.current = window.setTimeout(() => {
+      setHoveredGroup((prev) => (prev === groupKey ? null : prev));
+    }, 250);
   }
 
   return (
@@ -55,8 +80,12 @@ export function CategoryMegaMenu() {
               <div
                 key={group.groupKey}
                 className="relative"
-                onMouseEnter={() => hasSubmenu && setHoveredGroup(group.groupKey)}
-                onMouseLeave={() => setHoveredGroup((prev) => (prev === group.groupKey ? null : prev))}
+                onMouseEnter={() => {
+                  if (!hasSubmenu) return;
+                  cancelSubmenuClose();
+                  setHoveredGroup(group.groupKey);
+                }}
+                onMouseLeave={() => hasSubmenu && scheduleSubmenuClose(group.groupKey)}
               >
                 <Link
                   to={groupHref}
@@ -73,7 +102,11 @@ export function CategoryMegaMenu() {
                 </Link>
 
                 {hasSubmenu && hoveredGroup === group.groupKey && (
-                  <div className="absolute left-full top-0 z-30 ml-1 w-64 rounded-lg border border-gray-200 bg-white py-2 shadow-lg dark:border-gray-700 dark:bg-gray-800">
+                  <div
+                    className="absolute left-full top-0 z-30 ml-1 w-64 rounded-lg border border-gray-200 bg-white py-2 shadow-lg dark:border-gray-700 dark:bg-gray-800"
+                    onMouseEnter={cancelSubmenuClose}
+                    onMouseLeave={() => scheduleSubmenuClose(group.groupKey)}
+                  >
                     {group.categories.map((c) => (
                       <Link
                         key={c.slug}
