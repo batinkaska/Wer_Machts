@@ -6,6 +6,7 @@ import { PhoneVerificationModal } from "../auth/PhoneVerificationModal";
 import { useAuth } from "../../contexts/AuthContext";
 import { storage } from "../../firebase/config";
 import { SONSTIGES_SLUG } from "../../lib/categories";
+import { friendlyErrorMessage } from "../../lib/friendlyError";
 import { getCoordinates, getPlaceName, isValidPlzFormat } from "../../lib/postalCodes";
 import type { AdKind, NewAd, PriceType } from "../../types/ad";
 import { CategoryMultiPicker } from "../categories/CategoryMultiPicker";
@@ -202,7 +203,7 @@ export function AdForm({ onSubmit, submitting }: AdFormProps) {
       );
     } catch (err) {
       setUploading(false);
-      failWith(err instanceof Error ? err.message : t("adForm.errorSaveFailed"));
+      failWith(friendlyErrorMessage(err, t, "adForm.errorSaveFailed"));
     }
   }
 

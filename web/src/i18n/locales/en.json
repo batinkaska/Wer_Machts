@@ -568,5 +568,27 @@
     "terms": "Terms of Use",
     "agb": "Terms and conditions (AGB)",
     "privacySettings": "Privacy Settings,\nMeasurement & Analytics"
+  },
+  "errors": {
+    "invalidCredential": "Email address or password is incorrect.",
+    "invalidEmail": "This email address is invalid.",
+    "userDisabled": "This account has been disabled. Please contact support.",
+    "emailInUse": "An account with this email address already exists.",
+    "weakPassword": "The password must be at least 6 characters long.",
+    "tooManyRequests": "Too many attempts. Please wait a moment and try again.",
+    "networkError": "Couldn't connect. Please check your internet connection.",
+    "popupClosed": "The sign-in window was closed before the process finished.",
+    "accountExistsDifferentCredential": "An account with this email already exists using a different sign-in method.",
+    "requiresRecentLogin": "Please sign in again to perform this action.",
+    "invalidPhoneNumber": "This phone number is invalid.",
+    "invalidVerificationCode": "The code you entered is incorrect.",
+    "codeExpired": "This code has expired. Please request a new one.",
+    "phoneVerificationUnavailable": "Phone verification is currently unavailable. Please try again later.",
+    "expiredActionCode": "This link has expired.",
+    "invalidActionCode": "This link is invalid or has already been used.",
+    "uploadUnauthorized": "You don't have permission to upload this file.",
+    "uploadCanceled": "The upload was canceled.",
+    "uploadFailed": "The upload failed. Please try again.",
+    "permissionDenied": "You don't have permission for this action."
   }
 }

@@ -5,6 +5,7 @@ import logo from "../assets/logo.png";
 import wordmark from "../assets/wordmark.png";
 import { EyeIcon, EyeOffIcon, GoogleIcon } from "../components/icons";
 import { useAuth } from "../contexts/AuthContext";
+import { friendlyErrorMessage } from "../lib/friendlyError";
 import type { AccountType } from "../types/user";
 
 export function RegisterPage() {
@@ -47,7 +48,7 @@ export function RegisterPage() {
       // here can fire late (after the user has already clicked elsewhere) and yank
       // them back to the homepage.
     } catch (err) {
-      setError(err instanceof Error ? err.message : t("auth.registerFailed"));
+      setError(friendlyErrorMessage(err, t, "auth.registerFailed"));
     } finally {
       setSubmitting(false);
     }
@@ -58,7 +59,7 @@ export function RegisterPage() {
     try {
       await loginWithGoogle();
     } catch (err) {
-      setError(err instanceof Error ? err.message : t("auth.loginFailed"));
+      setError(friendlyErrorMessage(err, t, "auth.loginFailed"));
     }
   }
 

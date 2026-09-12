@@ -1,5 +1,6 @@
 import { type FormEvent, useState } from "react";
 import { useTranslation } from "react-i18next";
+import { friendlyErrorMessage } from "../../lib/friendlyError";
 
 interface BidFormProps {
   onSubmit: (values: { amount: number; message?: string }) => Promise<void>;
@@ -20,7 +21,7 @@ export function BidForm({ onSubmit, submitting }: BidFormProps) {
       setAmount("");
       setMessage("");
     } catch (err) {
-      setError(err instanceof Error ? err.message : t("bids.submitError"));
+      setError(friendlyErrorMessage(err, t, "bids.submitError"));
     }
   }
 

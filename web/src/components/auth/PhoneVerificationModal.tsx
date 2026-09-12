@@ -3,6 +3,7 @@ import { useTranslation } from "react-i18next";
 import { type ConfirmationResult, RecaptchaVerifier, linkWithPhoneNumber } from "firebase/auth";
 import { useAuth } from "../../contexts/AuthContext";
 import { auth } from "../../firebase/config";
+import { friendlyErrorMessage } from "../../lib/friendlyError";
 
 interface PhoneVerificationModalProps {
   reasonText: string;
@@ -55,7 +56,7 @@ export function PhoneVerificationModal({ reasonText, onClose, onVerified }: Phon
       const result = await linkWithPhoneNumber(auth.currentUser!, phone, verifier);
       setConfirmationResult(result);
     } catch (err) {
-      setPhoneError(err instanceof Error ? err.message : t("phoneVerify.phoneFailed"));
+      setPhoneError(friendlyErrorMessage(err, t, "phoneVerify.phoneFailed"));
       recaptchaRef.current?.clear();
       recaptchaRef.current = null;
       // Bump the attempt counter so the next try renders into a brand-new container
@@ -79,7 +80,7 @@ export function PhoneVerificationModal({ reasonText, onClose, onVerified }: Phon
       setVerified(true);
       setTimeout(onVerified, 1200);
     } catch (err) {
-      setCodeError(err instanceof Error ? err.message : t("phoneVerify.codeFailed"));
+      setCodeError(friendlyErrorMessage(err, t, "phoneVerify.codeFailed"));
     } finally {
       setConfirmingCode(false);
     }

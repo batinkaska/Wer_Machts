@@ -5,6 +5,7 @@ import logo from "../assets/logo.png";
 import wordmark from "../assets/wordmark.png";
 import { GoogleIcon } from "../components/icons";
 import { useAuth } from "../contexts/AuthContext";
+import { friendlyErrorMessage } from "../lib/friendlyError";
 
 export function LoginPage() {
   const { t } = useTranslation();
@@ -23,7 +24,7 @@ export function LoginPage() {
       await loginWithEmail(email, password);
       navigate("/");
     } catch (err) {
-      setError(err instanceof Error ? err.message : t("auth.loginFailed"));
+      setError(friendlyErrorMessage(err, t, "auth.loginFailed"));
     } finally {
       setSubmitting(false);
     }
@@ -35,7 +36,7 @@ export function LoginPage() {
       await loginWithGoogle();
       navigate("/");
     } catch (err) {
-      setError(err instanceof Error ? err.message : t("auth.loginFailed"));
+      setError(friendlyErrorMessage(err, t, "auth.loginFailed"));
     }
   }
 

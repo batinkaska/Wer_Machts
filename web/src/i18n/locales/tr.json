@@ -568,5 +568,27 @@
     "terms": "Kullanım Koşulları",
     "agb": "Genel İşlem Şartları (AGB)",
     "privacySettings": "Gizlilik Ayarları,\nÖlçüm & Analiz"
+  },
+  "errors": {
+    "invalidCredential": "E-posta adresi veya şifre yanlış.",
+    "invalidEmail": "Bu e-posta adresi geçersiz.",
+    "userDisabled": "Bu hesap devre dışı bırakıldı. Lütfen destek ile iletişime geç.",
+    "emailInUse": "Bu e-posta adresiyle zaten bir hesap var.",
+    "weakPassword": "Şifre en az 6 karakter olmalı.",
+    "tooManyRequests": "Çok fazla deneme yapıldı. Lütfen biraz bekleyip tekrar dene.",
+    "networkError": "Bağlantı kurulamadı. Lütfen internet bağlantını kontrol et.",
+    "popupClosed": "Giriş penceresi işlem tamamlanmadan kapatıldı.",
+    "accountExistsDifferentCredential": "Bu e-posta adresiyle zaten farklı bir giriş yöntemiyle oluşturulmuş bir hesap var.",
+    "requiresRecentLogin": "Bu işlemi yapmak için lütfen tekrar giriş yap.",
+    "invalidPhoneNumber": "Bu telefon numarası geçersiz.",
+    "invalidVerificationCode": "Girdiğin kod yanlış.",
+    "codeExpired": "Kodun süresi doldu. Lütfen yeni bir kod iste.",
+    "phoneVerificationUnavailable": "Telefon doğrulama şu anda kullanılamıyor. Lütfen daha sonra tekrar dene.",
+    "expiredActionCode": "Bu bağlantının süresi doldu.",
+    "invalidActionCode": "Bu bağlantı geçersiz veya zaten kullanılmış.",
+    "uploadUnauthorized": "Bu dosyayı yükleme iznin yok.",
+    "uploadCanceled": "Yükleme iptal edildi.",
+    "uploadFailed": "Yükleme başarısız oldu. Lütfen tekrar dene.",
+    "permissionDenied": "Bu işlem için iznin yok."
   }
 }

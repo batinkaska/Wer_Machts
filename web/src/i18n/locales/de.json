@@ -568,5 +568,27 @@
     "terms": "Nutzungsbedingungen",
     "agb": "Allgemeine Geschäftsbedingungen (AGB)",
     "privacySettings": "Datenschutzeinstellungen,\nMessung & Analyse"
+  },
+  "errors": {
+    "invalidCredential": "E-Mail-Adresse oder Passwort ist falsch.",
+    "invalidEmail": "Diese E-Mail-Adresse ist ungültig.",
+    "userDisabled": "Dieses Konto wurde deaktiviert. Bitte kontaktiere den Support.",
+    "emailInUse": "Für diese E-Mail-Adresse existiert bereits ein Konto.",
+    "weakPassword": "Das Passwort muss mindestens 6 Zeichen lang sein.",
+    "tooManyRequests": "Zu viele Versuche. Bitte warte einen Moment und versuche es erneut.",
+    "networkError": "Keine Verbindung möglich. Bitte überprüfe deine Internetverbindung.",
+    "popupClosed": "Das Anmeldefenster wurde geschlossen, bevor der Vorgang abgeschlossen war.",
+    "accountExistsDifferentCredential": "Für diese E-Mail-Adresse existiert bereits ein Konto mit einer anderen Anmeldemethode.",
+    "requiresRecentLogin": "Bitte melde dich erneut an, um diese Aktion durchzuführen.",
+    "invalidPhoneNumber": "Diese Telefonnummer ist ungültig.",
+    "invalidVerificationCode": "Der eingegebene Code ist falsch.",
+    "codeExpired": "Der Code ist abgelaufen. Bitte fordere einen neuen an.",
+    "phoneVerificationUnavailable": "Die Telefonverifizierung ist momentan nicht verfügbar. Bitte versuche es später erneut.",
+    "expiredActionCode": "Dieser Link ist abgelaufen.",
+    "invalidActionCode": "Dieser Link ist ungültig oder wurde bereits verwendet.",
+    "uploadUnauthorized": "Du hast keine Berechtigung, diese Datei hochzuladen.",
+    "uploadCanceled": "Der Upload wurde abgebrochen.",
+    "uploadFailed": "Der Upload ist fehlgeschlagen. Bitte versuche es erneut.",
+    "permissionDenied": "Du hast keine Berechtigung für diese Aktion."
   }
 }
