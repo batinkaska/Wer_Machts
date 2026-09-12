@@ -1,4 +1,5 @@
 import { Route, Routes } from "react-router-dom";
+import { CookieBanner } from "./components/cookies/CookieBanner";
 import { Footer } from "./components/layout/Footer";
 import { Navbar } from "./components/layout/Navbar";
 import { ProtectedRoute } from "./components/layout/ProtectedRoute";
@@ -119,6 +120,7 @@ function App() {
         </Routes>
       </main>
       <Footer />
+      <CookieBanner />
     </div>
   );
 }

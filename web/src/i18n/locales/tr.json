@@ -592,5 +592,23 @@
     "uploadCanceled": "Yükleme iptal edildi.",
     "uploadFailed": "Yükleme başarısız oldu. Lütfen tekrar dene.",
     "permissionDenied": "Bu işlem için iznin yok."
+  },
+  "cookies": {
+    "description": "Siteyi sunmak ve senin için geliştirmek amacıyla çerezler kullanıyoruz. Gerekli çerezler sitenin çalışması için zorunludur, geri kalanı tamamen senin tercihin.",
+    "privacyLink": "Gizlilik Politikası",
+    "acceptAll": "Tümünü kabul et",
+    "rejectAll": "Sadece gerekli olanlar",
+    "customize": "Ayarlar",
+    "saveSelection": "Seçimi kaydet",
+    "necessaryTitle": "Gerekli",
+    "necessaryDescription": "Giriş yapma ve güvenlik gibi temel işlevler için zorunludur. Kapatılamaz.",
+    "analyticsTitle": "İstatistikler",
+    "analyticsDescription": "Sitenin nasıl kullanıldığını anlamamıza yardımcı olur. Şu anda herhangi bir istatistik çerezi kullanmıyoruz.",
+    "marketingTitle": "Pazarlama",
+    "marketingDescription": "Kişiselleştirilmiş reklamlar için kullanılır. Şu anda herhangi bir pazarlama çerezi kullanmıyoruz.",
+    "settingsIntro": "Gerekli çerezlere ek olarak hangi çerez kategorilerini kullanmamıza izin vereceğine burada istediğin zaman karar verebilirsin.",
+    "savedConfirmation": "Kaydedildi!",
+    "settingsNote": "Wer Macht şu anda sadece teknik olarak zorunlu çerezleri kullanıyor (örn. oturum açma bilgin için). Bu durum değiştiğinde, burada seçtiğin ayarlar otomatik olarak geçerli olacak.",
+    "footerLink": "Çerez Ayarları"
   }
 }

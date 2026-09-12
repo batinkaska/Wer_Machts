@@ -592,5 +592,23 @@
     "uploadCanceled": "The upload was canceled.",
     "uploadFailed": "The upload failed. Please try again.",
     "permissionDenied": "You don't have permission for this action."
+  },
+  "cookies": {
+    "description": "We use cookies to provide the website and improve it for you. Necessary cookies are required to run the site, everything else is your choice.",
+    "privacyLink": "Privacy Policy",
+    "acceptAll": "Accept all",
+    "rejectAll": "Necessary only",
+    "customize": "Settings",
+    "saveSelection": "Save selection",
+    "necessaryTitle": "Necessary",
+    "necessaryDescription": "Required for core features like sign-in and security. Cannot be turned off.",
+    "analyticsTitle": "Statistics",
+    "analyticsDescription": "Would help us understand how the site is used. We currently don't use any statistics cookies.",
+    "marketingTitle": "Marketing",
+    "marketingDescription": "Would be used for personalized advertising. We currently don't use any marketing cookies.",
+    "settingsIntro": "You can decide here at any time which cookie categories we may use in addition to the necessary ones.",
+    "savedConfirmation": "Saved!",
+    "settingsNote": "Wer Macht currently only uses technically necessary cookies (e.g. for your login session). As soon as that changes, the settings you choose here will automatically apply.",
+    "footerLink": "Cookie Settings"
   }
 }
