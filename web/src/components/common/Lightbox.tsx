@@ -1,0 +1,76 @@
+import { useTranslation } from "react-i18next";
+import { CloseIcon } from "../icons";
+
+interface LightboxProps {
+  photoUrls: string[];
+  activeIndex: number;
+  onIndexChange: (index: number) => void;
+  onClose: () => void;
+  alt: string;
+}
+
+export function Lightbox({ photoUrls, activeIndex, onIndexChange, onClose, alt }: LightboxProps) {
+  const { t } = useTranslation();
+
+  function showPrevious() {
+    onIndexChange(activeIndex === 0 ? photoUrls.length - 1 : activeIndex - 1);
+  }
+
+  function showNext() {
+    onIndexChange(activeIndex === photoUrls.length - 1 ? 0 : activeIndex + 1);
+  }
+
+  return (
+    <div className="fixed inset-0 z-50 flex flex-col bg-black/95">
+      <div className="flex shrink-0 justify-end p-4">
+        <button
+          type="button"
+          onClick={onClose}
+          aria-label={t("adForm.close")}
+          className="flex h-10 w-10 items-center justify-center rounded-full bg-white/10 text-white hover:bg-white/20"
+        >
+          <CloseIcon className="h-6 w-6" />
+        </button>
+      </div>
+      <div className="relative flex min-h-0 flex-1 items-center justify-center px-4">
+        <img src={photoUrls[activeIndex]} alt={alt} className="max-h-full max-w-full object-contain" />
+        {photoUrls.length > 1 && (
+          <>
+            <button
+              type="button"
+              onClick={showPrevious}
+              aria-label={t("adDetail.previousPhoto")}
+              className="absolute left-4 top-1/2 flex h-10 w-10 -translate-y-1/2 items-center justify-center rounded-full bg-white/10 text-2xl text-white hover:bg-white/20"
+            >
+              ‹
+            </button>
+            <button
+              type="button"
+              onClick={showNext}
+              aria-label={t("adDetail.nextPhoto")}
+              className="absolute right-4 top-1/2 flex h-10 w-10 -translate-y-1/2 items-center justify-center rounded-full bg-white/10 text-2xl text-white hover:bg-white/20"
+            >
+              ›
+            </button>
+          </>
+        )}
+      </div>
+      {photoUrls.length > 1 && (
+        <div className="flex shrink-0 justify-center gap-2 overflow-x-auto p-4">
+          {photoUrls.map((url, i) => (
+            <button
+              key={url}
+              type="button"
+              onClick={() => onIndexChange(i)}
+              className={`h-16 w-16 shrink-0 overflow-hidden rounded border-2 ${
+                i === activeIndex ? "border-[#5fac5e]" : "border-transparent"
+              }`}
+            >
+              <img src={url} alt="" className="h-full w-full object-cover" />
+            </button>
+          ))}
+        </div>
+      )}
+    </div>
+  );
+}

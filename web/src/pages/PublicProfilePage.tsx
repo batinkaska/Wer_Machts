@@ -5,6 +5,7 @@ import { useTranslation } from "react-i18next";
 import { Link, useParams } from "react-router-dom";
 import { AdList } from "../components/ads/AdList";
 import { CategoryMultiPicker } from "../components/categories/CategoryMultiPicker";
+import { Lightbox } from "../components/common/Lightbox";
 import { PhotoIcon, StarIcon } from "../components/icons";
 import { ReviewBox } from "../components/reviews/ReviewBox";
 import { StarRatingDisplay } from "../components/reviews/StarRating";
@@ -58,6 +59,7 @@ export function PublicProfilePage() {
   const [galleryUploading, setGalleryUploading] = useState(false);
   const [previewMode, setPreviewMode] = useState(false);
   const [confirmingRemoveKey, setConfirmingRemoveKey] = useState<string | null>(null);
+  const [lightboxIndex, setLightboxIndex] = useState<number | null>(null);
 
   const isOwnProfile = firebaseUser?.uid === uid;
   const showOwnerControls = isOwnProfile && !previewMode;
@@ -397,9 +399,14 @@ export function PublicProfilePage() {
             <p className="text-sm text-gray-500 dark:text-gray-400">{t("profile.noPhotos")}</p>
           ) : (
             <div className="grid grid-cols-3 gap-2 sm:grid-cols-4">
-              {displayedUser.galleryUrls!.map((url) => (
+              {displayedUser.galleryUrls!.map((url, i) => (
                 <div key={url} className="group relative aspect-square overflow-hidden rounded bg-gray-100 dark:bg-gray-800">
-                  <img src={url} alt="" className="h-full w-full object-cover" />
+                  <img
+                    src={url}
+                    alt=""
+                    onClick={() => setLightboxIndex(i)}
+                    className="h-full w-full cursor-zoom-in object-cover"
+                  />
                   {showOwnerControls && (
                     <button
                       type="button"
@@ -413,6 +420,15 @@ export function PublicProfilePage() {
                 </div>
               ))}
             </div>
+          )}
+          {lightboxIndex !== null && (
+            <Lightbox
+              photoUrls={displayedUser.galleryUrls!}
+              activeIndex={lightboxIndex}
+              onIndexChange={setLightboxIndex}
+              onClose={() => setLightboxIndex(null)}
+              alt=""
+            />
           )}
         </div>
       )}
