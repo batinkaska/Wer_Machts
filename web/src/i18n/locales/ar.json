@@ -60,7 +60,8 @@
     "bidAccepted": "تم قبول عرضك على \"{{title}}\"",
     "bidRejected": "تم رفض عرضك على \"{{title}}\"",
     "newFollower": "أصبح {{name}} يتابعك الآن",
-    "generic": "إشعار جديد"
+    "generic": "إشعار جديد",
+    "verifyPhone": "قم بتأكيد رقم هاتفك الآن لفتح جميع الميزات."
   },
   "home": {
     "heroTitle": "من يفعل ذلك؟",

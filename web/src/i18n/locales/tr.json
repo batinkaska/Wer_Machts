@@ -59,7 +59,8 @@
     "bidAccepted": "\"{{title}}\" için teklifin kabul edildi",
     "bidRejected": "\"{{title}}\" için teklifin reddedildi",
     "newFollower": "{{name}} artık seni takip ediyor",
-    "generic": "Yeni bildirim"
+    "generic": "Yeni bildirim",
+    "verifyPhone": "Tüm özellikleri kullanabilmek için şimdi telefon numaranı onayla."
   },
   "home": {
     "heroTitle": "Bunu kim yapar?",

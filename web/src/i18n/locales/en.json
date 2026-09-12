@@ -59,7 +59,8 @@
     "bidAccepted": "Your offer for \"{{title}}\" was accepted",
     "bidRejected": "Your offer for \"{{title}}\" was declined",
     "newFollower": "{{name}} is now following you",
-    "generic": "New notification"
+    "generic": "New notification",
+    "verifyPhone": "Verify your phone number now to unlock all features."
   },
   "home": {
     "heroTitle": "Who'll get it done?",

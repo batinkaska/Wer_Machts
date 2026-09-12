@@ -194,6 +194,12 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     };
     await setDoc(doc(db, "users", user.uid), newUser);
     setAppUser(newUser);
+    void createNotification({
+      recipientId: user.uid,
+      type: "verify_phone",
+      actorId: user.uid,
+      actorName: input.displayName,
+    });
   }
 
   async function toggleFavorite(adId: string) {

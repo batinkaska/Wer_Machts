@@ -24,8 +24,8 @@ export function verificationEmailHtml(params: { name: string; link: string; rese
             </tr>
             <tr>
               <td style="padding:32px 32px 8px 32px;text-align:center;">
-                <img src="${LOGO_URL}" alt="" width="40" height="40" style="display:inline-block;vertical-align:middle;border-radius:8px;border:0;" />
-                <img src="${WORDMARK_URL}" alt="Wer Macht" height="28" style="display:inline-block;vertical-align:middle;margin-left:10px;border:0;" />
+                <img src="${LOGO_URL}" alt="" width="56" height="56" style="display:inline-block;vertical-align:middle;border-radius:10px;border:0;" />
+                <img src="${WORDMARK_URL}" alt="Wer Macht" height="38" style="display:inline-block;vertical-align:middle;margin-left:12px;border:0;" />
               </td>
             </tr>
             <tr>
@@ -91,8 +91,8 @@ export function passwordResetEmailHtml(params: { link: string }): string {
             </tr>
             <tr>
               <td style="padding:32px 32px 8px 32px;text-align:center;">
-                <img src="${LOGO_URL}" alt="" width="40" height="40" style="display:inline-block;vertical-align:middle;border-radius:8px;border:0;" />
-                <img src="${WORDMARK_URL}" alt="Wer Macht" height="28" style="display:inline-block;vertical-align:middle;margin-left:10px;border:0;" />
+                <img src="${LOGO_URL}" alt="" width="56" height="56" style="display:inline-block;vertical-align:middle;border-radius:10px;border:0;" />
+                <img src="${WORDMARK_URL}" alt="Wer Macht" height="38" style="display:inline-block;vertical-align:middle;margin-left:12px;border:0;" />
               </td>
             </tr>
             <tr>

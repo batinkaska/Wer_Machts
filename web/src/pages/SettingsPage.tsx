@@ -1,6 +1,6 @@
-import { type FormEvent, type ReactNode, useState } from "react";
+import { type FormEvent, type ReactNode, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
-import { Link, useNavigate } from "react-router-dom";
+import { Link, useNavigate, useSearchParams } from "react-router-dom";
 import { PhoneVerificationModal } from "../components/auth/PhoneVerificationModal";
 import { EyeIcon, ExternalLinkIcon, TrashIcon } from "../components/icons";
 import { VerifiedBadge } from "../components/VerifiedBadge";
@@ -589,6 +589,17 @@ export function SettingsPage() {
   const { firebaseUser, appUser, updateProfile, emailVerified } = useAuth();
   const { ads } = useAds({ ownerId: firebaseUser?.uid });
   const [showPhoneModal, setShowPhoneModal] = useState(false);
+  const [searchParams, setSearchParams] = useSearchParams();
+
+  useEffect(() => {
+    if (searchParams.get("verifyPhone") === "1") {
+      setShowPhoneModal(true);
+      const next = new URLSearchParams(searchParams);
+      next.delete("verifyPhone");
+      setSearchParams(next, { replace: true });
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   if (!appUser || !firebaseUser) return null;
 

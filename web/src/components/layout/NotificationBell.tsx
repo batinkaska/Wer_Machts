@@ -20,6 +20,8 @@ function notificationText(t: TFunction, n: Notification): string {
       return t("notifications.bidRejected", { title: n.adTitle });
     case "new_follower":
       return t("notifications.newFollower", { name: n.actorName });
+    case "verify_phone":
+      return t("notifications.verifyPhone");
     default:
       return t("notifications.generic");
   }
@@ -36,6 +38,8 @@ function notificationPath(n: Notification): string {
       return `/ads/${n.adId}`;
     case "new_follower":
       return `/profile/${n.actorId}`;
+    case "verify_phone":
+      return "/settings?verifyPhone=1";
     default:
       return "/";
   }

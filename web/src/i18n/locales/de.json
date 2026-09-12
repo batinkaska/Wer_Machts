@@ -59,7 +59,8 @@
     "bidAccepted": "Dein Angebot für \"{{title}}\" wurde angenommen",
     "bidRejected": "Dein Angebot für \"{{title}}\" wurde abgelehnt",
     "newFollower": "{{name}} folgt dir jetzt",
-    "generic": "Neue Benachrichtigung"
+    "generic": "Neue Benachrichtigung",
+    "verifyPhone": "Bestätige jetzt deine Telefonnummer, um alle Funktionen nutzen zu können."
   },
   "home": {
     "heroTitle": "Wer macht's?",

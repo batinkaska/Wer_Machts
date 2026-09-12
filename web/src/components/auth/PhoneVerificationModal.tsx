@@ -1,4 +1,5 @@
 import { type FormEvent, useEffect, useRef, useState } from "react";
+import { createPortal } from "react-dom";
 import { useTranslation } from "react-i18next";
 import { type ConfirmationResult, RecaptchaVerifier, linkWithPhoneNumber } from "firebase/auth";
 import { useAuth } from "../../contexts/AuthContext";
@@ -86,7 +87,7 @@ export function PhoneVerificationModal({ reasonText, onClose, onVerified }: Phon
     }
   }
 
-  return (
+  return createPortal(
     <div className="fixed inset-0 z-50 flex items-start justify-center overflow-y-auto bg-black/50 px-4 py-8">
       <div className="w-full max-w-md rounded-lg bg-white p-6 shadow-xl dark:bg-gray-900">
         <div className="mb-4 flex items-center justify-between">
@@ -149,6 +150,7 @@ export function PhoneVerificationModal({ reasonText, onClose, onVerified }: Phon
         )}
         <div key={attempt} id={containerId} />
       </div>
-    </div>
+    </div>,
+    document.body,
   );
 }
