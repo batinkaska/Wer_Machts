@@ -1,6 +1,6 @@
 import type { ReactNode } from "react";
 import { useTranslation } from "react-i18next";
-import { Navigate } from "react-router-dom";
+import { Navigate, useLocation } from "react-router-dom";
 import { useAuth } from "../../contexts/AuthContext";
 
 interface ProtectedRouteProps {
@@ -10,6 +10,7 @@ interface ProtectedRouteProps {
 export function ProtectedRoute({ children }: ProtectedRouteProps) {
   const { t } = useTranslation();
   const { firebaseUser, loading, needsProfile, needsActivation } = useAuth();
+  const location = useLocation();
 
   if (loading) {
     return (
@@ -28,7 +29,9 @@ export function ProtectedRoute({ children }: ProtectedRouteProps) {
   }
 
   if (needsActivation) {
-    return <Navigate to="/konto-aktivieren" replace />;
+    // Forward the query string (e.g. ?verifyPhone=1) so the intent that sent the
+    // user here survives the mandatory email-verification detour.
+    return <Navigate to={`/konto-aktivieren${location.search}`} replace />;
   }
 
   return <>{children}</>;

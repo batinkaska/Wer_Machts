@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { useTranslation } from "react-i18next";
-import { Navigate, useNavigate } from "react-router-dom";
+import { Navigate, useNavigate, useSearchParams } from "react-router-dom";
 import logo from "../assets/logo.png";
 import wordmark from "../assets/wordmark.png";
 import { useAuth } from "../contexts/AuthContext";
@@ -8,6 +8,7 @@ import { useAuth } from "../contexts/AuthContext";
 export function AccountActivationPage() {
   const { t } = useTranslation();
   const navigate = useNavigate();
+  const [searchParams] = useSearchParams();
   const {
     firebaseUser,
     loading,
@@ -25,7 +26,12 @@ export function AccountActivationPage() {
   if (loading) return null;
   if (!firebaseUser) return <Navigate to="/login" replace />;
   if (needsProfile) return <Navigate to="/register" replace />;
-  if (!needsActivation) return <Navigate to="/" replace />;
+  if (!needsActivation) {
+    // Once email verification clears, continue on to whatever brought the user
+    // through this mandatory detour (e.g. the "verify your phone" notification).
+    const dest = searchParams.get("verifyPhone") === "1" ? "/settings?verifyPhone=1" : "/";
+    return <Navigate to={dest} replace />;
+  }
 
   async function handleResend() {
     await resendVerificationEmail();
