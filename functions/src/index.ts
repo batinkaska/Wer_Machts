@@ -2,18 +2,25 @@ import { initializeApp } from "firebase-admin/app";
 import { getAuth } from "firebase-admin/auth";
 import { HttpsError, onCall } from "firebase-functions/v2/https";
 import { defineSecret } from "firebase-functions/params";
-import { passwordResetEmailHtml, verificationEmailHtml } from "./emailTemplate";
+import { contactMessageEmailHtml, passwordResetEmailHtml, verificationEmailHtml } from "./emailTemplate";
 
 initializeApp();
 
 const resendApiKey = defineSecret("RESEND_API_KEY");
 
 const SENDER = "Wer Macht <info@wermacht.app>";
+const SUPPORT_INBOX = "info@wermacht.app";
 const VERIFY_URL = "https://wermacht.app/email-bestaetigen";
 const RESEND_URL = "https://wermacht.app/konto-aktivieren";
 const RESET_PASSWORD_URL = "https://wermacht.app/passwort-zuruecksetzen";
 
-async function sendViaResend(params: { to: string; subject: string; html: string; apiKey: string }) {
+async function sendViaResend(params: {
+  to: string;
+  subject: string;
+  html: string;
+  apiKey: string;
+  replyTo?: string;
+}) {
   const response = await fetch("https://api.resend.com/emails", {
     method: "POST",
     headers: {
@@ -25,6 +32,7 @@ async function sendViaResend(params: { to: string; subject: string; html: string
       to: params.to,
       subject: params.subject,
       html: params.html,
+      ...(params.replyTo ? { reply_to: params.replyTo } : {}),
     }),
   });
 
@@ -33,6 +41,8 @@ async function sendViaResend(params: { to: string; subject: string; html: string
     throw new HttpsError("internal", `Resend-Fehler: ${errorText}`);
   }
 }
+
+const EMAIL_PATTERN = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
 export const sendVerificationEmail = onCall({ secrets: [resendApiKey] }, async (request) => {
   const uid = request.auth?.uid;
@@ -94,6 +104,43 @@ export const sendPasswordResetEmail = onCall({ secrets: [resendApiKey] }, async 
     subject: "Setze dein Passwort für Wer Macht zurück",
     html,
     apiKey: resendApiKey.value(),
+  });
+
+  return { sent: true };
+});
+
+export const sendContactMessage = onCall({ secrets: [resendApiKey] }, async (request) => {
+  const data = request.data ?? {};
+  const name = typeof data.name === "string" ? data.name.trim() : "";
+  const email = typeof data.email === "string" ? data.email.trim() : "";
+  const subject = typeof data.subject === "string" ? data.subject.trim() : "";
+  const message = typeof data.message === "string" ? data.message.trim() : "";
+  // Honeypot: real users never fill this hidden field. Bots that do get a
+  // fake success without us actually sending anything.
+  const honeypot = typeof data.website === "string" ? data.website.trim() : "";
+
+  if (honeypot) {
+    return { sent: true };
+  }
+
+  if (!email || !EMAIL_PATTERN.test(email)) {
+    throw new HttpsError("invalid-argument", "Bitte gib eine gültige E-Mail-Adresse an.");
+  }
+  if (!message || message.length < 5) {
+    throw new HttpsError("invalid-argument", "Bitte gib eine Nachricht ein.");
+  }
+  if (message.length > 5000) {
+    throw new HttpsError("invalid-argument", "Deine Nachricht ist zu lang.");
+  }
+
+  const html = contactMessageEmailHtml({ name, email, subject, message });
+
+  await sendViaResend({
+    to: SUPPORT_INBOX,
+    subject: subject ? `Kontaktformular: ${subject}` : "Neue Nachricht über das Kontaktformular",
+    html,
+    apiKey: resendApiKey.value(),
+    replyTo: email,
   });
 
   return { sent: true };

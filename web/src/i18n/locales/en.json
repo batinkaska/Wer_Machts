@@ -610,5 +610,27 @@
     "savedConfirmation": "Saved!",
     "settingsNote": "Wer Macht currently only uses technically necessary cookies (e.g. for your login session). As soon as that changes, the settings you choose here will automatically apply.",
     "footerLink": "Cookie Settings"
+  },
+  "contact": {
+    "pageTitle": "Help & Contact",
+    "intro": "Do you have a question, a problem, or want to file a complaint? Send us a message using the form below — we'll get back to you as soon as possible.",
+    "directEmailBefore": "You can also always email us directly at",
+    "directEmailAfter": ".",
+    "nameLabel": "Name (optional)",
+    "namePlaceholder": "Your name",
+    "emailLabel": "Email address",
+    "subjectLabel": "Topic",
+    "subjectOptions": {
+      "general": "General question",
+      "complaint": "Complaint",
+      "technical": "Technical issue",
+      "other": "Other"
+    },
+    "messageLabel": "Message",
+    "messagePlaceholder": "How can we help you?",
+    "submit": "Send message",
+    "sending": "Sending...",
+    "successMessage": "Thanks! Your message has been sent. We'll get back to you as soon as possible.",
+    "error": "Your message could not be sent. Please try again or email us directly."
   }
 }

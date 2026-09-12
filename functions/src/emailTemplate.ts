@@ -132,6 +132,69 @@ export function passwordResetEmailHtml(params: { link: string }): string {
 </html>`;
 }
 
+export function contactMessageEmailHtml(params: {
+  name: string;
+  email: string;
+  subject: string;
+  message: string;
+}): string {
+  const { name, email, subject, message } = params;
+
+  return `<!doctype html>
+<html lang="de">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Neue Kontaktanfrage</title>
+  </head>
+  <body style="margin:0;padding:0;background-color:#f3f4f6;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Helvetica,Arial,sans-serif;">
+    <table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="background-color:#f3f4f6;padding:32px 16px;">
+      <tr>
+        <td align="center">
+          <table role="presentation" width="480" cellpadding="0" cellspacing="0" style="max-width:480px;width:100%;background-color:#ffffff;border-radius:12px;overflow:hidden;border:1px solid #e5e7eb;">
+            <tr>
+              <td style="height:6px;background-color:#5fac5e;line-height:6px;font-size:0;">&nbsp;</td>
+            </tr>
+            <tr>
+              <td style="padding:32px 32px 8px 32px;text-align:center;">
+                <img src="${LOGO_URL}" alt="" width="56" height="56" style="display:inline-block;vertical-align:middle;border-radius:10px;border:0;" />
+                <img src="${WORDMARK_URL}" alt="Wer Macht" height="38" style="display:inline-block;vertical-align:middle;margin-left:12px;border:0;" />
+              </td>
+            </tr>
+            <tr>
+              <td style="padding:16px 32px 0 32px;color:#374151;font-size:15px;line-height:1.6;">
+                <p style="margin:0 0 16px 0;font-weight:600;">Neue Nachricht über das Kontaktformular</p>
+                <table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="font-size:14px;">
+                  <tr>
+                    <td style="padding:4px 0;color:#6b7280;width:90px;vertical-align:top;">Name:</td>
+                    <td style="padding:4px 0;">${escapeHtml(name) || "—"}</td>
+                  </tr>
+                  <tr>
+                    <td style="padding:4px 0;color:#6b7280;vertical-align:top;">E-Mail:</td>
+                    <td style="padding:4px 0;"><a href="mailto:${escapeHtml(email)}" style="color:#5fac5e;">${escapeHtml(email)}</a></td>
+                  </tr>
+                  <tr>
+                    <td style="padding:4px 0;color:#6b7280;vertical-align:top;">Betreff:</td>
+                    <td style="padding:4px 0;">${escapeHtml(subject) || "—"}</td>
+                  </tr>
+                </table>
+                <p style="margin:20px 0 4px 0;color:#6b7280;font-size:14px;">Nachricht:</p>
+                <p style="margin:0;white-space:pre-wrap;">${escapeHtml(message)}</p>
+              </td>
+            </tr>
+            <tr>
+              <td style="padding:24px 32px 32px 32px;color:#9ca3af;font-size:12px;line-height:1.6;">
+                Du kannst direkt auf diese E-Mail antworten, um ${escapeHtml(name) || "den Absender"} zu erreichen.
+              </td>
+            </tr>
+          </table>
+        </td>
+      </tr>
+    </table>
+  </body>
+</html>`;
+}
+
 function escapeHtml(value: string): string {
   return value
     .replace(/&/g, "&amp;")

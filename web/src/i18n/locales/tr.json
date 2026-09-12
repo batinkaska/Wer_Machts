@@ -610,5 +610,27 @@
     "savedConfirmation": "Kaydedildi!",
     "settingsNote": "Wer Macht şu anda sadece teknik olarak zorunlu çerezleri kullanıyor (örn. oturum açma bilgin için). Bu durum değiştiğinde, burada seçtiğin ayarlar otomatik olarak geçerli olacak.",
     "footerLink": "Çerez Ayarları"
+  },
+  "contact": {
+    "pageTitle": "Yardım & İletişim",
+    "intro": "Bir sorun, probleminiz mi var ya da şikayette mi bulunmak istiyorsun? Aşağıdaki formu kullanarak bize yaz — en kısa sürede sana dönüş yapacağız.",
+    "directEmailBefore": "Ayrıca doğrudan şu adrese e-posta atarak da bize ulaşabilirsin:",
+    "directEmailAfter": ".",
+    "nameLabel": "Ad (opsiyonel)",
+    "namePlaceholder": "Adın",
+    "emailLabel": "E-posta adresi",
+    "subjectLabel": "Konu",
+    "subjectOptions": {
+      "general": "Genel soru",
+      "complaint": "Şikayet",
+      "technical": "Teknik sorun",
+      "other": "Diğer"
+    },
+    "messageLabel": "Mesaj",
+    "messagePlaceholder": "Sana nasıl yardımcı olabiliriz?",
+    "submit": "Mesajı gönder",
+    "sending": "Gönderiliyor...",
+    "successMessage": "Teşekkürler! Mesajın bize ulaştı. En kısa sürede dönüş yapacağız.",
+    "error": "Mesajın gönderilemedi. Lütfen tekrar dene veya bize doğrudan e-posta at."
   }
 }

@@ -610,5 +610,27 @@
     "savedConfirmation": "Gespeichert!",
     "settingsNote": "Wer Macht setzt derzeit ausschließlich technisch notwendige Cookies ein (z. B. für deine Anmeldesitzung). Sobald sich das ändert, greifen die hier gewählten Einstellungen automatisch.",
     "footerLink": "Cookie-Einstellungen"
+  },
+  "contact": {
+    "pageTitle": "Hilfe & Kontakt",
+    "intro": "Hast du eine Frage, ein Problem oder möchtest du dich über etwas beschweren? Schreib uns über das Formular unten — wir melden uns so schnell wie möglich bei dir.",
+    "directEmailBefore": "Du kannst uns auch jederzeit direkt eine E-Mail an",
+    "directEmailAfter": "schreiben.",
+    "nameLabel": "Name (optional)",
+    "namePlaceholder": "Dein Name",
+    "emailLabel": "E-Mail-Adresse",
+    "subjectLabel": "Anliegen",
+    "subjectOptions": {
+      "general": "Allgemeine Frage",
+      "complaint": "Beschwerde",
+      "technical": "Technisches Problem",
+      "other": "Sonstiges"
+    },
+    "messageLabel": "Nachricht",
+    "messagePlaceholder": "Wie können wir dir helfen?",
+    "submit": "Nachricht senden",
+    "sending": "Wird gesendet...",
+    "successMessage": "Danke! Deine Nachricht wurde an uns gesendet. Wir melden uns so schnell wie möglich.",
+    "error": "Deine Nachricht konnte nicht gesendet werden. Bitte versuche es erneut oder schreib uns direkt eine E-Mail."
   }
 }
