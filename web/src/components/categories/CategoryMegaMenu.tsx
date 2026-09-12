@@ -3,52 +3,29 @@ import { useTranslation } from "react-i18next";
 import { Link } from "react-router-dom";
 import { CATEGORY_GROUPS, CATEGORY_GROUP_ICONS, categoryGroupName, categoryLabel } from "../../lib/categories";
 import { ChevronDownIcon, ChevronRightIcon } from "../icons";
+import { useDelayedHover } from "./useDelayedHover";
 
 export function CategoryMegaMenu() {
   const { t } = useTranslation();
   const [open, setOpen] = useState(false);
-  const [hoveredGroup, setHoveredGroup] = useState<string | null>(null);
   const containerRef = useRef<HTMLDivElement>(null);
-  const closeSubmenuTimeoutRef = useRef<number | null>(null);
+  const { hoveredKey: hoveredGroup, open: openSubmenu, scheduleClose, cancelClose, closeNow } = useDelayedHover();
 
   useEffect(() => {
     function handleClickOutside(e: MouseEvent) {
       if (containerRef.current && !containerRef.current.contains(e.target as Node)) {
         setOpen(false);
-        setHoveredGroup(null);
+        closeNow();
       }
     }
     document.addEventListener("mousedown", handleClickOutside);
     return () => document.removeEventListener("mousedown", handleClickOutside);
-  }, []);
-
-  useEffect(() => {
-    return () => {
-      if (closeSubmenuTimeoutRef.current !== null) {
-        window.clearTimeout(closeSubmenuTimeoutRef.current);
-      }
-    };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   function closeMenu() {
     setOpen(false);
-    setHoveredGroup(null);
-  }
-
-  function cancelSubmenuClose() {
-    if (closeSubmenuTimeoutRef.current !== null) {
-      window.clearTimeout(closeSubmenuTimeoutRef.current);
-      closeSubmenuTimeoutRef.current = null;
-    }
-  }
-
-  function scheduleSubmenuClose(groupKey: string) {
-    cancelSubmenuClose();
-    // Grace period so moving the cursor diagonally toward the submenu (crossing the
-    // gap between the row and the panel) doesn't close it before the click lands.
-    closeSubmenuTimeoutRef.current = window.setTimeout(() => {
-      setHoveredGroup((prev) => (prev === groupKey ? null : prev));
-    }, 250);
+    closeNow();
   }
 
   return (
@@ -80,12 +57,8 @@ export function CategoryMegaMenu() {
               <div
                 key={group.groupKey}
                 className="relative"
-                onMouseEnter={() => {
-                  if (!hasSubmenu) return;
-                  cancelSubmenuClose();
-                  setHoveredGroup(group.groupKey);
-                }}
-                onMouseLeave={() => hasSubmenu && scheduleSubmenuClose(group.groupKey)}
+                onMouseEnter={() => hasSubmenu && openSubmenu(group.groupKey)}
+                onMouseLeave={() => hasSubmenu && scheduleClose(group.groupKey)}
               >
                 <Link
                   to={groupHref}
@@ -104,8 +77,8 @@ export function CategoryMegaMenu() {
                 {hasSubmenu && hoveredGroup === group.groupKey && (
                   <div
                     className="absolute left-full top-0 z-30 ml-1 w-64 rounded-lg border border-gray-200 bg-white py-2 shadow-lg dark:border-gray-700 dark:bg-gray-800"
-                    onMouseEnter={cancelSubmenuClose}
-                    onMouseLeave={() => scheduleSubmenuClose(group.groupKey)}
+                    onMouseEnter={cancelClose}
+                    onMouseLeave={() => scheduleClose(group.groupKey)}
                   >
                     {group.categories.map((c) => (
                       <Link

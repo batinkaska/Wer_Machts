@@ -584,6 +584,7 @@ export function PublicProfilePage() {
                 note={categoryNoteDraft}
                 onNoteChange={setCategoryNoteDraft}
                 placeholder={t("categoryPicker.choosePlaceholder")}
+                variant="menu"
               />
               <div className="flex gap-2">
                 <button

@@ -273,6 +273,7 @@ export function AdForm({ onSubmit, submitting }: AdFormProps) {
               onNoteChange={setCategoryNote}
               placeholder={t("adForm.categoryPlaceholder")}
               allowGroupSelect
+              variant="menu"
             />
           </div>
 
