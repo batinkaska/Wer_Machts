@@ -568,7 +568,8 @@
     "privacy": "Datenschutzerklärung",
     "terms": "Nutzungsbedingungen",
     "agb": "Allgemeine Geschäftsbedingungen (AGB)",
-    "privacySettings": "Datenschutzeinstellungen,\nMessung & Analyse"
+    "privacySettings": "Datenschutzeinstellungen,\nMessung & Analyse",
+    "impressum": "Impressum"
   },
   "errors": {
     "invalidCredential": "E-Mail-Adresse oder Passwort ist falsch.",

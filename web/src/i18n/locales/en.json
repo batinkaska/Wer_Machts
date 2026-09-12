@@ -568,7 +568,8 @@
     "privacy": "Privacy Policy",
     "terms": "Terms of Use",
     "agb": "Terms and conditions (AGB)",
-    "privacySettings": "Privacy Settings,\nMeasurement & Analytics"
+    "privacySettings": "Privacy Settings,\nMeasurement & Analytics",
+    "impressum": "Legal Notice"
   },
   "errors": {
     "invalidCredential": "Email address or password is incorrect.",

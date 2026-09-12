@@ -14,6 +14,7 @@ import { FavoritesPage } from "./pages/FavoritesPage";
 import { FollowListPage } from "./pages/FollowListPage";
 import { ForgotPasswordPage } from "./pages/ForgotPasswordPage";
 import { HomePage } from "./pages/HomePage";
+import { ImpressumPage } from "./pages/ImpressumPage";
 import { LoginPage } from "./pages/LoginPage";
 import { MessagesPage } from "./pages/MessagesPage";
 import { MyAdsPage } from "./pages/MyAdsPage";
@@ -46,6 +47,7 @@ function App() {
           <Route path="/ads/:adId" element={<AdDetailPage />} />
           <Route path="/profile/:uid" element={<PublicProfilePage />} />
           <Route path="/profile/:uid/:kind" element={<FollowListPage />} />
+          <Route path="/impressum" element={<ImpressumPage />} />
           <Route path="/datenschutz" element={<PrivacyPage />} />
           <Route path="/nutzungsbedingungen" element={<TermsPage />} />
           <Route path="/agb" element={<AgbPage />} />

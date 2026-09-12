@@ -604,6 +604,7 @@ export function SettingsPage() {
   if (!appUser || !firebaseUser) return null;
 
   const PRIVACY_LINKS = [
+    { to: "/impressum", label: t("legal.impressum") },
     { to: "/datenschutz", label: t("legal.privacy") },
     { to: "/agb", label: t("legal.agb") },
   ];

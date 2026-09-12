@@ -568,7 +568,8 @@
     "privacy": "Gizlilik Politikası",
     "terms": "Kullanım Koşulları",
     "agb": "Genel İşlem Şartları (AGB)",
-    "privacySettings": "Gizlilik Ayarları,\nÖlçüm & Analiz"
+    "privacySettings": "Gizlilik Ayarları,\nÖlçüm & Analiz",
+    "impressum": "Yasal Bilgiler (Impressum)"
   },
   "errors": {
     "invalidCredential": "E-posta adresi veya şifre yanlış.",
