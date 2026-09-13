@@ -16,6 +16,7 @@ interface BidDoc {
   providerId: string;
   amount: number;
   status: string;
+  paymentStatus?: string;
   stripePaymentIntentId?: string;
 }
 
@@ -67,6 +68,13 @@ export const createPaymentIntent = onCall({ secrets: [stripeSecretKey] }, async 
   const { bidRef, bid, ad } = await loadBidAndAd(db, bidId);
   assertIsPayer(uid, bid, ad);
 
+  // A bid already marked paid must never have its payment state touched again —
+  // this is what protects against a stray double-click or a second open tab
+  // silently resetting a completed payment back to "pending".
+  if (bid.paymentStatus === "paid") {
+    throw new HttpsError("failed-precondition", "Diese Zahlung wurde bereits abgeschlossen.");
+  }
+
   if (!bid.amount || bid.amount <= 0) {
     throw new HttpsError("failed-precondition", "Ungültiger Betrag.");
   }
@@ -92,7 +100,15 @@ export const createPaymentIntent = onCall({ secrets: [stripeSecretKey] }, async 
       metadata: { bidId, adId: bid.adId },
       automatic_payment_methods: { enabled: true },
     });
-    await bidRef.update({ stripePaymentIntentId: paymentIntent.id, paymentStatus: "pending" });
+    const created = paymentIntent;
+    await db.runTransaction(async (tx) => {
+      const fresh = (await tx.get(bidRef)).data() as BidDoc | undefined;
+      if (fresh?.paymentStatus === "paid") {
+        // Lost the race against a payment that just succeeded elsewhere — leave it alone.
+        return;
+      }
+      tx.update(bidRef, { stripePaymentIntentId: created.id, paymentStatus: "pending" });
+    });
   }
 
   return { clientSecret: paymentIntent.client_secret };
