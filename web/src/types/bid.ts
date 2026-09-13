@@ -2,6 +2,7 @@ import type { Timestamp } from "firebase/firestore";
 
 export type BidStatus = "pending" | "accepted" | "rejected";
 export type PaymentMethod = "card" | "cash";
+export type PaymentStatus = "pending" | "paid" | "failed";
 
 export interface Bid {
   id: string;
@@ -13,6 +14,8 @@ export interface Bid {
   message?: string;
   status: BidStatus;
   paymentMethod?: PaymentMethod;
+  paymentStatus?: PaymentStatus;
+  stripePaymentIntentId?: string;
   hiddenFromProfile?: boolean;
   createdAt: Timestamp;
 }

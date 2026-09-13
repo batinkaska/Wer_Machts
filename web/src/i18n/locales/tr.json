@@ -412,7 +412,12 @@
       "card": "Kartla öde",
       "cash": "Yerinde nakit öde"
     },
-    "backToAd": "İlana dön"
+    "backToAd": "İlana dön",
+    "payNow": "Şimdi öde",
+    "processing": "İşleniyor...",
+    "cardError": "Ödeme tamamlanamadı. Lütfen tekrar dene.",
+    "cardPaidNote": "Ödeme başarıyla tamamlandı.",
+    "cardPendingNote": "Ödeme hâlâ işleniyor."
   },
   "auth": {
     "login": "Giriş yap",

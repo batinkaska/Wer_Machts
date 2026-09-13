@@ -412,7 +412,12 @@
       "card": "Mit Karte bezahlen",
       "cash": "Vor Ort bar bezahlen"
     },
-    "backToAd": "Zurück zum Auftrag"
+    "backToAd": "Zurück zum Auftrag",
+    "payNow": "Jetzt bezahlen",
+    "processing": "Wird verarbeitet...",
+    "cardError": "Die Zahlung konnte nicht abgeschlossen werden. Bitte versuche es erneut.",
+    "cardPaidNote": "Die Zahlung wurde erfolgreich abgeschlossen.",
+    "cardPendingNote": "Die Zahlung wird noch verarbeitet."
   },
   "auth": {
     "login": "Anmelden",

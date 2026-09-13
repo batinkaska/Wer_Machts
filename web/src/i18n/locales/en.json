@@ -412,7 +412,12 @@
       "card": "Pay by card",
       "cash": "Pay cash on site"
     },
-    "backToAd": "Back to listing"
+    "backToAd": "Back to listing",
+    "payNow": "Pay now",
+    "processing": "Processing...",
+    "cardError": "The payment could not be completed. Please try again.",
+    "cardPaidNote": "The payment was completed successfully.",
+    "cardPendingNote": "The payment is still being processed."
   },
   "auth": {
     "login": "Sign in",

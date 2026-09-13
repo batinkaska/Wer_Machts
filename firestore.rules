@@ -40,7 +40,12 @@ service cloud.firestore {
       allow update: if isSignedIn() && (
         resource.data.providerId == request.auth.uid ||
         get(/databases/$(database)/documents/ads/$(resource.data.adId)).data.ownerId == request.auth.uid
-      );
+      )
+        // paymentStatus / stripePaymentIntentId are only ever trustworthy when set by
+        // the Cloud Functions (Admin SDK, bypasses rules) after verifying with Stripe —
+        // a plain client write must never be able to change them.
+        && request.resource.data.get('paymentStatus', null) == resource.data.get('paymentStatus', null)
+        && request.resource.data.get('stripePaymentIntentId', null) == resource.data.get('stripePaymentIntentId', null);
       allow delete: if isSignedIn() && (
         resource.data.providerId == request.auth.uid ||
         get(/databases/$(database)/documents/ads/$(resource.data.adId)).data.ownerId == request.auth.uid
