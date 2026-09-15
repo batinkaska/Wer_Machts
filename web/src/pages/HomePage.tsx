@@ -3,7 +3,8 @@ import { Link } from "react-router-dom";
 import heroPeople from "../assets/hero-people.png";
 import logo from "../assets/logo.png";
 import { CheckCircleIcon, ClockIcon, DiamondIcon, LightbulbIcon } from "../components/icons";
-import { IntroAnimation } from "../components/home/IntroAnimation";
+// IntroAnimation geçici olarak kapatıldı — geri açmak için: import'u geri ekle ve
+// aşağıda <IntroAnimation /> satırının yorumunu kaldır.
 import { CATEGORY_GROUPS, categoryGroupName, categoryLabel } from "../lib/categories";
 
 const BENEFITS = [
