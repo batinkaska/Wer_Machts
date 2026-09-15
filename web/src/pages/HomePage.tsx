@@ -18,7 +18,7 @@ export function HomePage() {
 
   return (
     <div>
-      <IntroAnimation />
+      {/* <IntroAnimation /> */}
       <section className="bg-[#0b5b7a]">
         <div className="mx-auto max-w-5xl px-4 pt-8 text-center">
           <img src={logo} alt="" className="mx-auto mb-4 h-20 w-20 rounded-xl" />
