@@ -42,7 +42,7 @@ export function HomePage() {
           <img
             src={heroPeople}
             alt=""
-            className="mx-auto mt-6 hidden max-h-[28rem] w-auto md:block"
+            className="mx-auto mt-6 block max-h-48 w-auto sm:max-h-72 md:max-h-[28rem]"
           />
         </div>
       </section>
