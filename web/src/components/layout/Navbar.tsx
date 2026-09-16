@@ -13,7 +13,8 @@ import { NotificationBell } from "./NotificationBell";
 
 export function Navbar() {
   const { t } = useTranslation();
-  const { firebaseUser, logout } = useAuth();
+  const { firebaseUser, appUser, logout } = useAuth();
+  const showProLink = !!firebaseUser && !appUser?.isPro;
   const navigate = useNavigate();
 
   const [mobileSearchOpen, setMobileSearchOpen] = useState(false);
@@ -71,13 +72,21 @@ export function Navbar() {
     <header className="border-b border-gray-200 bg-white dark:border-gray-700 dark:bg-gray-900">
       <nav className="mx-auto max-w-5xl px-4 py-3">
         <div className="flex items-center justify-between">
-          <Link to="/" className="flex items-center gap-2">
-            <img src={logo} alt="" className="h-10 w-10 rounded-md" />
+          <Link to="/" className="flex shrink-0 items-center gap-2">
+            <img src={logo} alt="" className="h-10 w-10 shrink-0 rounded-md" />
             <img src={wordmark} alt="Wer Macht" className="h-10 w-auto" />
           </Link>
           <div className="flex items-center gap-3 text-sm">
             {firebaseUser && (
               <div className="flex items-center gap-3 md:hidden">
+                {showProLink && (
+                  <Link
+                    to="/settings"
+                    className="shrink-0 whitespace-nowrap text-sm font-medium text-[#5fac5e] hover:text-[#4d9a4c]"
+                  >
+                    {t("pro.navLinkShort")}
+                  </Link>
+                )}
                 <AccountMenu />
                 <NotificationBell />
               </div>
@@ -123,6 +132,11 @@ export function Navbar() {
         <div className="mx-auto flex max-w-5xl items-center justify-center gap-4 px-4">
           <CategoryMegaMenu />
           {searchBar}
+          {showProLink && (
+            <Link to="/settings" className="text-sm font-medium text-white hover:text-white/80">
+              {t("pro.navLink")}
+            </Link>
+          )}
           {firebaseUser && (
             <>
               <AccountMenu onDark />

@@ -458,7 +458,14 @@
     "activationTimeout": "Das dauert länger als erwartet — bitte lade die Seite in Kürze neu.",
     "featureAd": "Hervorheben",
     "unfeatureAd": "Nicht mehr hervorheben",
-    "featureRequiresPro": "Nur mit Pro verfügbar"
+    "featureRequiresPro": "Nur mit Pro verfügbar",
+    "navLink": "Pro werden",
+    "navLinkShort": "Pro",
+    "myAdsCapNotice": "Du nutzt {{count}} von 3 kostenlosen Inseraten.",
+    "profilePromoHeading": "Werde Pro",
+    "profilePromoUnlimited": "Unbegrenzte Inserate",
+    "profilePromoFeatured": "Anzeige hervorheben",
+    "profilePromoBadge": "Pro-Abzeichen"
   },
   "auth": {
     "login": "Anmelden",

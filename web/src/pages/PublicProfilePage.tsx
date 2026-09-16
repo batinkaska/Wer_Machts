@@ -199,7 +199,8 @@ export function PublicProfilePage() {
         </div>
       )}
 
-      <div className="flex items-center gap-5">
+      <div className="flex flex-wrap items-start justify-between gap-5">
+        <div className="flex items-center gap-5">
         <div className="relative shrink-0">
           {displayedUser.photoURL ? (
             <img
@@ -245,6 +246,26 @@ export function PublicProfilePage() {
             </div>
           )}
         </div>
+        </div>
+
+        {showOwnerControls && !displayedUser.isPro && (
+          <div className="w-full shrink-0 rounded-lg border border-amber-200 bg-amber-50 p-3 dark:border-amber-900 dark:bg-amber-950 sm:w-56">
+            <p className="text-sm font-semibold text-amber-800 dark:text-amber-300">
+              {t("pro.profilePromoHeading")}
+            </p>
+            <ul className="mt-1.5 space-y-0.5 text-xs text-amber-700 dark:text-amber-400">
+              <li>• {t("pro.profilePromoUnlimited")}</li>
+              <li>• {t("pro.profilePromoFeatured")}</li>
+              <li>• {t("pro.profilePromoBadge")}</li>
+            </ul>
+            <Link
+              to="/settings"
+              className="mt-2 inline-block rounded-full bg-[#5fac5e] px-3 py-1 text-xs font-medium text-white hover:bg-[#4d9a4c]"
+            >
+              {t("pro.upgradeCta")}
+            </Link>
+          </div>
+        )}
       </div>
 
       <div className="mt-4 flex items-center justify-between">

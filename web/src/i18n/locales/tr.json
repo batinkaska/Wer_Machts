@@ -458,7 +458,14 @@
     "activationTimeout": "Bu beklenenden uzun sürüyor — lütfen birazdan sayfayı yenile.",
     "featureAd": "Öne çıkar",
     "unfeatureAd": "Öne çıkarmayı kaldır",
-    "featureRequiresPro": "Sadece Pro ile kullanılabilir"
+    "featureRequiresPro": "Sadece Pro ile kullanılabilir",
+    "navLink": "Pro'ya Geç",
+    "navLinkShort": "Pro",
+    "myAdsCapNotice": "3 ücretsiz ilan hakkından {{count}} tanesini kullanıyorsun.",
+    "profilePromoHeading": "Pro'ya Geç",
+    "profilePromoUnlimited": "Sınırsız ilan",
+    "profilePromoFeatured": "İlanı öne çıkar",
+    "profilePromoBadge": "Pro rozeti"
   },
   "auth": {
     "login": "Giriş yap",

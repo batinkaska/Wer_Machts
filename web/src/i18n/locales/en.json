@@ -458,7 +458,14 @@
     "activationTimeout": "This is taking longer than expected — please reload the page shortly.",
     "featureAd": "Feature",
     "unfeatureAd": "Unfeature",
-    "featureRequiresPro": "Only available with Pro"
+    "featureRequiresPro": "Only available with Pro",
+    "navLink": "Go Pro",
+    "navLinkShort": "Pro",
+    "myAdsCapNotice": "You're using {{count}} of 3 free listings.",
+    "profilePromoHeading": "Become Pro",
+    "profilePromoUnlimited": "Unlimited listings",
+    "profilePromoFeatured": "Feature your ad",
+    "profilePromoBadge": "Pro badge"
   },
   "auth": {
     "login": "Sign in",

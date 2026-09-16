@@ -185,6 +185,20 @@ export function MyAdsPage() {
         <p className="mb-4 text-sm text-red-600 dark:text-red-400">{featureError}</p>
       )}
 
+      {!appUser?.isPro && (
+        <div className="mb-6 flex flex-wrap items-center justify-between gap-3 rounded-lg border border-gray-200 bg-gray-50 px-4 py-3 dark:border-gray-700 dark:bg-gray-800">
+          <p className="text-sm text-gray-700 dark:text-gray-300">
+            {t("pro.myAdsCapNotice", { count: activeAds.length })}
+          </p>
+          <Link
+            to="/settings"
+            className="shrink-0 rounded-full bg-[#5fac5e] px-3 py-1.5 text-xs font-medium text-white hover:bg-[#4d9a4c]"
+          >
+            {t("pro.upgradeCta")}
+          </Link>
+        </div>
+      )}
+
       {loading ? (
         <p className="text-center text-gray-500 dark:text-gray-400">{t("common.loading")}</p>
       ) : (

@@ -470,7 +470,14 @@
     "activationTimeout": "Это занимает больше времени, чем обычно — перезагрузите страницу через минуту.",
     "featureAd": "Продвигать",
     "unfeatureAd": "Не продвигать",
-    "featureRequiresPro": "Доступно только с Pro"
+    "featureRequiresPro": "Доступно только с Pro",
+    "navLink": "Стать Pro",
+    "navLinkShort": "Pro",
+    "myAdsCapNotice": "Вы используете {{count}} из 3 бесплатных объявлений.",
+    "profilePromoHeading": "Станьте Pro",
+    "profilePromoUnlimited": "Неограниченное количество объявлений",
+    "profilePromoFeatured": "Выделить объявление",
+    "profilePromoBadge": "Значок Pro"
   },
   "auth": {
     "login": "Войти",

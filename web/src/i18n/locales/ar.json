@@ -465,7 +465,14 @@
     "activationTimeout": "يستغرق هذا وقتًا أطول من المعتاد — يرجى إعادة تحميل الصفحة بعد قليل.",
     "featureAd": "إبراز",
     "unfeatureAd": "إلغاء الإبراز",
-    "featureRequiresPro": "متاح فقط مع Pro"
+    "featureRequiresPro": "متاح فقط مع Pro",
+    "navLink": "الترقية إلى Pro",
+    "navLinkShort": "Pro",
+    "myAdsCapNotice": "أنت تستخدم {{count}} من أصل 3 إعلانات مجانية.",
+    "profilePromoHeading": "كن Pro",
+    "profilePromoUnlimited": "إعلانات غير محدودة",
+    "profilePromoFeatured": "إبراز الإعلان",
+    "profilePromoBadge": "شارة Pro"
   },
   "auth": {
     "login": "تسجيل الدخول",
