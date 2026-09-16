@@ -33,7 +33,7 @@ export function HomePage() {
     <div>
       {/* <IntroAnimation /> */}
       <section className="bg-[#0b5b7a]">
-        <div className="mx-auto max-w-5xl px-4 pt-8 text-center">
+        <div className="mx-auto max-w-5xl px-4 text-center">
           <ActiveAdsCarousel />
           <img src={logo} alt="" className="mx-auto mb-4 mt-6 h-20 w-20 rounded-xl" />
           <h1 className="text-4xl font-semibold text-white">{t("home.heroTitle")}</h1>

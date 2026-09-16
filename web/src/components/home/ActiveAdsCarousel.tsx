@@ -59,7 +59,7 @@ export function ActiveAdsCarousel() {
     "flex h-8 w-8 items-center justify-center rounded-full border border-gray-300 text-gray-600 hover:bg-gray-50 disabled:opacity-30 dark:border-gray-600 dark:text-gray-300 dark:hover:bg-gray-700";
 
   return (
-    <div className="mx-auto mt-8 max-w-4xl rounded-xl bg-white p-5 text-left shadow-lg dark:bg-gray-800">
+    <div className="mx-auto max-w-4xl rounded-b-xl bg-white p-5 text-left shadow-lg dark:bg-gray-800">
       <div className="mb-4 flex items-center justify-between">
         <h2 className="text-base font-semibold text-gray-900 dark:text-gray-100">
           {t("home.activeAdsHeading")}
