@@ -16,8 +16,14 @@ export function Footer() {
         <div className="flex items-center gap-2">
           <img src={logo} alt="" className="h-5 w-5 rounded" />
           <img src={wordmark} alt="Wer Macht" className="h-5 w-auto" />
-          <span>— MVP</span>
         </div>
+
+        <p className="max-w-xl text-xs text-gray-400 dark:text-gray-500">
+          Copyright © 2026 Wer Macht. Alle Rechte vorbehalten. Ausgewiesene Marken gehören ihren
+          jeweiligen Eigentümern.
+          <br />
+          Wer Macht wird betrieben von Batin Kaska.
+        </p>
 
         <nav className="flex flex-wrap items-center justify-center gap-x-4 gap-y-1 text-xs">
           <Link to="/impressum" className={linkClass}>
