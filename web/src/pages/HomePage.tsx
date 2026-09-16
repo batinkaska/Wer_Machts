@@ -15,6 +15,16 @@ const BENEFITS = [
   { icon: LightbulbIcon, key: "easyToUse" },
 ] as const;
 
+// Kept out of the homepage's "trending" card grid (still fully usable
+// via the category menu / ad filters) so the section stays to 8 cards.
+const HOME_HIDDEN_GROUP_KEYS = new Set([
+  "sicherheit",
+  "sonstiges",
+  "elektronik",
+  "autoRadBoot",
+  "eventsFotografie",
+]);
+
 export function HomePage() {
   const { t } = useTranslation();
 
@@ -69,7 +79,7 @@ export function HomePage() {
           {t("home.categoriesHeading")}
         </h2>
         <div className="grid grid-cols-2 gap-6 sm:grid-cols-3 lg:grid-cols-4">
-          {CATEGORY_GROUPS.map((group) => (
+          {CATEGORY_GROUPS.filter((group) => !HOME_HIDDEN_GROUP_KEYS.has(group.groupKey)).map((group) => (
             <CategoryCard
               key={group.groupKey}
               to={`/ads?categories=${group.categories.map((c) => c.slug).join(",")}`}
