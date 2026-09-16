@@ -158,6 +158,10 @@ export function MyBidsPage() {
     ...givenBids.filter((bid) => bid.status === "accepted"),
     ...bidsOnMyAds.filter((bid) => bid.status === "accepted" && bid.providerId !== firebaseUser?.uid),
   ];
+  const isDealSettled = (bid: Bid) =>
+    bid.status === "accepted" &&
+    (bid.paymentMethod === "cash" || (bid.paymentMethod === "card" && bid.paymentStatus === "paid"));
+  const visibleGivenBids = givenBids.filter((bid) => !isDealSettled(bid));
 
   async function handleAccept(bid: Bid) {
     if (!firebaseUser) return;
@@ -233,9 +237,9 @@ export function MyBidsPage() {
             <h2 className="mb-3 text-lg font-medium text-gray-900 dark:text-gray-100">
               {t("myBids.givenHeading")}
             </h2>
-            {givenBids.length > 0 ? (
+            {visibleGivenBids.length > 0 ? (
               <ul className="space-y-3">
-                {givenBids.map((bid) => (
+                {visibleGivenBids.map((bid) => (
                   <GivenBidRow key={bid.id} bid={bid} />
                 ))}
               </ul>
