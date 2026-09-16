@@ -4,7 +4,7 @@ import { Link } from "react-router-dom";
 import { useAuth } from "../../contexts/AuthContext";
 import { UserIcon } from "../icons";
 
-export function AccountMenu() {
+export function AccountMenu({ onDark = false }: { onDark?: boolean }) {
   const { t } = useTranslation();
   const { firebaseUser } = useAuth();
   const [open, setOpen] = useState(false);
@@ -34,7 +34,11 @@ export function AccountMenu() {
       <button
         type="button"
         onClick={() => setOpen((v) => !v)}
-        className="flex flex-col items-center gap-0.5 text-white hover:text-white/80"
+        className={`flex flex-col items-center gap-0.5 ${
+          onDark
+            ? "text-white hover:text-white/80"
+            : "text-gray-700 hover:text-gray-900 dark:text-gray-300 dark:hover:text-white"
+        }`}
       >
         <UserIcon className="h-5 w-5 text-[#5fac5e]" />
         <span className="text-xs font-medium">{t("nav.menuMine")}</span>

@@ -76,6 +76,12 @@ export function Navbar() {
             <img src={wordmark} alt="Wer Macht" className="h-10 w-auto" />
           </Link>
           <div className="flex items-center gap-3 text-sm">
+            {firebaseUser && (
+              <div className="flex items-center gap-3 md:hidden">
+                <AccountMenu />
+                <NotificationBell />
+              </div>
+            )}
             <button
               type="button"
               onClick={() => setMobileSearchOpen((v) => !v)}
@@ -119,7 +125,7 @@ export function Navbar() {
           {searchBar}
           {firebaseUser && (
             <>
-              <AccountMenu />
+              <AccountMenu onDark />
               <NotificationBell />
             </>
           )}
@@ -130,12 +136,6 @@ export function Navbar() {
           <div className="mx-auto flex max-w-5xl flex-wrap items-center justify-center gap-4 px-4">
             <CategoryMegaMenu />
             {searchBar}
-            {firebaseUser && (
-              <>
-                <AccountMenu />
-                <NotificationBell />
-              </>
-            )}
           </div>
         </div>
       )}
