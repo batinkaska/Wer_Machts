@@ -78,8 +78,8 @@ export function PrivacyPage() {
             und verarbeitet.
           </li>
           <li>
-            Zahlungsabwicklung (Stripe): Zahlungen und das Treuhand-System (Escrow) werden über
-            Stripe Payments Europe, Ltd. abgewickelt. Wenn du eine Zahlung tätigst, werden
+            Zahlungsabwicklung (Stripe): Kartenzahlungen werden über Stripe Payments Europe, Ltd.
+            abgewickelt. Wenn du eine Zahlung tätigst, werden
             zahlungsrelevante Daten direkt an Stripe übermittelt. Die Rechtsgrundlage hierfür ist
             die Vertragserfüllung (Art. 6 Abs. 1 lit. b DSGVO).
           </li>

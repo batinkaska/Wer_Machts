@@ -105,20 +105,24 @@ export function AgbPage() {
 
       <section className="space-y-2">
         <h2 className="text-lg font-medium text-gray-900 dark:text-gray-100">
-          § 6 Zahlungsabwicklung und Treuhand-System (Escrow)
+          § 6 Zahlungsabwicklung
         </h2>
         <p>
-          (1) Die Zahlungsabwicklung erfolgt über einen lizenzierten externen
-          Zahlungsdienstleister (z. B. Stripe).
+          (1) Die Kartenzahlung erfolgt über einen lizenzierten externen Zahlungsdienstleister
+          (z. B. Stripe). Der Betreiber ist Vertragspartner dieses Zahlungsdienstleisters; die
+          Zahlung des Auftraggebers geht zunächst auf ein Konto des Betreibers ein.
         </p>
         <p>
-          (2) Sobald der Auftraggeber ein Angebot annimmt, wird der vereinbarte Betrag im Voraus
-          eingezogen und sicher auf einem Treuhandkonto verwahrt.
+          (2) Sobald der Auftraggeber ein Angebot annimmt und per Karte bezahlt, wird der
+          vereinbarte Betrag im Voraus eingezogen und vom Betreiber bis zur Bestätigung der
+          erfolgreichen Ausführung zurückgehalten.
         </p>
         <p>
           (3) Nach Bestätigung der erfolgreichen Ausführung der Dienstleistung durch den
-          Auftraggeber wird der Betrag (abzüglich einer eventuellen freiwilligen
-          Plattform-Gebühr) automatisch an den Dienstleister ausgezahlt.
+          Auftraggeber überweist der Betreiber den Betrag (abzüglich einer eventuellen
+          freiwilligen Plattform-Gebühr) innerhalb einer angemessenen Frist per Banküberweisung
+          an den Dienstleister. Anfallende Gebühren des Zahlungsdienstleisters trägt der
+          Betreiber.
         </p>
         <p>(4) Stornierungen und Konfliktlösung:</p>
         <ul className="list-disc space-y-2 pl-5">
@@ -127,8 +131,8 @@ export function AgbPage() {
             der Auftraggeber den vollen Betrag zurück.
           </li>
           <li>
-            Entsteht nach Arbeitsbeginn ein Konflikt (z. B. wegen mangelhafter Ausführung), wird
-            das Geld im Treuhandkonto eingefroren. Die Auszahlung erfolgt erst, wenn sich die
+            Entsteht nach Arbeitsbeginn ein Konflikt (z. B. wegen mangelhafter Ausführung), hält
+            der Betreiber die Auszahlung zurück. Die Auszahlung erfolgt erst, wenn sich die
             Parteien nachweislich geeinigt haben oder eine rechtskräftige
             behördliche/gerichtliche Entscheidung vorliegt. Die Plattform agiert hierbei nicht
             als rechtlicher Schlichter.
