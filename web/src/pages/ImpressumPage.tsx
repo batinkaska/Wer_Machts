@@ -11,7 +11,7 @@ export function ImpressumPage() {
         <p>
           Batin Kaska
           <br />
-          [Sokak Adı ve Kapı Numaran]
+          Görgen Str. 4
           <br />
           56068 Koblenz
         </p>
@@ -20,7 +20,7 @@ export function ImpressumPage() {
       <section className="space-y-2">
         <h2 className="text-lg font-medium text-gray-900 dark:text-gray-100">Kontakt</h2>
         <p>
-          Telefon: [Telefon Numaran, örn: +49 152 ...]
+          Telefon: +49 178 2487624
           <br />
           E-Mail: <a href="mailto:info@wermacht.app" className="text-[#5fac5e] underline">info@wermacht.app</a>
         </p>

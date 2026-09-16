@@ -19,9 +19,14 @@ export function PrivacyPage() {
         </h2>
         <p>Verantwortlicher im Sinne der DSGVO und anderer nationaler Datenschutzgesetze ist:</p>
         <ul className="list-disc space-y-1 pl-5">
-          <li>Name/Firma: [Dein Name / Firmenname einfügen]</li>
-          <li>Adresse: [Deine Adresse einfügen]</li>
-          <li>E-Mail: [Deine E-Mail-Adresse einfügen, z. B. wermachtsupport@gmail.com]</li>
+          <li>Name/Firma: Batin Kaska</li>
+          <li>Adresse: Görgen Str. 4, 56068 Koblenz</li>
+          <li>
+            E-Mail:{" "}
+            <a href="mailto:info@wermacht.app" className="text-[#5fac5e] underline">
+              info@wermacht.app
+            </a>
+          </li>
         </ul>
       </section>
 
@@ -108,7 +113,7 @@ export function PrivacyPage() {
         </h2>
         <p>
           Wenn du uns über unser Kontaktformular oder direkt per E-Mail an
-          wermachtsupport@gmail.com kontaktierst, speichern wir deine Angaben (z. B. Name,
+          info@wermacht.app kontaktierst, speichern wir deine Angaben (z. B. Name,
           E-Mail-Adresse, Inhalt der Nachricht) ausschließlich zur Bearbeitung deiner Anfrage. Die
           Rechtsgrundlage hierfür ist Art. 6 Abs. 1 lit. b bzw. f DSGVO.
         </p>

@@ -2,6 +2,7 @@ import { useTranslation } from "react-i18next";
 import { Link } from "react-router-dom";
 import logo from "../../assets/logo.png";
 import wordmark from "../../assets/wordmark.png";
+import { InstagramIcon } from "../icons";
 import { reopenCookieBanner } from "../../lib/cookieConsent";
 
 export function Footer() {
@@ -34,6 +35,15 @@ export function Footer() {
           <button type="button" onClick={reopenCookieBanner} className={linkClass}>
             {t("cookies.footerLink")}
           </button>
+          <a
+            href="https://www.instagram.com/wermacht.app/"
+            target="_blank"
+            rel="noopener noreferrer"
+            aria-label="Instagram"
+            className={linkClass}
+          >
+            <InstagramIcon className="h-4 w-4" />
+          </a>
         </nav>
       </div>
     </footer>

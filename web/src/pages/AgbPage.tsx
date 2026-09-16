@@ -12,9 +12,8 @@ export function AgbPage() {
         </h2>
         <p>
           (1) Diese Allgemeinen Geschäftsbedingungen (AGB) gelten für die Nutzung der Plattform
-          "Wer macht" (nachfolgend "Plattform" genannt), betrieben durch [Dein Name / Firmenname
-          einfügen], [Deine Adresse einfügen], [Deine E-Mail-Adresse einfügen] (nachfolgend
-          "Betreiber" genannt).
+          "Wer macht" (nachfolgend "Plattform" genannt), betrieben durch Batin Kaska, Görgen Str.
+          4, 56068 Koblenz, info@wermacht.app (nachfolgend "Betreiber" genannt).
         </p>
         <p>
           (2) Die Plattform bietet Nutzern (sowohl privaten als auch gewerblichen) die Möglichkeit,
