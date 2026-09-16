@@ -221,7 +221,7 @@ export function MessagesPage() {
           </div>
         </div>
 
-        <div className={`flex-1 flex-col ${conversationId ? "flex" : "hidden md:flex"}`}>
+        <div className={`min-w-0 flex-1 flex-col ${conversationId ? "flex" : "hidden md:flex"}`}>
           {!conversationId ? (
             <div className="flex flex-1 items-center justify-center text-gray-400 dark:text-gray-500">
               {t("messages.selectConversation")}

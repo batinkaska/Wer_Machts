@@ -21,7 +21,7 @@ export function MessageThread({ messages, uid, otherName }: MessageThreadProps) 
       {messages.map((message) => {
         const mine = message.senderId === uid;
         return (
-          <div key={message.id} className={`flex items-end gap-2 ${mine ? "flex-row-reverse" : ""}`}>
+          <div key={message.id} className={`flex items-end gap-2 ${mine ? "justify-end" : "justify-start"}`}>
             {!mine && (
               <div className="flex h-7 w-7 shrink-0 items-center justify-center rounded-full bg-gray-200 text-xs font-medium text-gray-600 dark:bg-gray-700 dark:text-gray-300">
                 {initials}
