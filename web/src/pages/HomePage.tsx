@@ -3,6 +3,7 @@ import { Link } from "react-router-dom";
 import heroPeople from "../assets/hero-people.png";
 import logo from "../assets/logo.png";
 import { CheckCircleIcon, ClockIcon, DiamondIcon, LightbulbIcon } from "../components/icons";
+import { ActiveAdsCarousel } from "../components/home/ActiveAdsCarousel";
 import { CategoryCard } from "../components/home/CategoryCard";
 // IntroAnimation geçici olarak kapatıldı — geri açmak için: import'u geri ekle ve
 // aşağıda <IntroAnimation /> satırının yorumunu kaldır.
@@ -50,6 +51,7 @@ export function HomePage() {
               {t("home.offerCta")}
             </Link>
           </div>
+          <ActiveAdsCarousel />
           <img
             src={heroPeople}
             alt=""

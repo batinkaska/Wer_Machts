@@ -69,6 +69,10 @@
     "createAd": "Auftrag erstellen",
     "offerCta": "Anbieten",
     "categoriesHeading": "Trend-Dienstleistungen der Woche",
+    "activeAdsHeading": "Aktuelle Aufträge",
+    "prevPage": "Vorherige",
+    "nextPage": "Nächste",
+    "goToPage": "Seite {{page}}",
     "viewListings": "Anzeigen ansehen",
     "benefits": {
       "compareOffers": {

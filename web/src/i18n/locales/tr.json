@@ -69,6 +69,10 @@
     "createAd": "İlan ver",
     "offerCta": "Teklif ver",
     "categoriesHeading": "Haftanın Trend Hizmetleri",
+    "activeAdsHeading": "Güncel İlanlar",
+    "prevPage": "Önceki",
+    "nextPage": "Sonraki",
+    "goToPage": "Sayfa {{page}}",
     "viewListings": "İlanları Gör",
     "benefits": {
       "compareOffers": {

@@ -70,6 +70,10 @@
     "createAd": "نشر إعلان",
     "offerCta": "تقديم عرض",
     "categoriesHeading": "الخدمات الرائجة هذا الأسبوع",
+    "activeAdsHeading": "الإعلانات الحالية",
+    "prevPage": "السابق",
+    "nextPage": "التالي",
+    "goToPage": "الصفحة {{page}}",
     "viewListings": "عرض الإعلانات",
     "benefits": {
       "compareOffers": {

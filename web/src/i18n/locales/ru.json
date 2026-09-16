@@ -71,6 +71,10 @@
     "createAd": "Разместить заказ",
     "offerCta": "Предложить",
     "categoriesHeading": "Популярные услуги недели",
+    "activeAdsHeading": "Актуальные заказы",
+    "prevPage": "Назад",
+    "nextPage": "Далее",
+    "goToPage": "Страница {{page}}",
     "viewListings": "Смотреть объявления",
     "benefits": {
       "compareOffers": {

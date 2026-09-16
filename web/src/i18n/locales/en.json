@@ -69,6 +69,10 @@
     "createAd": "Post a listing",
     "offerCta": "Offer",
     "categoriesHeading": "This Week's Trending Services",
+    "activeAdsHeading": "Current listings",
+    "prevPage": "Previous",
+    "nextPage": "Next",
+    "goToPage": "Page {{page}}",
     "viewListings": "View listings",
     "benefits": {
       "compareOffers": {
