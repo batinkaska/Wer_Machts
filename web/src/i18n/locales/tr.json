@@ -662,12 +662,12 @@
     "necessaryTitle": "Gerekli",
     "necessaryDescription": "Giriş yapma ve güvenlik gibi temel işlevler için zorunludur. Kapatılamaz.",
     "analyticsTitle": "İstatistikler",
-    "analyticsDescription": "Sitenin nasıl kullanıldığını anlamamıza yardımcı olur. Şu anda herhangi bir istatistik çerezi kullanmıyoruz.",
+    "analyticsDescription": "Sitenin nasıl kullanıldığını anlamamıza yardımcı olur (Google Analytics).",
     "marketingTitle": "Pazarlama",
     "marketingDescription": "Kişiselleştirilmiş reklamlar için kullanılır. Şu anda herhangi bir pazarlama çerezi kullanmıyoruz.",
     "settingsIntro": "Gerekli çerezlere ek olarak hangi çerez kategorilerini kullanmamıza izin vereceğine burada istediğin zaman karar verebilirsin.",
     "savedConfirmation": "Kaydedildi!",
-    "settingsNote": "Wer Macht şu anda sadece teknik olarak zorunlu çerezleri kullanıyor (örn. oturum açma bilgin için). Bu durum değiştiğinde, burada seçtiğin ayarlar otomatik olarak geçerli olacak.",
+    "settingsNote": "Wer Macht, onayınla sitenin nasıl kullanıldığını anlamak için Google Analytics kullanıyor. Pazarlama çerezi şu anda kullanılmıyor.",
     "footerLink": "Çerez Ayarları"
   },
   "contact": {

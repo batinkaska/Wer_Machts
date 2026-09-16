@@ -662,12 +662,12 @@
     "necessaryTitle": "Necessary",
     "necessaryDescription": "Required for core features like sign-in and security. Cannot be turned off.",
     "analyticsTitle": "Statistics",
-    "analyticsDescription": "Would help us understand how the site is used. We currently don't use any statistics cookies.",
+    "analyticsDescription": "Help us understand how the site is used (Google Analytics).",
     "marketingTitle": "Marketing",
     "marketingDescription": "Would be used for personalized advertising. We currently don't use any marketing cookies.",
     "settingsIntro": "You can decide here at any time which cookie categories we may use in addition to the necessary ones.",
     "savedConfirmation": "Saved!",
-    "settingsNote": "Wer Macht currently only uses technically necessary cookies (e.g. for your login session). As soon as that changes, the settings you choose here will automatically apply.",
+    "settingsNote": "With your consent, Wer Macht uses Google Analytics to understand how the site is used. We don't currently use marketing cookies.",
     "footerLink": "Cookie Settings"
   },
   "contact": {

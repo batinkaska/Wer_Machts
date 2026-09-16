@@ -662,12 +662,12 @@
     "necessaryTitle": "Notwendig",
     "necessaryDescription": "Erforderlich für grundlegende Funktionen wie Anmeldung und Sicherheit. Können nicht deaktiviert werden.",
     "analyticsTitle": "Statistiken",
-    "analyticsDescription": "Würden uns helfen zu verstehen, wie die Website genutzt wird. Aktuell setzen wir keine Statistik-Cookies ein.",
+    "analyticsDescription": "Helfen uns zu verstehen, wie die Website genutzt wird (Google Analytics).",
     "marketingTitle": "Marketing",
     "marketingDescription": "Würden für personalisierte Werbung genutzt. Aktuell setzen wir keine Marketing-Cookies ein.",
     "settingsIntro": "Hier kannst du jederzeit festlegen, welche Cookie-Kategorien wir zusätzlich zu den notwendigen Cookies verwenden dürfen.",
     "savedConfirmation": "Gespeichert!",
-    "settingsNote": "Wer Macht setzt derzeit ausschließlich technisch notwendige Cookies ein (z. B. für deine Anmeldesitzung). Sobald sich das ändert, greifen die hier gewählten Einstellungen automatisch.",
+    "settingsNote": "Mit deiner Einwilligung nutzt Wer Macht Google Analytics, um die Nutzung der Website zu verstehen. Marketing-Cookies setzen wir aktuell nicht ein.",
     "footerLink": "Cookie-Einstellungen"
   },
   "contact": {

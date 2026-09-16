@@ -1,3 +1,4 @@
+import { useId } from "react";
 import type { SVGProps } from "react";
 
 export function SearchIcon(props: SVGProps<SVGSVGElement>) {
@@ -530,19 +531,22 @@ export function CarIcon(props: SVGProps<SVGSVGElement>) {
 }
 
 export function InstagramIcon(props: SVGProps<SVGSVGElement>) {
+  const gradientId = useId();
   return (
-    <svg
-      viewBox="0 0 24 24"
-      fill="none"
-      stroke="currentColor"
-      strokeWidth={2}
-      strokeLinecap="round"
-      strokeLinejoin="round"
-      {...props}
-    >
-      <rect x="3" y="3" width="18" height="18" rx="5" />
-      <circle cx="12" cy="12" r="4" />
-      <circle cx="17.5" cy="6.5" r="1" fill="currentColor" stroke="none" />
+    <svg viewBox="0 0 24 24" {...props}>
+      <defs>
+        <radialGradient id={gradientId} cx="30%" cy="107%" r="150%">
+          <stop offset="0%" stopColor="#FEDA75" />
+          <stop offset="15%" stopColor="#FA7E1E" />
+          <stop offset="45%" stopColor="#D62976" />
+          <stop offset="70%" stopColor="#962FBF" />
+          <stop offset="100%" stopColor="#4F5BD5" />
+        </radialGradient>
+      </defs>
+      <rect x="1" y="1" width="22" height="22" rx="6" fill={`url(#${gradientId})`} />
+      <rect x="5.5" y="5.5" width="13" height="13" rx="4" fill="none" stroke="#fff" strokeWidth={1.6} />
+      <circle cx="12" cy="12" r="3.6" fill="none" stroke="#fff" strokeWidth={1.6} />
+      <circle cx="16.4" cy="7.6" r="1" fill="#fff" />
     </svg>
   );
 }
