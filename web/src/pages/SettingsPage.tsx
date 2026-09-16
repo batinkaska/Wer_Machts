@@ -3,7 +3,7 @@ import { type FormEvent, type ReactNode, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { Link, useNavigate, useSearchParams } from "react-router-dom";
 import { PhoneVerificationModal } from "../components/auth/PhoneVerificationModal";
-import { EyeIcon, ExternalLinkIcon, TrashIcon } from "../components/icons";
+import { CheckCircleIcon, EyeIcon, ExternalLinkIcon, TrashIcon } from "../components/icons";
 import { VerifiedBadge } from "../components/VerifiedBadge";
 import { useAuth } from "../contexts/AuthContext";
 import { functions } from "../firebase/config";
@@ -22,6 +22,14 @@ const PRO_PLANS: { id: ProPlan; labelKey: string }[] = [
   { id: "semiannual", labelKey: "pro.planSemiannual" },
   { id: "yearly", labelKey: "pro.planYearly" },
 ];
+
+const PRO_INTRO_BENEFIT_KEYS = [
+  "pro.introBenefitUnlimited",
+  "pro.introBenefitFeatured",
+  "pro.introBenefitVisibility",
+  "pro.introBenefitBadge",
+  "pro.introBenefitTrial",
+] as const;
 
 const THIRTY_DAYS_MS = 30 * 24 * 60 * 60 * 1000;
 
@@ -670,6 +678,19 @@ function ProSettingsSection({
   return (
     <div className="space-y-2">
       <h2 className="text-base font-semibold text-gray-900 dark:text-gray-100">{t("pro.settingsHeading")}</h2>
+      {!appUser.isPro && (
+        <div className="space-y-2 rounded-lg border border-amber-200 bg-amber-50 p-4 dark:border-amber-900 dark:bg-amber-950">
+          <p className="text-sm text-amber-900 dark:text-amber-200">{t("pro.introText")}</p>
+          <ul className="space-y-1.5">
+            {PRO_INTRO_BENEFIT_KEYS.map((key) => (
+              <li key={key} className="flex items-start gap-2 text-sm text-amber-800 dark:text-amber-300">
+                <CheckCircleIcon className="mt-0.5 h-4 w-4 shrink-0 text-amber-600 dark:text-amber-400" />
+                <span>{t(key)}</span>
+              </li>
+            ))}
+          </ul>
+        </div>
+      )}
       <SettingsCard>
         <div className="space-y-3 p-4">
           {error && <p className="text-sm text-red-600 dark:text-red-400">{error}</p>}

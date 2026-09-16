@@ -445,6 +445,12 @@
   "pro": {
     "badge": "Pro",
     "settingsHeading": "Pro Üyelik",
+    "introText": "Wer Macht Pro ile ilanlarından daha fazlasını elde et – daha fazla görünürlük, daha fazla talep, sınır yok.",
+    "introBenefitUnlimited": "Sadece 3 değil, sınırsız sayıda aktif ilan",
+    "introBenefitFeatured": "Seçtiğin bir ilanı kalıcı olarak öne çıkar",
+    "introBenefitVisibility": "Öne çıkan ilanlar ana sayfada ve arama sonuçlarında en üstte gösterilir",
+    "introBenefitBadge": "Profilindeki ve ilanlarındaki Pro rozeti güven oluşturur",
+    "introBenefitTrial": "İstediğin zaman iptal edebilirsin, ilk ayı ücretsiz dene",
     "planMonthly": "Aylık · 9,99 €",
     "planSemiannual": "6 Aylık · 49,99 €",
     "planYearly": "Yıllık · 89,99 €",

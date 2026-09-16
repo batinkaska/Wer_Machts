@@ -445,6 +445,12 @@
   "pro": {
     "badge": "Pro",
     "settingsHeading": "Pro membership",
+    "introText": "With Wer Macht Pro you get more out of your listings – more visibility, more inquiries, no limits.",
+    "introBenefitUnlimited": "Unlimited active listings instead of just 3",
+    "introBenefitFeatured": "Permanently feature one listing of your choice",
+    "introBenefitVisibility": "Featured listings appear at the top of the homepage and search results",
+    "introBenefitBadge": "The Pro badge on your profile and listings builds trust",
+    "introBenefitTrial": "Cancel anytime, try the first month free",
     "planMonthly": "Monthly · 9.99 €",
     "planSemiannual": "6 months · 49.99 €",
     "planYearly": "Yearly · 89.99 €",

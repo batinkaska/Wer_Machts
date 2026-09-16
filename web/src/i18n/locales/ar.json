@@ -452,6 +452,12 @@
   "pro": {
     "badge": "Pro",
     "settingsHeading": "عضوية Pro",
+    "introText": "مع Wer Macht Pro تحصل على المزيد من إعلاناتك - رؤية أكبر، طلبات أكثر، بلا حدود.",
+    "introBenefitUnlimited": "عدد غير محدود من الإعلانات النشطة بدلاً من 3 فقط",
+    "introBenefitFeatured": "إبراز إعلان واحد من اختيارك بشكل دائم",
+    "introBenefitVisibility": "تظهر الإعلانات المميزة في أعلى الصفحة الرئيسية ونتائج البحث",
+    "introBenefitBadge": "شارة Pro في ملفك الشخصي وإعلاناتك تبني الثقة",
+    "introBenefitTrial": "يمكن الإلغاء في أي وقت، جرب الشهر الأول مجانًا",
     "planMonthly": "شهريًا · 9.99 €",
     "planSemiannual": "6 أشهر · 49.99 €",
     "planYearly": "سنويًا · 89.99 €",

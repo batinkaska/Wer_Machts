@@ -445,6 +445,12 @@
   "pro": {
     "badge": "Pro",
     "settingsHeading": "Pro-Mitgliedschaft",
+    "introText": "Mit Wer Macht Pro holst du mehr aus deinen Inseraten heraus – mehr Sichtbarkeit, mehr Anfragen, keine Grenzen.",
+    "introBenefitUnlimited": "Unbegrenzt viele aktive Inserate statt nur 3",
+    "introBenefitFeatured": "Ein Inserat deiner Wahl dauerhaft hervorheben",
+    "introBenefitVisibility": "Hervorgehobene Inserate erscheinen ganz oben auf der Startseite und in der Suche",
+    "introBenefitBadge": "Pro-Abzeichen auf deinem Profil und deinen Inseraten schafft Vertrauen",
+    "introBenefitTrial": "Jederzeit kündbar, ersten Monat kostenlos testen",
     "planMonthly": "Monatlich · 9,99 €",
     "planSemiannual": "6 Monate · 49,99 €",
     "planYearly": "Jährlich · 89,99 €",
