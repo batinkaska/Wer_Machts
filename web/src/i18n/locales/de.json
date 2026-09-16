@@ -440,7 +440,13 @@
     "supportNone": "Kein Dank",
     "supportCustom": "Eigener Betrag",
     "supportContinue": "Weiter zur Zahlung",
-    "supportTotal": "Gesamt: {{amount}} €"
+    "supportTotal": "Gesamt: {{amount}} €",
+    "bankDetailsHeading": "Bankverbindung für die Auszahlung",
+    "bankDetailsIntro": "Damit Wer Macht dir den Betrag per Überweisung auszahlen kann, hinterlege bitte deine Bankverbindung.",
+    "accountHolderLabel": "Kontoinhaber",
+    "ibanLabel": "IBAN",
+    "bankDetailsNameRequired": "Bitte gib den Kontoinhaber an.",
+    "bankDetailsIbanInvalid": "Bitte gib eine gültige IBAN ein."
   },
   "pro": {
     "badge": "Pro",

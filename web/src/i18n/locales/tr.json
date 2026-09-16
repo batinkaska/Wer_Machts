@@ -440,7 +440,13 @@
     "supportNone": "Hayır teşekkürler",
     "supportCustom": "Özel tutar",
     "supportContinue": "Ödemeye devam et",
-    "supportTotal": "Toplam: {{amount}} €"
+    "supportTotal": "Toplam: {{amount}} €",
+    "bankDetailsHeading": "Ödeme için banka bilgileri",
+    "bankDetailsIntro": "Wer Macht'ın sana tutarı havale ile gönderebilmesi için lütfen banka bilgilerini gir.",
+    "accountHolderLabel": "Hesap sahibi",
+    "ibanLabel": "IBAN",
+    "bankDetailsNameRequired": "Lütfen hesap sahibinin adını gir.",
+    "bankDetailsIbanInvalid": "Lütfen geçerli bir IBAN gir."
   },
   "pro": {
     "badge": "Pro",

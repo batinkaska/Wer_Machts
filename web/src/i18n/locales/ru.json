@@ -452,7 +452,13 @@
     "supportNone": "Нет, спасибо",
     "supportCustom": "Своя сумма",
     "supportContinue": "Перейти к оплате",
-    "supportTotal": "Итого: {{amount}} €"
+    "supportTotal": "Итого: {{amount}} €",
+    "bankDetailsHeading": "Банковские реквизиты для выплаты",
+    "bankDetailsIntro": "Чтобы Wer Macht мог перевести вам сумму банковским переводом, укажите, пожалуйста, свои банковские реквизиты.",
+    "accountHolderLabel": "Владелец счёта",
+    "ibanLabel": "IBAN",
+    "bankDetailsNameRequired": "Пожалуйста, укажите владельца счёта.",
+    "bankDetailsIbanInvalid": "Пожалуйста, введите корректный IBAN."
   },
   "pro": {
     "badge": "Pro",

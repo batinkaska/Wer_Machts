@@ -440,7 +440,13 @@
     "supportNone": "No thanks",
     "supportCustom": "Custom amount",
     "supportContinue": "Continue to payment",
-    "supportTotal": "Total: {{amount}} €"
+    "supportTotal": "Total: {{amount}} €",
+    "bankDetailsHeading": "Bank details for payout",
+    "bankDetailsIntro": "So Wer Macht can transfer the amount to you by bank transfer, please provide your bank details.",
+    "accountHolderLabel": "Account holder",
+    "ibanLabel": "IBAN",
+    "bankDetailsNameRequired": "Please enter the account holder.",
+    "bankDetailsIbanInvalid": "Please enter a valid IBAN."
   },
   "pro": {
     "badge": "Pro",

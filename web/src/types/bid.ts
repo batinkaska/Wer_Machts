@@ -20,3 +20,9 @@ export interface Bid {
   hiddenFromProfile?: boolean;
   createdAt: Timestamp;
 }
+
+export interface BidBankDetails {
+  iban: string;
+  accountHolderName: string;
+  updatedAt: Timestamp;
+}

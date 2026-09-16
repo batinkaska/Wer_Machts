@@ -447,7 +447,13 @@
     "supportNone": "لا شكرًا",
     "supportCustom": "مبلغ مخصص",
     "supportContinue": "المتابعة إلى الدفع",
-    "supportTotal": "الإجمالي: {{amount}} €"
+    "supportTotal": "الإجمالي: {{amount}} €",
+    "bankDetailsHeading": "بيانات الحساب البنكي للدفع",
+    "bankDetailsIntro": "لكي يتمكن Wer Macht من تحويل المبلغ إليك عبر تحويل بنكي، يرجى إدخال بيانات حسابك البنكي.",
+    "accountHolderLabel": "صاحب الحساب",
+    "ibanLabel": "رقم الحساب المصرفي الدولي (IBAN)",
+    "bankDetailsNameRequired": "يرجى إدخال اسم صاحب الحساب.",
+    "bankDetailsIbanInvalid": "يرجى إدخال رقم IBAN صحيح."
   },
   "pro": {
     "badge": "Pro",

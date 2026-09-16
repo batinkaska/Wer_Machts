@@ -12,6 +12,14 @@ service cloud.firestore {
         get(/databases/$(database)/documents/users/$(recipientId)).data.get('blockedUserIds', []);
     }
 
+    // The payment recipient is whichever side of the deal is NOT the one who pays:
+    // on a "biete" ad the bidder pays the ad owner, on a "suche" ad the ad owner pays the bidder.
+    function bidPaymentRecipientId(bidId) {
+      let bid = get(/databases/$(database)/documents/bids/$(bidId)).data;
+      let ad = get(/databases/$(database)/documents/ads/$(bid.adId)).data;
+      return ad.adKind == 'biete' ? ad.ownerId : bid.providerId;
+    }
+
     match /users/{uid} {
       allow read: if true;
       allow create: if isSignedIn() && request.auth.uid == uid;
@@ -69,6 +77,12 @@ service cloud.firestore {
         resource.data.providerId == request.auth.uid ||
         get(/databases/$(database)/documents/ads/$(resource.data.adId)).data.ownerId == request.auth.uid
       );
+
+      // Bank details for the manual payout — only the person who is actually
+      // getting paid may ever read or write their own IBAN, never the payer.
+      match /private/bankDetails {
+        allow read, write: if isSignedIn() && request.auth.uid == bidPaymentRecipientId(bidId);
+      }
     }
 
     match /messages/{messageId} {

@@ -1,20 +1,21 @@
 import { Elements, PaymentElement, useElements, useStripe } from "@stripe/react-stripe-js";
 import { loadStripe } from "@stripe/stripe-js";
-import { doc, onSnapshot, serverTimestamp, updateDoc } from "firebase/firestore";
+import { doc, onSnapshot, serverTimestamp, setDoc, updateDoc } from "firebase/firestore";
 import { httpsCallable } from "firebase/functions";
-import { useEffect, useState } from "react";
+import { type FormEvent, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { Link, useParams, useSearchParams } from "react-router-dom";
 import { CheckCircleIcon } from "../components/icons";
 import { SupportContributionStep } from "../components/payment/SupportContributionStep";
 import { useAuth } from "../contexts/AuthContext";
-import { adsCol, bidsCol } from "../firebase/converters";
+import { adsCol, bidBankDetailsDoc, bidsCol } from "../firebase/converters";
 import { functions } from "../firebase/config";
 import { useAd } from "../hooks/useAd";
 import { logAnalyticsEvent } from "../lib/analytics";
 import { friendlyErrorMessage } from "../lib/friendlyError";
+import { isValidIbanFormat, maskIban, normalizeIban } from "../lib/iban";
 import { createNotification } from "../lib/notify";
-import type { Bid, PaymentMethod } from "../types/bid";
+import type { Bid, BidBankDetails, PaymentMethod } from "../types/bid";
 
 const stripePromise = loadStripe(import.meta.env.VITE_STRIPE_PUBLISHABLE_KEY);
 const createPaymentIntentFn = httpsCallable(functions, "createPaymentIntent");
@@ -114,6 +115,134 @@ function PaidConfirmation({
           </div>
         )}
       </div>
+    </div>
+  );
+}
+
+function RecipientBankDetails({ bidId }: { bidId: string }) {
+  const { t } = useTranslation();
+  const [details, setDetails] = useState<BidBankDetails | null>(null);
+  const [loading, setLoading] = useState(true);
+  const [editing, setEditing] = useState(false);
+  const [accountHolderName, setAccountHolderName] = useState("");
+  const [iban, setIban] = useState("");
+  const [error, setError] = useState<string | null>(null);
+  const [saving, setSaving] = useState(false);
+
+  useEffect(() => {
+    return onSnapshot(bidBankDetailsDoc(bidId), (snap) => {
+      const data = snap.exists() ? snap.data() : null;
+      setDetails(data);
+      setAccountHolderName(data?.accountHolderName ?? "");
+      setIban(data?.iban ?? "");
+      setLoading(false);
+    });
+  }, [bidId]);
+
+  async function handleSave(e: FormEvent) {
+    e.preventDefault();
+    setError(null);
+    if (!accountHolderName.trim()) {
+      setError(t("payment.bankDetailsNameRequired"));
+      return;
+    }
+    if (!isValidIbanFormat(iban)) {
+      setError(t("payment.bankDetailsIbanInvalid"));
+      return;
+    }
+    setSaving(true);
+    try {
+      await setDoc(bidBankDetailsDoc(bidId), {
+        accountHolderName: accountHolderName.trim(),
+        iban: normalizeIban(iban),
+        updatedAt: serverTimestamp(),
+      } as BidBankDetails);
+      setEditing(false);
+    } catch (err) {
+      setError(friendlyErrorMessage(err, t, "adForm.errorSaveFailed"));
+    } finally {
+      setSaving(false);
+    }
+  }
+
+  if (loading) return null;
+
+  return (
+    <div className="mt-4 rounded-lg border border-gray-200 p-4 dark:border-gray-700">
+      <p className="text-sm font-medium text-gray-900 dark:text-gray-100">{t("payment.bankDetailsHeading")}</p>
+      <p className="mt-1 text-xs text-gray-500 dark:text-gray-400">{t("payment.bankDetailsIntro")}</p>
+
+      {details && !editing ? (
+        <div className="mt-3 flex items-center justify-between gap-3">
+          <div className="text-sm text-gray-700 dark:text-gray-300">
+            <p>{details.accountHolderName}</p>
+            <p className="font-mono">{maskIban(details.iban)}</p>
+          </div>
+          <button
+            type="button"
+            onClick={() => setEditing(true)}
+            className="shrink-0 text-sm text-[#5fac5e] hover:underline"
+          >
+            {t("common.edit")}
+          </button>
+        </div>
+      ) : (
+        <form onSubmit={handleSave} className="mt-3 space-y-3">
+          <div>
+            <label
+              htmlFor="bankDetailsAccountHolder"
+              className="mb-1 block text-xs font-medium text-gray-700 dark:text-gray-300"
+            >
+              {t("payment.accountHolderLabel")}
+            </label>
+            <input
+              id="bankDetailsAccountHolder"
+              value={accountHolderName}
+              onChange={(e) => setAccountHolderName(e.target.value)}
+              className="w-full rounded border border-gray-300 px-3 py-2 text-sm dark:border-gray-600 dark:bg-gray-800 dark:text-gray-100"
+            />
+          </div>
+          <div>
+            <label
+              htmlFor="bankDetailsIban"
+              className="mb-1 block text-xs font-medium text-gray-700 dark:text-gray-300"
+            >
+              {t("payment.ibanLabel")}
+            </label>
+            <input
+              id="bankDetailsIban"
+              value={iban}
+              onChange={(e) => setIban(e.target.value)}
+              placeholder="DE00 0000 0000 0000 0000 00"
+              className="w-full rounded border border-gray-300 px-3 py-2 text-sm font-mono dark:border-gray-600 dark:bg-gray-800 dark:text-gray-100"
+            />
+          </div>
+          {error && <p className="text-xs text-red-600 dark:text-red-400">{error}</p>}
+          <div className="flex gap-2">
+            <button
+              type="submit"
+              disabled={saving}
+              className="rounded-full bg-[#5fac5e] px-4 py-2 text-sm font-medium text-white hover:bg-[#4d9a4c] disabled:opacity-50"
+            >
+              {saving ? t("adDetail.sending") : t("common.save")}
+            </button>
+            {details && (
+              <button
+                type="button"
+                onClick={() => {
+                  setEditing(false);
+                  setAccountHolderName(details.accountHolderName);
+                  setIban(details.iban);
+                  setError(null);
+                }}
+                className="rounded-full border border-gray-300 px-4 py-2 text-sm text-gray-700 hover:bg-gray-50 dark:border-gray-600 dark:text-gray-300 dark:hover:bg-gray-800"
+              >
+                {t("common.cancel")}
+              </button>
+            )}
+          </div>
+        </form>
+      )}
     </div>
   );
 }
@@ -314,6 +443,8 @@ export function PaymentPage() {
           <p className="text-sm text-gray-500 dark:text-gray-400">{t("payment.waitingForPayer")}</p>
         )}
       </div>
+
+      {!isPayer && bidId && <RecipientBankDetails bidId={bidId} />}
 
       <Link
         to={`/ads/${adId}`}

@@ -2,9 +2,10 @@ import {
   type FirestoreDataConverter,
   type QueryDocumentSnapshot,
   collection,
+  doc,
 } from "firebase/firestore";
 import type { Ad } from "../types/ad";
-import type { Bid } from "../types/bid";
+import type { Bid, BidBankDetails } from "../types/bid";
 import type { ChatMessage } from "../types/message";
 import type { Notification } from "../types/notification";
 import type { Report } from "../types/report";
@@ -58,3 +59,17 @@ export const messagesCol = collection(db, "messages").withConverter(messageConve
 export const reportsCol = collection(db, "reports").withConverter(reportConverter);
 export const notificationsCol = collection(db, "notifications").withConverter(notificationConverter);
 export const reviewsCol = collection(db, "reviews").withConverter(reviewConverter);
+
+const bidBankDetailsConverter: FirestoreDataConverter<BidBankDetails> = {
+  toFirestore(value: BidBankDetails) {
+    return { ...value };
+  },
+  fromFirestore(snapshot: QueryDocumentSnapshot) {
+    return snapshot.data() as BidBankDetails;
+  },
+};
+
+/** Private per-bid subdocument: only the payment recipient may read/write it (see firestore.rules). */
+export function bidBankDetailsDoc(bidId: string) {
+  return doc(db, "bids", bidId, "private", "bankDetails").withConverter(bidBankDetailsConverter);
+}
