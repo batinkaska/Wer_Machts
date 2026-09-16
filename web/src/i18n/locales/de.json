@@ -212,7 +212,10 @@
   },
   "myBids": {
     "pageTitle": "Meine Angebote",
+    "givenHeading": "Meine abgegebenen Angebote",
+    "receivedHeading": "Erhaltene Angebote (ausstehend)",
     "empty": "Sie haben noch kein Angebot abgegeben.",
+    "receivedEmpty": "Du hast noch keine ausstehenden Angebote auf deine Anzeigen erhalten.",
     "toAd": "Zum Auftrag",
     "withdraw": "Angebot zurückziehen",
     "withdrawConfirm": "Angebot wirklich zurückziehen?"

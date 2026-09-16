@@ -212,7 +212,10 @@
   },
   "myBids": {
     "pageTitle": "My offers",
+    "givenHeading": "Offers I've made",
+    "receivedHeading": "Received offers (pending)",
     "empty": "You haven't placed any offers yet.",
+    "receivedEmpty": "You haven't received any pending offers on your listings yet.",
     "toAd": "To listing",
     "withdraw": "Withdraw offer",
     "withdrawConfirm": "Really withdraw this offer?"

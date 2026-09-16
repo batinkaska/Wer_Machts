@@ -1,4 +1,4 @@
-import { getDocs, query, where } from "firebase/firestore";
+import { onSnapshot, query, where } from "firebase/firestore";
 import { useEffect, useState } from "react";
 import { bidsCol } from "../firebase/converters";
 import type { Bid } from "../types/bid";
@@ -16,19 +16,12 @@ export function useBidsForAds(adIds: string[]) {
       setLoading(false);
       return;
     }
-    let cancelled = false;
     setLoading(true);
     const q = query(bidsCol, where("adId", "in", adIds.slice(0, MAX_IN_CLAUSE)));
-    getDocs(q)
-      .then((snap) => {
-        if (!cancelled) setBids(snap.docs.map((d) => d.data()));
-      })
-      .finally(() => {
-        if (!cancelled) setLoading(false);
-      });
-    return () => {
-      cancelled = true;
-    };
+    return onSnapshot(q, (snap) => {
+      setBids(snap.docs.map((d) => d.data()));
+      setLoading(false);
+    });
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [key]);
 

@@ -212,7 +212,10 @@
   },
   "myBids": {
     "pageTitle": "Tekliflerim",
+    "givenHeading": "Verdiğim teklifler",
+    "receivedHeading": "Gelen teklifler (bekleyen)",
     "empty": "Henüz bir teklif vermedin.",
+    "receivedEmpty": "İlanlarına henüz bekleyen bir teklif gelmedi.",
     "toAd": "İlana git",
     "withdraw": "Teklifi geri çek",
     "withdrawConfirm": "Teklifi gerçekten geri çekmek istiyor musun?"
