@@ -216,6 +216,8 @@
     "receivedHeading": "Received offers (pending)",
     "empty": "You haven't placed any offers yet.",
     "receivedEmpty": "You haven't received any pending offers on your listings yet.",
+    "completedHeading": "Completed jobs",
+    "completedEmpty": "You don't have any completed jobs yet.",
     "toAd": "To listing",
     "withdraw": "Withdraw offer",
     "withdrawConfirm": "Really withdraw this offer?"
@@ -419,8 +421,11 @@
     "payNow": "Pay now",
     "processing": "Processing...",
     "cardError": "The payment could not be completed. Please try again.",
-    "cardPaidNote": "The payment was completed successfully.",
-    "cardPendingNote": "The payment is still being processed."
+    "cardPendingNote": "The payment is still being processed.",
+    "paidTitlePayer": "Payment successful",
+    "paidMessagePayer": "Your payment of {{amount}} € to {{name}} was processed successfully.",
+    "paidTitleRecipient": "Payment received",
+    "paidMessageRecipient": "You received a payment of {{amount}} € from {{name}}."
   },
   "auth": {
     "login": "Sign in",

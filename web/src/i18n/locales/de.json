@@ -216,6 +216,8 @@
     "receivedHeading": "Erhaltene Angebote (ausstehend)",
     "empty": "Sie haben noch kein Angebot abgegeben.",
     "receivedEmpty": "Du hast noch keine ausstehenden Angebote auf deine Anzeigen erhalten.",
+    "completedHeading": "Abgeschlossene Aufträge",
+    "completedEmpty": "Du hast noch keine abgeschlossenen Aufträge.",
     "toAd": "Zum Auftrag",
     "withdraw": "Angebot zurückziehen",
     "withdrawConfirm": "Angebot wirklich zurückziehen?"
@@ -419,8 +421,11 @@
     "payNow": "Jetzt bezahlen",
     "processing": "Wird verarbeitet...",
     "cardError": "Die Zahlung konnte nicht abgeschlossen werden. Bitte versuche es erneut.",
-    "cardPaidNote": "Die Zahlung wurde erfolgreich abgeschlossen.",
-    "cardPendingNote": "Die Zahlung wird noch verarbeitet."
+    "cardPendingNote": "Die Zahlung wird noch verarbeitet.",
+    "paidTitlePayer": "Zahlung erfolgreich",
+    "paidMessagePayer": "Deine Zahlung von {{amount}} € an {{name}} wurde erfolgreich verarbeitet.",
+    "paidTitleRecipient": "Zahlung erhalten",
+    "paidMessageRecipient": "Du hast eine Zahlung von {{amount}} € von {{name}} erhalten."
   },
   "auth": {
     "login": "Anmelden",

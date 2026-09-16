@@ -66,6 +66,30 @@ function GivenBidRow({ bid }: { bid: Bid }) {
   );
 }
 
+function CompletedDealRow({ bid }: { bid: Bid }) {
+  const { t } = useTranslation();
+
+  return (
+    <li className="flex items-center justify-between gap-3 rounded border border-gray-200 p-3 dark:border-gray-700">
+      <div>
+        <Link
+          to={`/ads/${bid.adId}`}
+          className="font-medium text-purple-700 hover:underline dark:text-purple-400"
+        >
+          {bid.adTitle ?? t("myBids.toAd")}
+        </Link>
+        <p className="mt-1 text-sm text-gray-700 dark:text-gray-300">{bid.amount} €</p>
+      </div>
+      <Link
+        to={`/ads/${bid.adId}/payment?bidId=${bid.id}`}
+        className="shrink-0 rounded-full bg-[#5fac5e] px-4 py-1.5 text-sm font-medium text-white hover:bg-[#4d9a4c]"
+      >
+        {t("adDetail.goToPayment")}
+      </Link>
+    </li>
+  );
+}
+
 function ReceivedBidRow({
   bid,
   onAccept,
@@ -130,6 +154,10 @@ export function MyBidsPage() {
   const receivedBids = bidsOnMyAds.filter(
     (bid) => bid.status === "pending" && bid.providerId !== firebaseUser?.uid,
   );
+  const completedDeals = [
+    ...givenBids.filter((bid) => bid.status === "accepted"),
+    ...bidsOnMyAds.filter((bid) => bid.status === "accepted" && bid.providerId !== firebaseUser?.uid),
+  ];
 
   async function handleAccept(bid: Bid) {
     if (!firebaseUser) return;
@@ -183,6 +211,21 @@ export function MyBidsPage() {
               </ul>
             ) : (
               <p className="text-sm text-gray-500 dark:text-gray-400">{t("myBids.receivedEmpty")}</p>
+            )}
+          </section>
+
+          <section>
+            <h2 className="mb-3 text-lg font-medium text-gray-900 dark:text-gray-100">
+              {t("myBids.completedHeading")}
+            </h2>
+            {completedDeals.length > 0 ? (
+              <ul className="space-y-3">
+                {completedDeals.map((bid) => (
+                  <CompletedDealRow key={bid.id} bid={bid} />
+                ))}
+              </ul>
+            ) : (
+              <p className="text-sm text-gray-500 dark:text-gray-400">{t("myBids.completedEmpty")}</p>
             )}
           </section>
 

@@ -5,6 +5,7 @@ import { httpsCallable } from "firebase/functions";
 import { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { Link, useParams, useSearchParams } from "react-router-dom";
+import { CheckCircleIcon } from "../components/icons";
 import { useAuth } from "../contexts/AuthContext";
 import { adsCol, bidsCol } from "../firebase/converters";
 import { functions } from "../firebase/config";
@@ -75,6 +76,36 @@ function StripeCardForm({ bidId, onPaid }: { bidId: string; onPaid: () => void }
   );
 }
 
+function PaidConfirmation({
+  isPayer,
+  amount,
+  counterpartyName,
+}: {
+  isPayer: boolean;
+  amount: number;
+  counterpartyName: string;
+}) {
+  const { t } = useTranslation();
+
+  return (
+    <div className="flex flex-col items-center gap-3 py-4 text-center">
+      <span className="flex h-14 w-14 items-center justify-center rounded-full bg-green-100 text-green-600 dark:bg-green-950 dark:text-green-400">
+        <CheckCircleIcon className="h-8 w-8" />
+      </span>
+      <div>
+        <p className="text-lg font-semibold text-gray-900 dark:text-gray-100">
+          {isPayer ? t("payment.paidTitlePayer") : t("payment.paidTitleRecipient")}
+        </p>
+        <p className="mt-1 text-sm text-gray-600 dark:text-gray-400">
+          {isPayer
+            ? t("payment.paidMessagePayer", { amount, name: counterpartyName })
+            : t("payment.paidMessageRecipient", { amount, name: counterpartyName })}
+        </p>
+      </div>
+    </div>
+  );
+}
+
 export function PaymentPage() {
   const { t } = useTranslation();
   const { adId } = useParams<{ adId: string }>();
@@ -105,6 +136,8 @@ export function PaymentPage() {
   const payerId = ad && bid ? (ad.adKind === "biete" ? bid.providerId : ad.ownerId) : undefined;
   const isPayer = !!firebaseUser && firebaseUser.uid === payerId;
   const isPaid = bid?.paymentStatus === "paid";
+  const payerName = ad && bid ? (ad.adKind === "biete" ? bid.providerName : ad.ownerName) : "";
+  const recipientName = ad && bid ? (ad.adKind === "biete" ? ad.ownerName : bid.providerName) : "";
 
   async function chooseCash() {
     if (!bidId || !ad || !bid || !isPayer) return;
@@ -184,7 +217,13 @@ export function PaymentPage() {
       <p className="mt-1 text-xl font-bold text-[#5fac5e]">{bid.amount} €</p>
 
       <div className="mt-6 rounded-lg border border-gray-200 p-5 dark:border-gray-700">
-        {bid.paymentMethod && !changingMethod ? (
+        {bid.paymentMethod === "card" && isPaid ? (
+          <PaidConfirmation
+            isPayer={isPayer}
+            amount={bid.amount}
+            counterpartyName={isPayer ? recipientName : payerName}
+          />
+        ) : bid.paymentMethod && !changingMethod ? (
           <div>
             <div className="flex items-center justify-between gap-3">
               <p className="text-sm font-medium text-gray-900 dark:text-gray-100">
@@ -205,7 +244,7 @@ export function PaymentPage() {
             </div>
             {bid.paymentMethod === "card" && (
               <p className="mt-1 text-xs text-gray-500 dark:text-gray-400">
-                {isPaid ? t("payment.cardPaidNote") : t("payment.cardPendingNote")}
+                {t("payment.cardPendingNote")}
               </p>
             )}
           </div>

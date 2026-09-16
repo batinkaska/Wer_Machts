@@ -217,6 +217,8 @@
     "receivedHeading": "العروض المستلمة (قيد الانتظار)",
     "empty": "لم تقدّم أي عرض بعد.",
     "receivedEmpty": "لم تستلم بعد أي عروض قيد الانتظار على إعلاناتك.",
+    "completedHeading": "الصفقات المكتملة",
+    "completedEmpty": "ليس لديك أي صفقات مكتملة بعد.",
     "toAd": "إلى الإعلان",
     "withdraw": "سحب العرض",
     "withdrawConfirm": "هل تريد فعلاً سحب هذا العرض؟"
@@ -426,8 +428,11 @@
     "payNow": "ادفع الآن",
     "processing": "جارٍ المعالجة...",
     "cardError": "تعذّر إتمام الدفع. يرجى المحاولة مرة أخرى.",
-    "cardPaidNote": "تم إتمام الدفع بنجاح.",
-    "cardPendingNote": "لا تزال عملية الدفع قيد المعالجة."
+    "cardPendingNote": "لا تزال عملية الدفع قيد المعالجة.",
+    "paidTitlePayer": "تم الدفع بنجاح",
+    "paidMessagePayer": "تمت معالجة دفعتك البالغة {{amount}} € إلى {{name}} بنجاح.",
+    "paidTitleRecipient": "تم استلام الدفعة",
+    "paidMessageRecipient": "لقد استلمت دفعة بقيمة {{amount}} € من {{name}}."
   },
   "auth": {
     "login": "تسجيل الدخول",

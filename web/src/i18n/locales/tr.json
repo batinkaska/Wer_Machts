@@ -216,6 +216,8 @@
     "receivedHeading": "Gelen teklifler (bekleyen)",
     "empty": "Henüz bir teklif vermedin.",
     "receivedEmpty": "İlanlarına henüz bekleyen bir teklif gelmedi.",
+    "completedHeading": "Biten Anlaşmalar",
+    "completedEmpty": "Henüz biten bir anlaşman yok.",
     "toAd": "İlana git",
     "withdraw": "Teklifi geri çek",
     "withdrawConfirm": "Teklifi gerçekten geri çekmek istiyor musun?"
@@ -419,8 +421,11 @@
     "payNow": "Şimdi öde",
     "processing": "İşleniyor...",
     "cardError": "Ödeme tamamlanamadı. Lütfen tekrar dene.",
-    "cardPaidNote": "Ödeme başarıyla tamamlandı.",
-    "cardPendingNote": "Ödeme hâlâ işleniyor."
+    "cardPendingNote": "Ödeme hâlâ işleniyor.",
+    "paidTitlePayer": "Ödeme başarılı",
+    "paidMessagePayer": "{{name}} kişisine yaptığın {{amount}} € tutarındaki ödeme başarıyla tamamlandı.",
+    "paidTitleRecipient": "Ödeme alındı",
+    "paidMessageRecipient": "{{name}} kişisinden {{amount}} € tutarında bir ödeme aldın."
   },
   "auth": {
     "login": "Giriş yap",
