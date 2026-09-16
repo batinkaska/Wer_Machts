@@ -769,6 +769,8 @@ export function SettingsPage() {
     <div className="mx-auto max-w-2xl space-y-6 px-4 py-10">
       <h1 className="text-2xl font-semibold text-gray-900 dark:text-gray-100">{t("settings.pageTitle")}</h1>
 
+      <ProSettingsSection appUser={appUser} refreshAppUser={refreshAppUser} />
+
       <div className="space-y-2">
         <h2 className="text-base font-semibold text-gray-900 dark:text-gray-100">{t("settings.profileInfoHeading")}</h2>
         <SettingsCard>
@@ -786,8 +788,6 @@ export function SettingsPage() {
           />
         </SettingsCard>
       </div>
-
-      <ProSettingsSection appUser={appUser} refreshAppUser={refreshAppUser} />
 
       {appUser.accountType === "business" && (
         <div className="space-y-2">

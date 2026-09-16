@@ -199,8 +199,7 @@ export function PublicProfilePage() {
         </div>
       )}
 
-      <div className="flex flex-wrap items-start justify-between gap-5">
-        <div className="flex items-center gap-5">
+      <div className="flex items-start gap-5">
         <div className="relative shrink-0">
           {displayedUser.photoURL ? (
             <img
@@ -214,58 +213,60 @@ export function PublicProfilePage() {
             </div>
           )}
         </div>
-        <div>
-          <div className="flex flex-wrap items-center gap-2">
-            <h1 className="text-2xl font-semibold text-gray-900 dark:text-gray-100">{displayedUser.displayName}</h1>
-            {displayedUser.isPro && <ProBadge />}
-            {displayedUser.emailVerified && <VerifiedBadge label={t("verifiedBadges.email")} />}
-            {displayedUser.phoneVerified && <VerifiedBadge label={t("verifiedBadges.phone")} />}
-            {displayedUser.accountType === "business" && <VerifiedBadge label={t("verifiedBadges.business")} />}
-          </div>
-          {displayedUser.city && <p className="text-sm text-gray-500 dark:text-gray-400">{displayedUser.city}</p>}
-          <div className="mt-1 flex gap-4 text-sm text-gray-600 dark:text-gray-400">
-            {canViewFollows ? (
-              <>
-                <Link to={`/profile/${uid}/followers`} className="hover:underline">
-                  {t("profile.followerCount", { count: followerCount })}
-                </Link>
-                <Link to={`/profile/${uid}/following`} className="hover:underline">
-                  {t("profile.followingCount", { count: followingCount })}
-                </Link>
-              </>
-            ) : (
-              <>
-                <span>{t("profile.followerCount", { count: followerCount })}</span>
-                <span>{t("profile.followingCount", { count: followingCount })}</span>
-              </>
+
+        <div className="flex flex-1 flex-wrap items-start justify-between gap-4">
+          <div>
+            <div className="flex flex-wrap items-center gap-2">
+              <h1 className="text-2xl font-semibold text-gray-900 dark:text-gray-100">{displayedUser.displayName}</h1>
+              {displayedUser.isPro && <ProBadge />}
+              {displayedUser.emailVerified && <VerifiedBadge label={t("verifiedBadges.email")} />}
+              {displayedUser.phoneVerified && <VerifiedBadge label={t("verifiedBadges.phone")} />}
+              {displayedUser.accountType === "business" && <VerifiedBadge label={t("verifiedBadges.business")} />}
+            </div>
+            {displayedUser.city && <p className="text-sm text-gray-500 dark:text-gray-400">{displayedUser.city}</p>}
+            <div className="mt-1 flex gap-4 text-sm text-gray-600 dark:text-gray-400">
+              {canViewFollows ? (
+                <>
+                  <Link to={`/profile/${uid}/followers`} className="hover:underline">
+                    {t("profile.followerCount", { count: followerCount })}
+                  </Link>
+                  <Link to={`/profile/${uid}/following`} className="hover:underline">
+                    {t("profile.followingCount", { count: followingCount })}
+                  </Link>
+                </>
+              ) : (
+                <>
+                  <span>{t("profile.followerCount", { count: followerCount })}</span>
+                  <span>{t("profile.followingCount", { count: followingCount })}</span>
+                </>
+              )}
+            </div>
+            {ratingCount > 0 && (
+              <div className="mt-1">
+                <StarRatingDisplay average={ratingAverage} count={ratingCount} />
+              </div>
             )}
           </div>
-          {ratingCount > 0 && (
-            <div className="mt-1">
-              <StarRatingDisplay average={ratingAverage} count={ratingCount} />
+
+          {showOwnerControls && !displayedUser.isPro && (
+            <div className="w-full shrink-0 rounded-lg border border-amber-200 bg-amber-50 p-3 dark:border-amber-900 dark:bg-amber-950 sm:w-56">
+              <p className="text-sm font-semibold text-amber-800 dark:text-amber-300">
+                {t("pro.profilePromoHeading")}
+              </p>
+              <ul className="mt-1.5 space-y-0.5 text-xs text-amber-700 dark:text-amber-400">
+                <li>• {t("pro.profilePromoUnlimited")}</li>
+                <li>• {t("pro.profilePromoFeatured")}</li>
+                <li>• {t("pro.profilePromoBadge")}</li>
+              </ul>
+              <Link
+                to="/settings"
+                className="mt-2 inline-block rounded-full bg-[#5fac5e] px-3 py-1 text-xs font-medium text-white hover:bg-[#4d9a4c]"
+              >
+                {t("pro.upgradeCta")}
+              </Link>
             </div>
           )}
         </div>
-        </div>
-
-        {showOwnerControls && !displayedUser.isPro && (
-          <div className="w-full shrink-0 rounded-lg border border-amber-200 bg-amber-50 p-3 dark:border-amber-900 dark:bg-amber-950 sm:w-56">
-            <p className="text-sm font-semibold text-amber-800 dark:text-amber-300">
-              {t("pro.profilePromoHeading")}
-            </p>
-            <ul className="mt-1.5 space-y-0.5 text-xs text-amber-700 dark:text-amber-400">
-              <li>• {t("pro.profilePromoUnlimited")}</li>
-              <li>• {t("pro.profilePromoFeatured")}</li>
-              <li>• {t("pro.profilePromoBadge")}</li>
-            </ul>
-            <Link
-              to="/settings"
-              className="mt-2 inline-block rounded-full bg-[#5fac5e] px-3 py-1 text-xs font-medium text-white hover:bg-[#4d9a4c]"
-            >
-              {t("pro.upgradeCta")}
-            </Link>
-          </div>
-        )}
       </div>
 
       <div className="mt-4 flex items-center justify-between">
