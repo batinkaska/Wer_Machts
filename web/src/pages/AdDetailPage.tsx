@@ -24,6 +24,7 @@ import { db } from "../firebase/config";
 import { useAd } from "../hooks/useAd";
 import { useAds } from "../hooks/useAds";
 import { useBids } from "../hooks/useBids";
+import { logAnalyticsEvent } from "../lib/analytics";
 import { categoryLabels } from "../lib/categories";
 import { useDateFormatter } from "../lib/useDateFormatter";
 import { createNotification } from "../lib/notify";
@@ -146,12 +147,14 @@ export function AdDetailPage() {
         adTitle: ad.title,
       });
     }
+    logAnalyticsEvent("bid_sent", { ad_kind: ad.adKind });
   }
 
   async function handleAccept(bid: Bid) {
     if (ad!.adKind === "biete") {
       await updateDoc(doc(bidsCol, bid.id), { status: "accepted" });
       await updateDoc(doc(adsCol, ad!.id), { status: "in_progress", updatedAt: serverTimestamp() });
+      logAnalyticsEvent("bid_accepted", { ad_kind: ad!.adKind });
       if (firebaseUser && ad && bid.providerId !== firebaseUser.uid) {
         await createNotification({
           recipientId: bid.providerId,

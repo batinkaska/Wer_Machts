@@ -4,6 +4,7 @@ import { Footer } from "./components/layout/Footer";
 import { Navbar } from "./components/layout/Navbar";
 import { ProtectedRoute } from "./components/layout/ProtectedRoute";
 import { LanguageSync } from "./i18n/LanguageSync";
+import { AnalyticsSync } from "./lib/AnalyticsSync";
 import { ThemeSync } from "./theme/ThemeSync";
 import { AccountActivationPage } from "./pages/AccountActivationPage";
 import { AdDetailPage } from "./pages/AdDetailPage";
@@ -35,6 +36,7 @@ function App() {
     <div className="flex min-h-screen flex-col bg-white dark:bg-gray-900">
       <LanguageSync />
       <ThemeSync />
+      <AnalyticsSync />
       <Navbar />
       <main className="flex-1">
         <Routes>

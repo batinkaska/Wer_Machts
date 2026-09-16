@@ -11,6 +11,7 @@ import { useAuth } from "../contexts/AuthContext";
 import { adsCol, bidsCol } from "../firebase/converters";
 import { functions } from "../firebase/config";
 import { useAd } from "../hooks/useAd";
+import { logAnalyticsEvent } from "../lib/analytics";
 import { friendlyErrorMessage } from "../lib/friendlyError";
 import { createNotification } from "../lib/notify";
 import type { Bid, PaymentMethod } from "../types/bid";
@@ -50,6 +51,7 @@ function StripeCardForm({ bidId, onPaid }: { bidId: string; onPaid: () => void }
 
       if (paymentIntent?.status === "succeeded") {
         await confirmPaymentStatusFn({ bidId });
+        logAnalyticsEvent("payment_completed", { method: "card" });
         onPaid();
       } else {
         setError(t("payment.cardError"));
@@ -171,6 +173,7 @@ export function PaymentPage() {
           });
         }
       }
+      logAnalyticsEvent("payment_completed", { method: "cash" });
       setChangingMethod(false);
     } finally {
       setSaving(null);

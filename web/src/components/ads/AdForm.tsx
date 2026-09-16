@@ -6,6 +6,7 @@ import { PhoneVerificationModal } from "../auth/PhoneVerificationModal";
 import { useAuth } from "../../contexts/AuthContext";
 import { storage } from "../../firebase/config";
 import { useAds } from "../../hooks/useAds";
+import { logAnalyticsEvent } from "../../lib/analytics";
 import { SONSTIGES_SLUG } from "../../lib/categories";
 import { friendlyErrorMessage } from "../../lib/friendlyError";
 import { getCoordinates, getPlaceName, isValidPlzFormat } from "../../lib/postalCodes";
@@ -208,6 +209,9 @@ export function AdForm({ onSubmit, submitting }: AdFormProps) {
         },
         action,
       );
+      if (action === "publish") {
+        logAnalyticsEvent("ad_published", { ad_kind: adKind });
+      }
     } catch (err) {
       setUploading(false);
       failWith(friendlyErrorMessage(err, t, "adForm.errorSaveFailed"));

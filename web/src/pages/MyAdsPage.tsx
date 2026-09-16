@@ -9,6 +9,7 @@ import { useAuth } from "../contexts/AuthContext";
 import { adsCol } from "../firebase/converters";
 import { functions } from "../firebase/config";
 import { useAds } from "../hooks/useAds";
+import { logAnalyticsEvent } from "../lib/analytics";
 import { friendlyErrorMessage } from "../lib/friendlyError";
 import { republishAd } from "../lib/republishAd";
 import type { Ad, AdStatus } from "../types/ad";
@@ -155,6 +156,7 @@ export function MyAdsPage() {
     setFeatureError(null);
     try {
       await setFeaturedAdFn({ adId });
+      if (adId) logAnalyticsEvent("ad_featured");
       await refreshAppUser();
     } catch (err) {
       setFeatureError(friendlyErrorMessage(err, t, "adForm.errorSaveFailed"));

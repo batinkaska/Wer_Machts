@@ -9,6 +9,7 @@ import { useAuth } from "../contexts/AuthContext";
 import { functions } from "../firebase/config";
 import { useAds } from "../hooks/useAds";
 import { type LanguageCode, SUPPORTED_LANGUAGES } from "../i18n";
+import { logAnalyticsEvent } from "../lib/analytics";
 import { friendlyErrorMessage } from "../lib/friendlyError";
 import { useDateFormatter } from "../lib/useDateFormatter";
 import { type ThemePreference, applyTheme, detectInitialThemePreference } from "../theme";
@@ -638,6 +639,7 @@ function ProSettingsSection({
       if (fresh?.isPro) {
         clearInterval(interval);
         setActivating(false);
+        logAnalyticsEvent("pro_activated", { plan: fresh.proPlan });
       } else if (attempts >= 7) {
         clearInterval(interval);
         setActivating(false);
@@ -655,6 +657,7 @@ function ProSettingsSection({
     setError(null);
     setCheckoutLoading(plan);
     try {
+      logAnalyticsEvent("pro_checkout_started", { plan });
       const result = await createProCheckoutSessionFn({ plan });
       window.location.href = (result.data as { url: string }).url;
     } catch (err) {
