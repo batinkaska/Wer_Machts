@@ -13,17 +13,13 @@ export function Footer() {
   return (
     <footer className="border-t border-gray-200 py-6 text-sm text-gray-500 dark:border-gray-700 dark:text-gray-400">
       <div className="mx-auto flex max-w-5xl flex-col items-center gap-3 px-4 text-center">
-        <div className="flex items-center gap-2">
+        <div className="flex flex-wrap items-center justify-center gap-2">
           <img src={logo} alt="" className="h-5 w-5 rounded" />
           <img src={wordmark} alt="Wer Macht" className="h-5 w-auto" />
+          <p className="text-xs text-gray-400 dark:text-gray-500">
+            © 2026 Wer Macht, betrieben von Batin Kaska. Alle Rechte vorbehalten.
+          </p>
         </div>
-
-        <p className="max-w-xl text-xs text-gray-400 dark:text-gray-500">
-          Copyright © 2026 Wer Macht. Alle Rechte vorbehalten. Ausgewiesene Marken gehören ihren
-          jeweiligen Eigentümern.
-          <br />
-          Wer Macht wird betrieben von Batin Kaska.
-        </p>
 
         <nav className="flex flex-wrap items-center justify-center gap-x-4 gap-y-1 text-xs">
           <Link to="/impressum" className={linkClass}>
