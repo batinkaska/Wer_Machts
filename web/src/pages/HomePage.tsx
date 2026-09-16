@@ -3,9 +3,10 @@ import { Link } from "react-router-dom";
 import heroPeople from "../assets/hero-people.png";
 import logo from "../assets/logo.png";
 import { CheckCircleIcon, ClockIcon, DiamondIcon, LightbulbIcon } from "../components/icons";
+import { CategoryCard } from "../components/home/CategoryCard";
 // IntroAnimation geçici olarak kapatıldı — geri açmak için: import'u geri ekle ve
 // aşağıda <IntroAnimation /> satırının yorumunu kaldır.
-import { CATEGORY_GROUPS, categoryGroupName, categoryLabel } from "../lib/categories";
+import { CATEGORY_GROUPS, CATEGORY_GROUP_ICONS, categoryGroupName } from "../lib/categories";
 
 const BENEFITS = [
   { icon: DiamondIcon, key: "compareOffers" },
@@ -64,24 +65,17 @@ export function HomePage() {
         </div>
       </div>
       <div className="mx-auto max-w-5xl px-4 py-12 dark:bg-gray-900">
-        <div className="grid grid-cols-1 gap-8 sm:grid-cols-2 lg:grid-cols-3">
+        <h2 className="mb-6 text-center text-2xl font-semibold text-gray-900 dark:text-gray-100">
+          {t("home.categoriesHeading")}
+        </h2>
+        <div className="grid grid-cols-2 gap-6 sm:grid-cols-3 lg:grid-cols-4">
           {CATEGORY_GROUPS.map((group) => (
-            <div key={group.groupKey}>
-              <h2 className="mb-3 text-base font-semibold text-gray-900 dark:text-gray-100">
-                {categoryGroupName(t, group.groupKey)}
-              </h2>
-              <div className="flex flex-wrap gap-2">
-                {group.categories.map((c) => (
-                  <Link
-                    key={c.slug}
-                    to={`/ads?categories=${c.slug}`}
-                    className="rounded-full border border-gray-200 px-4 py-1.5 text-sm text-gray-700 hover:bg-gray-50 dark:border-gray-700 dark:text-gray-300 dark:hover:bg-gray-800"
-                  >
-                    {categoryLabel(t, c.slug)}
-                  </Link>
-                ))}
-              </div>
-            </div>
+            <CategoryCard
+              key={group.groupKey}
+              to={`/ads?categories=${group.categories.map((c) => c.slug).join(",")}`}
+              name={categoryGroupName(t, group.groupKey)}
+              icon={CATEGORY_GROUP_ICONS[group.groupKey]}
+            />
           ))}
         </div>
       </div>

@@ -68,6 +68,8 @@
     "browseAds": "Search",
     "createAd": "Post a listing",
     "offerCta": "Offer",
+    "categoriesHeading": "Discover categories",
+    "viewListings": "View listings",
     "benefits": {
       "compareOffers": {
         "title": "Compare multiple offers",
