@@ -5,6 +5,7 @@ import { Link } from "react-router-dom";
 import { PhoneVerificationModal } from "../auth/PhoneVerificationModal";
 import { useAuth } from "../../contexts/AuthContext";
 import { storage } from "../../firebase/config";
+import { useAds } from "../../hooks/useAds";
 import { SONSTIGES_SLUG } from "../../lib/categories";
 import { friendlyErrorMessage } from "../../lib/friendlyError";
 import { getCoordinates, getPlaceName, isValidPlzFormat } from "../../lib/postalCodes";
@@ -26,6 +27,8 @@ interface AdFormProps {
 export function AdForm({ onSubmit, submitting }: AdFormProps) {
   const { t } = useTranslation();
   const { appUser, updateProfile } = useAuth();
+  const { ads: ownAds } = useAds({ ownerId: appUser?.uid, includeDrafts: true });
+  const openAdCount = ownAds.filter((ad) => ad.status === "open").length;
 
   const [adKind, setAdKind] = useState<AdKind>("suche");
   const [title, setTitle] = useState("");
@@ -148,6 +151,10 @@ export function AdForm({ onSubmit, submitting }: AdFormProps) {
     }
 
     if (action === "publish") {
+      if (!appUser?.isPro && openAdCount >= 3) {
+        failWith(t("adForm.errorOpenAdCapReached"));
+        return;
+      }
       if (categories.length === 0) {
         failWith(t("adForm.errorCategoryRequired"));
         return;

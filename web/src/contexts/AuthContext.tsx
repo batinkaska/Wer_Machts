@@ -42,6 +42,7 @@ interface AuthContextValue {
   emailVerified: boolean;
   resendVerificationEmail: () => Promise<void>;
   refreshEmailVerified: () => Promise<boolean>;
+  refreshAppUser: () => Promise<AppUser | null>;
   registerWithEmail: (email: string, password: string) => Promise<FirebaseUser>;
   loginWithEmail: (email: string, password: string) => Promise<void>;
   loginWithGoogle: () => Promise<void>;
@@ -152,6 +153,15 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       setAppUser((prev) => (prev ? { ...prev, emailVerified: true } : prev));
     }
     return verified;
+  }
+
+  async function refreshAppUser() {
+    if (!firebaseUser) return null;
+    const snap = await getDoc(doc(usersCol, firebaseUser.uid));
+    if (!snap.exists()) return null;
+    const data = snap.data();
+    setAppUser(data);
+    return data;
   }
 
   async function loginWithEmail(email: string, password: string) {
@@ -371,6 +381,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     emailVerified,
     resendVerificationEmail,
     refreshEmailVerified,
+    refreshAppUser,
     registerWithEmail,
     loginWithEmail,
     loginWithGoogle,

@@ -4,6 +4,8 @@ import type { ThemePreference } from "../theme";
 
 export type ProfileVisibility = "public" | "private";
 export type AccountType = "private" | "business";
+export type ProPlan = "monthly" | "semiannual" | "yearly";
+export type ProStatus = "trialing" | "active" | "past_due" | "canceled";
 
 export interface ProfileSectionVisibility {
   bio?: ProfileVisibility;
@@ -42,5 +44,15 @@ export interface AppUser {
   followersVisible?: boolean;
   hiddenConversationIds?: string[];
   sectionVisibility?: ProfileSectionVisibility;
+  stripeCustomerId?: string;
+  stripeSubscriptionId?: string;
+  isPro?: boolean;
+  proPlan?: ProPlan;
+  proStatus?: ProStatus;
+  proCurrentPeriodEnd?: Timestamp;
+  proTrialEnd?: Timestamp;
+  proTrialUsed?: boolean;
+  proCancelAtPeriodEnd?: boolean;
+  featuredAdId?: string | null;
   createdAt: Timestamp;
 }

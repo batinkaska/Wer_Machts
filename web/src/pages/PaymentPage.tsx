@@ -6,6 +6,7 @@ import { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { Link, useParams, useSearchParams } from "react-router-dom";
 import { CheckCircleIcon } from "../components/icons";
+import { SupportContributionStep } from "../components/payment/SupportContributionStep";
 import { useAuth } from "../contexts/AuthContext";
 import { adsCol, bidsCol } from "../firebase/converters";
 import { functions } from "../firebase/config";
@@ -79,13 +80,16 @@ function StripeCardForm({ bidId, onPaid }: { bidId: string; onPaid: () => void }
 function PaidConfirmation({
   isPayer,
   amount,
+  supportAmount,
   counterpartyName,
 }: {
   isPayer: boolean;
   amount: number;
+  supportAmount?: number;
   counterpartyName: string;
 }) {
   const { t } = useTranslation();
+  const total = amount + (supportAmount ?? 0);
 
   return (
     <div className="flex flex-col items-center gap-3 py-4 text-center">
@@ -98,9 +102,15 @@ function PaidConfirmation({
         </p>
         <p className="mt-1 text-sm text-gray-600 dark:text-gray-400">
           {isPayer
-            ? t("payment.paidMessagePayer", { amount, name: counterpartyName })
-            : t("payment.paidMessageRecipient", { amount, name: counterpartyName })}
+            ? t("payment.paidMessagePayer", { amount: total, name: counterpartyName })
+            : t("payment.paidMessageRecipient", { amount: total, name: counterpartyName })}
         </p>
+        {!!supportAmount && (
+          <div className="mt-2 text-xs text-gray-500 dark:text-gray-400">
+            <p>{t("payment.paidBreakdownService", { amount })}</p>
+            <p>{t("payment.paidBreakdownSupport", { amount: supportAmount })}</p>
+          </div>
+        )}
       </div>
     </div>
   );
@@ -121,6 +131,7 @@ export function PaymentPage() {
   const [clientSecret, setClientSecret] = useState<string | null>(null);
   const [startingCardPayment, setStartingCardPayment] = useState(false);
   const [startError, setStartError] = useState<string | null>(null);
+  const [showSupportStep, setShowSupportStep] = useState(false);
 
   useEffect(() => {
     if (!bidId) {
@@ -166,14 +177,15 @@ export function PaymentPage() {
     }
   }
 
-  async function startCardPayment() {
+  async function startCardPayment(supportAmount: number) {
     if (!bidId) return;
     setStartError(null);
     setStartingCardPayment(true);
     try {
-      const result = await createPaymentIntentFn({ bidId });
+      const result = await createPaymentIntentFn({ bidId, supportAmount });
       setClientSecret((result.data as { clientSecret: string }).clientSecret);
       setChangingMethod(false);
+      setShowSupportStep(false);
     } catch (err) {
       setStartError(friendlyErrorMessage(err, t, "payment.cardError"));
     } finally {
@@ -221,6 +233,7 @@ export function PaymentPage() {
           <PaidConfirmation
             isPayer={isPayer}
             amount={bid.amount}
+            supportAmount={bid.supportAmount}
             counterpartyName={isPayer ? recipientName : payerName}
           />
         ) : bid.paymentMethod && !changingMethod ? (
@@ -253,6 +266,12 @@ export function PaymentPage() {
             <Elements stripe={stripePromise} options={{ clientSecret }}>
               <StripeCardForm bidId={bidId!} onPaid={() => setClientSecret(null)} />
             </Elements>
+          ) : showSupportStep ? (
+            <SupportContributionStep
+              serviceAmount={bid.amount}
+              onContinue={startCardPayment}
+              onCancel={() => setShowSupportStep(false)}
+            />
           ) : (
             <>
               <p className="mb-3 text-sm font-medium text-gray-700 dark:text-gray-300">
@@ -262,11 +281,11 @@ export function PaymentPage() {
               <div className="flex gap-3">
                 <button
                   type="button"
-                  onClick={startCardPayment}
+                  onClick={() => setShowSupportStep(true)}
                   disabled={startingCardPayment || saving !== null}
                   className="flex-1 rounded-full border border-gray-300 px-4 py-2.5 text-sm font-medium text-gray-700 hover:bg-gray-50 disabled:opacity-50 dark:border-gray-600 dark:text-gray-300 dark:hover:bg-gray-800"
                 >
-                  {startingCardPayment ? t("adDetail.sending") : t("payment.method.card")}
+                  {t("payment.method.card")}
                 </button>
                 <button
                   type="button"

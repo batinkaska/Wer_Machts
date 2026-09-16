@@ -9,6 +9,7 @@ import { Lightbox } from "../components/common/Lightbox";
 import { PhotoIcon, StarIcon } from "../components/icons";
 import { ReviewBox } from "../components/reviews/ReviewBox";
 import { StarRatingDisplay } from "../components/reviews/StarRating";
+import { ProBadge } from "../components/ProBadge";
 import { VerifiedBadge } from "../components/VerifiedBadge";
 import { useAuth } from "../contexts/AuthContext";
 import { storage } from "../firebase/config";
@@ -215,6 +216,7 @@ export function PublicProfilePage() {
         <div>
           <div className="flex flex-wrap items-center gap-2">
             <h1 className="text-2xl font-semibold text-gray-900 dark:text-gray-100">{displayedUser.displayName}</h1>
+            {displayedUser.isPro && <ProBadge />}
             {displayedUser.emailVerified && <VerifiedBadge label={t("verifiedBadges.email")} />}
             {displayedUser.phoneVerified && <VerifiedBadge label={t("verifiedBadges.phone")} />}
             {displayedUser.accountType === "business" && <VerifiedBadge label={t("verifiedBadges.business")} />}

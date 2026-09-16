@@ -3,6 +3,7 @@ import type { TFunction } from "i18next";
 import { useTranslation } from "react-i18next";
 import { Link } from "react-router-dom";
 import { useAuth } from "../../contexts/AuthContext";
+import { ProBadge } from "../ProBadge";
 import { categoryLabels } from "../../lib/categories";
 import type { Ad } from "../../types/ad";
 
@@ -68,6 +69,7 @@ export function AdCard({ ad }: { ad: Ad }) {
             >
               {ad.adKind === "biete" ? t("common.offering") : t("common.seeking")}
             </span>
+            {ad.isFeatured && <ProBadge />}
             {ad.status === "draft" && (
               <span className="rounded-full bg-gray-100 px-1.5 py-0.5 text-[10px] font-medium text-gray-600 dark:bg-gray-700 dark:text-gray-300">
                 {t("common.draft")}

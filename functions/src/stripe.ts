@@ -18,6 +18,7 @@ interface BidDoc {
   status: string;
   paymentStatus?: string;
   stripePaymentIntentId?: string;
+  supportAmount?: number;
 }
 
 interface AdDoc {
@@ -79,8 +80,14 @@ export const createPaymentIntent = onCall({ secrets: [stripeSecretKey] }, async 
     throw new HttpsError("failed-precondition", "Ungültiger Betrag.");
   }
 
+  // The voluntary support contribution is capped at the service amount itself —
+  // a generous-but-sane bound since the payer still sees and authorizes the
+  // final total themselves in the Stripe payment form before anything is charged.
+  const rawSupportAmount = Number(request.data?.supportAmount) || 0;
+  const supportAmount = Math.max(0, Math.min(rawSupportAmount, bid.amount));
+
   const stripe = new Stripe(stripeSecretKey.value());
-  const amount = Math.round(bid.amount * 100);
+  const amount = Math.round((bid.amount + supportAmount) * 100);
 
   let paymentIntent: Stripe.PaymentIntent | undefined;
   if (bid.stripePaymentIntentId) {
@@ -107,7 +114,11 @@ export const createPaymentIntent = onCall({ secrets: [stripeSecretKey] }, async 
         // Lost the race against a payment that just succeeded elsewhere — leave it alone.
         return;
       }
-      tx.update(bidRef, { stripePaymentIntentId: created.id, paymentStatus: "pending" });
+      tx.update(bidRef, {
+        stripePaymentIntentId: created.id,
+        paymentStatus: "pending",
+        supportAmount,
+      });
     });
   }
 

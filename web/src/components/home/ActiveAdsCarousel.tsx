@@ -3,6 +3,7 @@ import { useTranslation } from "react-i18next";
 import { Link } from "react-router-dom";
 import { priceLabel } from "../ads/AdCard";
 import { ChevronRightIcon } from "../icons";
+import { ProBadge } from "../ProBadge";
 import { useAds } from "../../hooks/useAds";
 import type { Ad } from "../../types/ad";
 
@@ -32,6 +33,7 @@ function CompactAdCard({ ad }: { ad: Ad }) {
         >
           {ad.adKind === "biete" ? t("common.offering") : t("common.seeking")}
         </span>
+        {ad.isFeatured && <ProBadge className="ml-1" />}
         <h3 className="mt-1 line-clamp-1 text-sm font-semibold text-gray-900 dark:text-gray-100">
           {ad.title}
         </h3>

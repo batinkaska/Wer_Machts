@@ -132,6 +132,14 @@ export function useAds(filters: AdFilters = {}) {
       results = [...withPrice, ...withoutPrice];
     }
 
+    // Pro users may feature exactly one ad — it's pinned to the front of every
+    // list regardless of the sort mode above. Runs last so it always wins.
+    if (results.some((ad) => ad.isFeatured)) {
+      const featured = results.filter((ad) => ad.isFeatured);
+      const rest = results.filter((ad) => !ad.isFeatured);
+      results = [...featured, ...rest];
+    }
+
     return results;
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [

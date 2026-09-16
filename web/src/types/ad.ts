@@ -26,11 +26,19 @@ export interface Ad {
   status: AdStatus;
   bidCount: number;
   hiddenFromProfile?: boolean;
+  isFeatured?: boolean;
   createdAt: Timestamp;
   updatedAt: Timestamp;
 }
 
 export type NewAd = Omit<
   Ad,
-  "id" | "ownerId" | "ownerName" | "status" | "bidCount" | "createdAt" | "updatedAt"
+  | "id"
+  | "ownerId"
+  | "ownerName"
+  | "status"
+  | "bidCount"
+  | "isFeatured"
+  | "createdAt"
+  | "updatedAt"
 >;

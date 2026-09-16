@@ -16,6 +16,7 @@ import { BidList } from "../components/bids/BidList";
 import { PhotoGallery } from "../components/ads/PhotoGallery";
 import { ChatIcon, FlagIcon, HeartIcon, PinIcon, ShareIcon } from "../components/icons";
 import { ReviewBox } from "../components/reviews/ReviewBox";
+import { ProBadge } from "../components/ProBadge";
 import { VerifiedBadge } from "../components/VerifiedBadge";
 import { useAuth } from "../contexts/AuthContext";
 import { adsCol, bidsCol, messagesCol, reportsCol, usersCol } from "../firebase/converters";
@@ -524,6 +525,7 @@ export function AdDetailPage() {
               )}
               <span className="flex flex-wrap items-center gap-1.5">
                 <span className="font-medium text-gray-900 dark:text-gray-100">{ad.ownerName}</span>
+                {owner?.isPro && <ProBadge />}
                 {owner?.emailVerified && <VerifiedBadge label={t("verifiedBadges.email")} />}
                 {owner?.phoneVerified && <VerifiedBadge label={t("verifiedBadges.phone")} />}
                 {owner?.accountType === "business" && <VerifiedBadge label={t("verifiedBadges.business")} />}

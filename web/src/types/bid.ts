@@ -16,6 +16,7 @@ export interface Bid {
   paymentMethod?: PaymentMethod;
   paymentStatus?: PaymentStatus;
   stripePaymentIntentId?: string;
+  supportAmount?: number;
   hiddenFromProfile?: boolean;
   createdAt: Timestamp;
 }

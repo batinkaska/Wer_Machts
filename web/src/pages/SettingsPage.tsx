@@ -1,3 +1,4 @@
+import { httpsCallable } from "firebase/functions";
 import { type FormEvent, type ReactNode, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { Link, useNavigate, useSearchParams } from "react-router-dom";
@@ -5,9 +6,22 @@ import { PhoneVerificationModal } from "../components/auth/PhoneVerificationModa
 import { EyeIcon, ExternalLinkIcon, TrashIcon } from "../components/icons";
 import { VerifiedBadge } from "../components/VerifiedBadge";
 import { useAuth } from "../contexts/AuthContext";
+import { functions } from "../firebase/config";
 import { useAds } from "../hooks/useAds";
 import { type LanguageCode, SUPPORTED_LANGUAGES } from "../i18n";
+import { friendlyErrorMessage } from "../lib/friendlyError";
+import { useDateFormatter } from "../lib/useDateFormatter";
 import { type ThemePreference, applyTheme, detectInitialThemePreference } from "../theme";
+import type { AppUser, ProPlan } from "../types/user";
+
+const createProCheckoutSessionFn = httpsCallable(functions, "createProCheckoutSession");
+const createProBillingPortalSessionFn = httpsCallable(functions, "createProBillingPortalSession");
+
+const PRO_PLANS: { id: ProPlan; labelKey: string }[] = [
+  { id: "monthly", labelKey: "pro.planMonthly" },
+  { id: "semiannual", labelKey: "pro.planSemiannual" },
+  { id: "yearly", labelKey: "pro.planYearly" },
+];
 
 const THIRTY_DAYS_MS = 30 * 24 * 60 * 60 * 1000;
 
@@ -584,9 +598,143 @@ function AppearanceCard() {
   );
 }
 
+function ProSettingsSection({
+  appUser,
+  refreshAppUser,
+}: {
+  appUser: AppUser;
+  refreshAppUser: () => Promise<AppUser | null>;
+}) {
+  const { t } = useTranslation();
+  const { formatDate } = useDateFormatter();
+  const [searchParams, setSearchParams] = useSearchParams();
+  const [checkoutLoading, setCheckoutLoading] = useState<ProPlan | null>(null);
+  const [portalLoading, setPortalLoading] = useState(false);
+  const [error, setError] = useState<string | null>(null);
+  const [activating, setActivating] = useState(false);
+  const [activationTimedOut, setActivationTimedOut] = useState(false);
+
+  useEffect(() => {
+    if (searchParams.get("pro") !== "success" || appUser.isPro) return;
+    const next = new URLSearchParams(searchParams);
+    next.delete("pro");
+    setSearchParams(next, { replace: true });
+
+    setActivating(true);
+    let cancelled = false;
+    let attempts = 0;
+    const interval = setInterval(async () => {
+      attempts += 1;
+      const fresh = await refreshAppUser();
+      if (cancelled) return;
+      if (fresh?.isPro) {
+        clearInterval(interval);
+        setActivating(false);
+      } else if (attempts >= 7) {
+        clearInterval(interval);
+        setActivating(false);
+        setActivationTimedOut(true);
+      }
+    }, 1500);
+    return () => {
+      cancelled = true;
+      clearInterval(interval);
+    };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
+  async function handleUpgrade(plan: ProPlan) {
+    setError(null);
+    setCheckoutLoading(plan);
+    try {
+      const result = await createProCheckoutSessionFn({ plan });
+      window.location.href = (result.data as { url: string }).url;
+    } catch (err) {
+      setError(friendlyErrorMessage(err, t, "adForm.errorSaveFailed"));
+      setCheckoutLoading(null);
+    }
+  }
+
+  async function handleManage() {
+    setError(null);
+    setPortalLoading(true);
+    try {
+      const result = await createProBillingPortalSessionFn();
+      window.location.href = (result.data as { url: string }).url;
+    } catch (err) {
+      setError(friendlyErrorMessage(err, t, "adForm.errorSaveFailed"));
+      setPortalLoading(false);
+    }
+  }
+
+  return (
+    <div className="space-y-2">
+      <h2 className="text-base font-semibold text-gray-900 dark:text-gray-100">{t("pro.settingsHeading")}</h2>
+      <SettingsCard>
+        <div className="space-y-3 p-4">
+          {error && <p className="text-sm text-red-600 dark:text-red-400">{error}</p>}
+
+          {activating ? (
+            <p className="text-sm text-gray-500 dark:text-gray-400">{t("pro.activating")}</p>
+          ) : activationTimedOut ? (
+            <p className="text-sm text-amber-600 dark:text-amber-400">{t("pro.activationTimeout")}</p>
+          ) : appUser.isPro ? (
+            <>
+              <p className="text-sm text-gray-900 dark:text-gray-100">
+                {appUser.proStatus === "trialing" && appUser.proTrialEnd
+                  ? t("pro.statusTrialing", { date: formatDate(appUser.proTrialEnd) })
+                  : appUser.proCurrentPeriodEnd
+                    ? t("pro.statusActive", { date: formatDate(appUser.proCurrentPeriodEnd) })
+                    : null}
+              </p>
+              {appUser.proStatus === "past_due" && (
+                <p className="text-sm font-medium text-red-600 dark:text-red-400">
+                  {t("pro.statusPastDue")}
+                </p>
+              )}
+              <button
+                type="button"
+                onClick={handleManage}
+                disabled={portalLoading}
+                className="rounded-full bg-gray-900 px-4 py-2 text-sm font-medium text-white hover:bg-gray-700 disabled:opacity-50 dark:bg-gray-100 dark:text-gray-900 dark:hover:bg-gray-300"
+              >
+                {portalLoading ? t("adDetail.sending") : t("pro.manageCta")}
+              </button>
+            </>
+          ) : (
+            <>
+              {!appUser.proTrialUsed && (
+                <p className="text-sm font-medium text-[#5fac5e]">{t("pro.trialNotice")}</p>
+              )}
+              <div className="grid grid-cols-1 gap-3 sm:grid-cols-3">
+                {PRO_PLANS.map((plan) => (
+                  <button
+                    key={plan.id}
+                    type="button"
+                    onClick={() => handleUpgrade(plan.id)}
+                    disabled={checkoutLoading !== null}
+                    className="rounded-lg border border-gray-200 p-3 text-left hover:border-[#5fac5e] disabled:opacity-50 dark:border-gray-700"
+                  >
+                    <p className="text-sm font-semibold text-gray-900 dark:text-gray-100">
+                      {t(plan.labelKey)}
+                    </p>
+                    <p className="mt-1 text-xs font-medium text-[#5fac5e]">
+                      {checkoutLoading === plan.id ? t("adDetail.sending") : t("pro.upgradeCta")}
+                    </p>
+                  </button>
+                ))}
+              </div>
+            </>
+          )}
+        </div>
+      </SettingsCard>
+    </div>
+  );
+}
+
 export function SettingsPage() {
   const { t } = useTranslation();
-  const { firebaseUser, appUser, updateProfile, emailVerified } = useAuth();
+  const { firebaseUser, appUser, updateProfile, emailVerified, refreshAppUser } = useAuth();
   const { ads } = useAds({ ownerId: firebaseUser?.uid });
   const [showPhoneModal, setShowPhoneModal] = useState(false);
   const [searchParams, setSearchParams] = useSearchParams();
@@ -638,6 +786,8 @@ export function SettingsPage() {
           />
         </SettingsCard>
       </div>
+
+      <ProSettingsSection appUser={appUser} refreshAppUser={refreshAppUser} />
 
       {appUser.accountType === "business" && (
         <div className="space-y-2">
