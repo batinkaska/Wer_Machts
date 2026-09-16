@@ -6,7 +6,7 @@ import { useAuth } from "../../contexts/AuthContext";
 import { categoryLabels } from "../../lib/categories";
 import type { Ad } from "../../types/ad";
 
-function priceLabel(t: TFunction, ad: Ad): string {
+export function priceLabel(t: TFunction, ad: Ad): string {
   let label: string;
   if (ad.priceType === "gift") label = t("adForm.priceTypeGift");
   else if (ad.priceType === "on_request") label = t("common.priceOnRequest");

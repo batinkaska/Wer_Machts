@@ -34,7 +34,8 @@ export function HomePage() {
       {/* <IntroAnimation /> */}
       <section className="bg-[#0b5b7a]">
         <div className="mx-auto max-w-5xl px-4 pt-8 text-center">
-          <img src={logo} alt="" className="mx-auto mb-4 h-20 w-20 rounded-xl" />
+          <ActiveAdsCarousel />
+          <img src={logo} alt="" className="mx-auto mb-4 mt-6 h-20 w-20 rounded-xl" />
           <h1 className="text-4xl font-semibold text-white">{t("home.heroTitle")}</h1>
           <p className="mx-auto mt-4 max-w-xl text-white/80">{t("home.heroSubtitle")}</p>
           <div className="mt-8 flex justify-center gap-3">
@@ -51,7 +52,6 @@ export function HomePage() {
               {t("home.offerCta")}
             </Link>
           </div>
-          <ActiveAdsCarousel />
           <img
             src={heroPeople}
             alt=""

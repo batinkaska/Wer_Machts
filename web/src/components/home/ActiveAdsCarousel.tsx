@@ -1,11 +1,47 @@
 import { useMemo, useState } from "react";
 import { useTranslation } from "react-i18next";
-import { AdCard } from "../ads/AdCard";
+import { Link } from "react-router-dom";
+import { priceLabel } from "../ads/AdCard";
 import { ChevronRightIcon } from "../icons";
 import { useAds } from "../../hooks/useAds";
+import type { Ad } from "../../types/ad";
 
 const PAGE_SIZE = 4;
 const MAX_ADS = 12;
+
+function CompactAdCard({ ad }: { ad: Ad }) {
+  const { t } = useTranslation();
+
+  return (
+    <Link
+      to={`/ads/${ad.id}`}
+      className="block overflow-hidden rounded-lg border border-gray-200 bg-white transition hover:shadow-md dark:border-gray-700 dark:bg-gray-800"
+    >
+      <div className="aspect-video bg-gray-100 dark:bg-gray-700">
+        {ad.photoUrls[0] && (
+          <img src={ad.photoUrls[0]} alt={ad.title} className="h-full w-full object-cover" />
+        )}
+      </div>
+      <div className="p-3">
+        <span
+          className={`inline-block rounded-full px-1.5 py-0.5 text-[10px] font-medium ${
+            ad.adKind === "biete"
+              ? "bg-green-50 text-[#4d9a4c] dark:bg-green-950"
+              : "bg-blue-50 text-blue-700 dark:bg-blue-950 dark:text-blue-400"
+          }`}
+        >
+          {ad.adKind === "biete" ? t("common.offering") : t("common.seeking")}
+        </span>
+        <h3 className="mt-1 line-clamp-1 text-sm font-semibold text-gray-900 dark:text-gray-100">
+          {ad.title}
+        </h3>
+        <p className="mt-1 text-sm font-semibold text-gray-900 dark:text-gray-100">
+          {priceLabel(t, ad)}
+        </p>
+      </div>
+    </Link>
+  );
+}
 
 export function ActiveAdsCarousel() {
   const { t } = useTranslation();
@@ -53,7 +89,7 @@ export function ActiveAdsCarousel() {
       </div>
       <div className="grid grid-cols-2 gap-4 lg:grid-cols-4">
         {pageAds.map((ad) => (
-          <AdCard key={ad.id} ad={ad} />
+          <CompactAdCard key={ad.id} ad={ad} />
         ))}
       </div>
       {totalPages > 1 && (
