@@ -8,7 +8,6 @@ import tr from "./locales/tr.json";
 
 export const SUPPORTED_LANGUAGES = ["de", "en", "ru", "tr", "ar"] as const;
 export type LanguageCode = (typeof SUPPORTED_LANGUAGES)[number];
-export const RTL_LANGUAGES: readonly LanguageCode[] = ["ar"];
 
 function isSupported(code: string | null | undefined): code is LanguageCode {
   return !!code && (SUPPORTED_LANGUAGES as readonly string[]).includes(code);

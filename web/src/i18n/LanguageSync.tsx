@@ -1,7 +1,6 @@
 import { useEffect } from "react";
 import { useTranslation } from "react-i18next";
 import { useAuth } from "../contexts/AuthContext";
-import { RTL_LANGUAGES } from "./index";
 
 export function LanguageSync() {
   const { i18n } = useTranslation();
@@ -17,9 +16,9 @@ export function LanguageSync() {
 
   useEffect(() => {
     document.documentElement.lang = i18n.language;
-    document.documentElement.dir = (RTL_LANGUAGES as readonly string[]).includes(i18n.language)
-      ? "rtl"
-      : "ltr";
+    // Layout stays LTR for every language, including Arabic — only the
+    // text itself is translated, so button/nav positions never flip.
+    document.documentElement.dir = "ltr";
   }, [i18n.language]);
 
   return null;
