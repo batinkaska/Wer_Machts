@@ -214,8 +214,8 @@ export function PublicProfilePage() {
           )}
         </div>
 
-        <div className="flex flex-1 flex-wrap items-start justify-between gap-4">
-          <div>
+        <div className="flex flex-1 flex-col gap-4 sm:flex-row sm:items-start sm:justify-between">
+          <div className="min-w-0">
             <div className="flex flex-wrap items-center gap-2">
               <h1 className="text-2xl font-semibold text-gray-900 dark:text-gray-100">{displayedUser.displayName}</h1>
               {displayedUser.isPro && <ProBadge />}
@@ -249,7 +249,7 @@ export function PublicProfilePage() {
           </div>
 
           {showOwnerControls && !displayedUser.isPro && (
-            <div className="w-full shrink-0 rounded-lg border border-amber-200 bg-amber-50 p-3 dark:border-amber-900 dark:bg-amber-950 sm:w-56">
+            <div className="w-full shrink-0 rounded-lg border border-amber-200 bg-amber-50 p-3 dark:border-amber-900 dark:bg-amber-950 sm:w-56 sm:self-start">
               <p className="text-sm font-semibold text-amber-800 dark:text-amber-300">
                 {t("pro.profilePromoHeading")}
               </p>
