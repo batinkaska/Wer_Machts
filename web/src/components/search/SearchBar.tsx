@@ -76,20 +76,20 @@ export function SearchBar({
   }
 
   return (
-    <form onSubmit={handleSubmit}>
-      <div className="flex w-fit items-stretch rounded-full border border-gray-200 bg-white shadow-sm dark:border-gray-700 dark:bg-gray-800">
-        <div className="flex items-stretch divide-x divide-gray-200 dark:divide-gray-700">
-          <div className="flex items-center gap-2 pl-4 pr-3">
-            <SearchIcon className="h-4 w-4 text-[#5fac5e]" />
+    <form onSubmit={handleSubmit} className="w-full sm:w-fit">
+      <div className="flex w-full flex-col overflow-hidden rounded-2xl border border-gray-200 bg-white shadow-sm dark:border-gray-700 dark:bg-gray-800 sm:w-fit sm:flex-row sm:items-stretch sm:rounded-full">
+        <div className="flex flex-col divide-y divide-gray-200 dark:divide-gray-700 sm:flex-row sm:items-stretch sm:divide-x sm:divide-y-0">
+          <div className="flex items-center gap-2 px-4 py-2.5 sm:py-0 sm:pl-4 sm:pr-3">
+            <SearchIcon className="h-4 w-4 shrink-0 text-[#5fac5e]" />
             <input
               value={query}
               onChange={(e) => onQueryChange(e.target.value)}
               placeholder={t("search.queryPlaceholder")}
-              className="w-36 bg-transparent py-2 text-sm text-gray-900 placeholder:text-gray-400 focus:outline-none dark:text-gray-100"
+              className="w-full bg-transparent py-2 text-sm text-gray-900 placeholder:text-gray-400 focus:outline-none dark:text-gray-100 sm:w-36"
             />
           </div>
-          <div ref={plzContainerRef} className="relative flex items-center gap-2 px-3">
-            <PinIcon className="h-4 w-4 text-[#5fac5e]" />
+          <div ref={plzContainerRef} className="relative flex items-center gap-2 px-4 py-2.5 sm:py-0 sm:px-3">
+            <PinIcon className="h-4 w-4 shrink-0 text-[#5fac5e]" />
             <input
               value={plz || (wholeCountrySelected ? t("search.wholeCountry") : "")}
               onChange={(e) => {
@@ -98,7 +98,7 @@ export function SearchBar({
               }}
               onFocus={() => setShowSuggestions(true)}
               placeholder={t("search.plzPlaceholder")}
-              className="w-28 bg-transparent py-2 text-sm text-gray-900 placeholder:text-gray-400 focus:outline-none dark:text-gray-100"
+              className="w-full bg-transparent py-2 text-sm text-gray-900 placeholder:text-gray-400 focus:outline-none dark:text-gray-100 sm:w-28"
             />
             {showSuggestions && (
               <div className="absolute left-0 top-full z-20 mt-2 max-h-72 w-56 overflow-y-auto rounded-lg border border-gray-200 bg-white py-1 text-sm shadow-lg dark:border-gray-700 dark:bg-gray-800">
@@ -122,12 +122,12 @@ export function SearchBar({
               </div>
             )}
           </div>
-          <div className="flex items-center px-3">
+          <div className="flex items-center px-4 py-2.5 sm:py-0 sm:px-3">
             <select
               value={radiusKm}
               onChange={(e) => onRadiusChange(e.target.value)}
               disabled={!plz}
-              className="bg-transparent py-2 text-sm text-gray-600 focus:outline-none disabled:text-gray-300 dark:text-gray-300 dark:disabled:text-gray-600"
+              className="w-full bg-transparent py-2 text-sm text-gray-600 focus:outline-none disabled:text-gray-300 dark:text-gray-300 dark:disabled:text-gray-600 sm:w-auto"
             >
               <option value={WHOLE_PLACE_RADIUS}>{t("search.wholePlace")}</option>
               {RADIUS_OPTIONS.map((km) => (
@@ -140,7 +140,7 @@ export function SearchBar({
         </div>
         <button
           type="submit"
-          className="whitespace-nowrap rounded-r-full bg-[#5fac5e] px-6 text-sm font-medium text-white hover:bg-[#4d9a4c]"
+          className="w-full whitespace-nowrap bg-[#5fac5e] px-6 py-2.5 text-sm font-medium text-white hover:bg-[#4d9a4c] sm:w-auto sm:rounded-r-full sm:py-0"
         >
           {t("search.submit")}
         </button>
