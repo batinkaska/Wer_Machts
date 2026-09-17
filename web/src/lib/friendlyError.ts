@@ -29,6 +29,8 @@ const ERROR_KEY_BY_CODE: Record<string, string> = {
   "storage/quota-exceeded": "errors.uploadFailed",
   "permission-denied": "errors.permissionDenied",
   "unavailable": "errors.networkError",
+  "functions/failed-precondition": "errors.reviewNoSharedConversation",
+  "functions/already-exists": "errors.reviewAlreadySubmitted",
 };
 
 function getErrorCode(err: unknown): string | undefined {

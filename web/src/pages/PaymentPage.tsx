@@ -14,7 +14,6 @@ import { useAd } from "../hooks/useAd";
 import { logAnalyticsEvent } from "../lib/analytics";
 import { friendlyErrorMessage } from "../lib/friendlyError";
 import { isValidIbanFormat, maskIban, normalizeIban } from "../lib/iban";
-import { createNotification } from "../lib/notify";
 import type { Bid, BidBankDetails, PaymentMethod } from "../types/bid";
 
 const stripePromise = loadStripe(import.meta.env.VITE_STRIPE_PUBLISHABLE_KEY);
@@ -252,7 +251,7 @@ export function PaymentPage() {
   const { adId } = useParams<{ adId: string }>();
   const [searchParams] = useSearchParams();
   const bidId = searchParams.get("bidId");
-  const { firebaseUser, appUser } = useAuth();
+  const { firebaseUser } = useAuth();
   const { ad, loading: adLoading } = useAd(adId);
 
   const [bid, setBid] = useState<Bid | null>(null);
@@ -290,17 +289,7 @@ export function PaymentPage() {
       } else {
         await updateDoc(doc(bidsCol, bidId), { status: "accepted", paymentMethod: "cash" });
         await updateDoc(doc(adsCol, ad.id), { status: "in_progress", updatedAt: serverTimestamp() });
-        if (firebaseUser && firebaseUser.uid !== bid.providerId) {
-          await createNotification({
-            recipientId: bid.providerId,
-            type: "bid_accepted",
-            actorId: firebaseUser.uid,
-            actorName: appUser?.displayName ?? ad.ownerName,
-            adId: ad.id,
-            adTitle: ad.title,
-            bidId: bid.id,
-          });
-        }
+        // The bid_accepted notification is created server-side by onBidWritten.
       }
       logAnalyticsEvent("payment_completed", { method: "cash" });
       setChangingMethod(false);

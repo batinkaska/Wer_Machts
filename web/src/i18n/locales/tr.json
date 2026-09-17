@@ -656,6 +656,8 @@
     "weakPassword": "Şifre en az 6 karakter olmalı.",
     "tooManyRequests": "Çok fazla deneme yapıldı. Lütfen biraz bekleyip tekrar dene.",
     "networkError": "Bağlantı kurulamadı. Lütfen internet bağlantını kontrol et.",
+    "reviewNoSharedConversation": "Sadece daha önce iletişime geçtiğin kişileri değerlendirebilirsin.",
+    "reviewAlreadySubmitted": "Bu kişiyi zaten değerlendirdin.",
     "popupClosed": "Giriş penceresi işlem tamamlanmadan kapatıldı.",
     "accountExistsDifferentCredential": "Bu e-posta adresiyle zaten farklı bir giriş yöntemiyle oluşturulmuş bir hesap var.",
     "requiresRecentLogin": "Bu işlemi yapmak için lütfen tekrar giriş yap.",

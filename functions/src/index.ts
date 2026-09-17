@@ -1,7 +1,9 @@
 import { initializeApp } from "firebase-admin/app";
 import { getAuth } from "firebase-admin/auth";
+import { getFirestore, FieldValue } from "firebase-admin/firestore";
 import { HttpsError, onCall } from "firebase-functions/v2/https";
 import { defineSecret } from "firebase-functions/params";
+import { onBidWritten, onMessageCreated } from "./bidNotificationTriggers";
 import { sendViaResend } from "./email";
 import { contactMessageEmailHtml, passwordResetEmailHtml, verificationEmailHtml } from "./emailTemplate";
 
@@ -9,6 +11,7 @@ export { cancelDeal, confirmPaymentStatus, createPaymentIntent } from "./stripe"
 export { createProBillingPortalSession, createProCheckoutSession, setFeaturedAd } from "./proSubscription";
 export { stripeWebhook } from "./stripeWebhook";
 export { onBankDetailsWritten, onNotificationCreated } from "./notificationEmails";
+export { onBidWritten, onMessageCreated };
 
 initializeApp();
 
@@ -121,4 +124,82 @@ export const sendContactMessage = onCall({ secrets: [resendApiKey] }, async (req
   });
 
   return { sent: true };
+});
+
+// Reviews go through this callable (Firestore rules deny direct writes) so we
+// can verify the reviewer actually shared a real conversation with the
+// reviewee first — otherwise anyone could post a fake rating for any account,
+// undermining the one trust signal the whole marketplace relies on.
+export const submitReview = onCall(async (request) => {
+  const uid = request.auth?.uid;
+  if (!uid) {
+    throw new HttpsError("unauthenticated", "Du musst angemeldet sein.");
+  }
+
+  const data = request.data ?? {};
+  const revieweeId = typeof data.revieweeId === "string" ? data.revieweeId : "";
+  const conversationId = typeof data.conversationId === "string" ? data.conversationId : "";
+  const adId = typeof data.adId === "string" ? data.adId : undefined;
+  const rating = data.rating;
+  const comment = typeof data.comment === "string" ? data.comment.trim() : "";
+
+  if (!revieweeId || revieweeId === uid) {
+    throw new HttpsError("invalid-argument", "Ungültiger Bewertungsempfänger.");
+  }
+  if (!conversationId) {
+    throw new HttpsError("invalid-argument", "conversationId fehlt.");
+  }
+  if (!Number.isInteger(rating) || rating < 1 || rating > 5) {
+    throw new HttpsError("invalid-argument", "Ungültige Bewertung.");
+  }
+  if (comment.length > 1000) {
+    throw new HttpsError("invalid-argument", "Kommentar ist zu lang.");
+  }
+
+  const db = getFirestore();
+
+  // Proof of a real interaction: at least one message in ANY conversation
+  // between the two of them — not scoped to the given conversationId, since
+  // the public-profile review flow uses a synthetic "profile_..." id that
+  // never has a real message behind it even for two users who genuinely
+  // messaged each other about an ad. Single-field query (array-contains on
+  // participantIds, avoids a composite index) — filtered further in code.
+  const messagesSnap = await db
+    .collection("messages")
+    .where("participantIds", "array-contains", uid)
+    .limit(200)
+    .get();
+  const hasSharedConversation = messagesSnap.docs.some((doc) => {
+    const participantIds = doc.data().participantIds as string[] | undefined;
+    return participantIds?.includes(uid) && participantIds?.includes(revieweeId);
+  });
+  if (!hasSharedConversation) {
+    throw new HttpsError("failed-precondition", "Keine gemeinsame Unterhaltung mit dieser Person gefunden.");
+  }
+
+  const existingSnap = await db
+    .collection("reviews")
+    .where("conversationId", "==", conversationId)
+    .where("reviewerId", "==", uid)
+    .limit(10)
+    .get();
+  if (existingSnap.docs.some((doc) => doc.data().revieweeId === revieweeId)) {
+    throw new HttpsError("already-exists", "Du hast diese Person für diese Unterhaltung bereits bewertet.");
+  }
+
+  const reviewerSnap = await db.collection("users").doc(uid).get();
+  const reviewerName = (reviewerSnap.data()?.displayName as string | undefined) ?? "";
+
+  await db.collection("reviews").add({
+    conversationId,
+    ...(adId ? { adId } : {}),
+    revieweeId,
+    reviewerId: uid,
+    reviewerName,
+    rating,
+    ...(comment ? { comment } : {}),
+    createdAt: FieldValue.serverTimestamp(),
+  });
+
+  return { ok: true };
 });

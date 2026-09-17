@@ -131,7 +131,7 @@ export function AdForm({ onSubmit, submitting }: AdFormProps) {
   async function uploadPhotos(): Promise<string[]> {
     return Promise.all(
       files.map(async (file) => {
-        const storageRef = ref(storage, `ads/${crypto.randomUUID()}-${file.name}`);
+        const storageRef = ref(storage, `ads/${appUser?.uid}/${crypto.randomUUID()}-${file.name}`);
         const snap = await uploadBytes(storageRef, file);
         return getDownloadURL(snap.ref);
       }),

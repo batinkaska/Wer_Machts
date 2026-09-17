@@ -207,19 +207,8 @@ export const confirmPaymentStatus = onCall({ secrets: [stripeSecretKey] }, async
 
   if (!wasAlreadyAccepted) {
     await adRef.update({ status: "in_progress", updatedAt: FieldValue.serverTimestamp() });
-    if (uid !== bid.providerId) {
-      await db.collection("notifications").add({
-        recipientId: bid.providerId,
-        type: "bid_accepted",
-        actorId: uid,
-        actorName: ad.ownerName,
-        adId: adRef.id,
-        adTitle: ad.title,
-        bidId,
-        read: false,
-        createdAt: FieldValue.serverTimestamp(),
-      });
-    }
+    // The bid_accepted notification is created by the onBidWritten trigger,
+    // which reacts to this same status change — no need to duplicate it here.
   }
 
   if (!wasAlreadyPaid) {

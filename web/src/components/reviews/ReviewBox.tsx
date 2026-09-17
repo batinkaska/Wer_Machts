@@ -1,11 +1,14 @@
-import { addDoc, serverTimestamp } from "firebase/firestore";
+import { httpsCallable } from "firebase/functions";
 import { useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useAuth } from "../../contexts/AuthContext";
-import { reviewsCol } from "../../firebase/converters";
+import { functions } from "../../firebase/config";
+import { friendlyErrorMessage } from "../../lib/friendlyError";
 import { useReviewsForConversation } from "../../hooks/useReviewsForConversation";
 import { StarIcon } from "../icons";
 import { StarRatingInput } from "./StarRating";
+
+const submitReviewFn = httpsCallable(functions, "submitReview");
 
 interface ReviewBoxProps {
   conversationId: string;
@@ -16,7 +19,7 @@ interface ReviewBoxProps {
 
 export function ReviewBox({ conversationId, adId, revieweeId, revieweeName }: ReviewBoxProps) {
   const { t } = useTranslation();
-  const { firebaseUser, appUser } = useAuth();
+  const { firebaseUser } = useAuth();
   const { reviews } = useReviewsForConversation(conversationId);
   const myReview = reviews.find(
     (r) => r.reviewerId === firebaseUser?.uid && r.revieweeId === revieweeId,
@@ -25,21 +28,22 @@ export function ReviewBox({ conversationId, adId, revieweeId, revieweeName }: Re
   const [rating, setRating] = useState(0);
   const [comment, setComment] = useState("");
   const [submitting, setSubmitting] = useState(false);
+  const [error, setError] = useState<string | null>(null);
 
   async function handleSubmit() {
     if (!firebaseUser || rating === 0) return;
     setSubmitting(true);
+    setError(null);
     try {
-      await addDoc(reviewsCol, {
+      await submitReviewFn({
         conversationId,
         ...(adId ? { adId } : {}),
         revieweeId,
-        reviewerId: firebaseUser.uid,
-        reviewerName: appUser?.displayName ?? "",
         rating,
         ...(comment.trim() ? { comment: comment.trim() } : {}),
-        createdAt: serverTimestamp(),
-      } as never);
+      });
+    } catch (err) {
+      setError(friendlyErrorMessage(err, t, "adForm.errorSaveFailed"));
     } finally {
       setSubmitting(false);
     }
@@ -76,6 +80,7 @@ export function ReviewBox({ conversationId, adId, revieweeId, revieweeName }: Re
             placeholder={t("messages.commentPlaceholder")}
             className="w-full rounded border border-gray-300 px-2 py-1.5 text-sm dark:border-gray-600 dark:bg-gray-800 dark:text-gray-100"
           />
+          {error && <p className="text-xs text-red-600 dark:text-red-400">{error}</p>}
           <button
             type="button"
             onClick={handleSubmit}

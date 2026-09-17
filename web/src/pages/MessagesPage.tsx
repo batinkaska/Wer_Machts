@@ -11,7 +11,6 @@ import { useAuth } from "../contexts/AuthContext";
 import { adsCol, messagesCol, reportsCol, usersCol } from "../firebase/converters";
 import { useConversationSummaries } from "../hooks/useConversationSummaries";
 import { useMessages } from "../hooks/useMessages";
-import { createNotification } from "../lib/notify";
 
 interface LocationState {
   adId?: string;
@@ -148,15 +147,8 @@ export function MessagesPage() {
         createdAt: serverTimestamp(),
         read: false,
       } as never);
-      await createNotification({
-        recipientId: otherUid,
-        type: "message",
-        actorId: firebaseUser.uid,
-        actorName: appUser?.displayName ?? "",
-        adId,
-        adTitle,
-        conversationId,
-      });
+      // The message notification (and its email) is created server-side by
+      // the onMessageCreated trigger.
     } catch {
       setSendError(true);
     }

@@ -656,6 +656,8 @@
     "weakPassword": "Das Passwort muss mindestens 6 Zeichen lang sein.",
     "tooManyRequests": "Zu viele Versuche. Bitte warte einen Moment und versuche es erneut.",
     "networkError": "Keine Verbindung möglich. Bitte überprüfe deine Internetverbindung.",
+    "reviewNoSharedConversation": "Du kannst nur Personen bewerten, mit denen du bereits Kontakt hattest.",
+    "reviewAlreadySubmitted": "Du hast diese Person bereits bewertet.",
     "popupClosed": "Das Anmeldefenster wurde geschlossen, bevor der Vorgang abgeschlossen war.",
     "accountExistsDifferentCredential": "Für diese E-Mail-Adresse existiert bereits ein Konto mit einer anderen Anmeldemethode.",
     "requiresRecentLogin": "Bitte melde dich erneut an, um diese Aktion durchzuführen.",

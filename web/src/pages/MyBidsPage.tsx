@@ -10,7 +10,6 @@ import { functions } from "../firebase/config";
 import { useAds } from "../hooks/useAds";
 import { useBidsForAds } from "../hooks/useBidsForAds";
 import { useMyBids } from "../hooks/useBids";
-import { createNotification } from "../lib/notify";
 import type { Bid } from "../types/bid";
 
 const cancelDealFn = httpsCallable(functions, "cancelDeal");
@@ -247,7 +246,7 @@ function ReceivedBidRow({
 export function MyBidsPage() {
   const { t } = useTranslation();
   const navigate = useNavigate();
-  const { firebaseUser, appUser } = useAuth();
+  const { firebaseUser } = useAuth();
   const { bids: givenBids, loading: givenLoading } = useMyBids(firebaseUser?.uid);
   const { ads: myAds } = useAds({ ownerId: firebaseUser?.uid, includeDrafts: true });
   const myAdIds = useMemo(() => myAds.map((a) => a.id), [myAds]);
@@ -281,15 +280,7 @@ export function MyBidsPage() {
     if (adKindById.get(bid.adId) === "biete") {
       await updateDoc(doc(bidsCol, bid.id), { status: "accepted" });
       await updateDoc(doc(adsCol, bid.adId), { status: "in_progress", updatedAt: serverTimestamp() });
-      await createNotification({
-        recipientId: bid.providerId,
-        type: "bid_accepted",
-        actorId: firebaseUser.uid,
-        actorName: appUser?.displayName ?? "",
-        adId: bid.adId,
-        adTitle: bid.adTitle ?? "",
-        bidId: bid.id,
-      });
+      // The bid_accepted notification is created server-side by onBidWritten.
     } else {
       navigate(`/ads/${bid.adId}/payment?bidId=${bid.id}`);
     }
@@ -298,14 +289,7 @@ export function MyBidsPage() {
   async function handleReject(bid: Bid) {
     if (!firebaseUser) return;
     await updateDoc(doc(bidsCol, bid.id), { status: "rejected" });
-    await createNotification({
-      recipientId: bid.providerId,
-      type: "bid_rejected",
-      actorId: firebaseUser.uid,
-      actorName: appUser?.displayName ?? "",
-      adId: bid.adId,
-      adTitle: bid.adTitle ?? "",
-    });
+    // The bid_rejected notification is created server-side by onBidWritten.
   }
 
   async function handleDeleteBid(bid: Bid) {

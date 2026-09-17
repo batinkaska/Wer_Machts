@@ -656,6 +656,8 @@
     "weakPassword": "The password must be at least 6 characters long.",
     "tooManyRequests": "Too many attempts. Please wait a moment and try again.",
     "networkError": "Couldn't connect. Please check your internet connection.",
+    "reviewNoSharedConversation": "You can only review people you've already been in contact with.",
+    "reviewAlreadySubmitted": "You've already reviewed this person.",
     "popupClosed": "The sign-in window was closed before the process finished.",
     "accountExistsDifferentCredential": "An account with this email already exists using a different sign-in method.",
     "requiresRecentLogin": "Please sign in again to perform this action.",

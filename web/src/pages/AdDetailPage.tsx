@@ -27,7 +27,6 @@ import { useBids } from "../hooks/useBids";
 import { logAnalyticsEvent } from "../lib/analytics";
 import { categoryLabels } from "../lib/categories";
 import { useDateFormatter } from "../lib/useDateFormatter";
-import { createNotification } from "../lib/notify";
 import { republishAd } from "../lib/republishAd";
 import { makeConversationId } from "../types/message";
 import type { AppUser } from "../types/user";
@@ -138,16 +137,8 @@ export function AdDetailPage() {
       } as never);
       tx.update(adRef, { bidCount: ad.bidCount + 1, updatedAt: serverTimestamp() });
     });
-    if (ad.ownerId !== firebaseUser.uid) {
-      await createNotification({
-        recipientId: ad.ownerId,
-        type: "bid_placed",
-        actorId: firebaseUser.uid,
-        actorName: appUser.displayName,
-        adId: ad.id,
-        adTitle: ad.title,
-      });
-    }
+    // The bid_placed notification (and its email) is created server-side by
+    // the onBidWritten trigger, which reacts to this same bid document.
     logAnalyticsEvent("bid_sent", { ad_kind: ad.adKind });
   }
 
@@ -156,17 +147,7 @@ export function AdDetailPage() {
       await updateDoc(doc(bidsCol, bid.id), { status: "accepted" });
       await updateDoc(doc(adsCol, ad!.id), { status: "in_progress", updatedAt: serverTimestamp() });
       logAnalyticsEvent("bid_accepted", { ad_kind: ad!.adKind });
-      if (firebaseUser && ad && bid.providerId !== firebaseUser.uid) {
-        await createNotification({
-          recipientId: bid.providerId,
-          type: "bid_accepted",
-          actorId: firebaseUser.uid,
-          actorName: appUser?.displayName ?? ad.ownerName,
-          adId: ad.id,
-          adTitle: ad.title,
-          bidId: bid.id,
-        });
-      }
+      // The bid_accepted notification is created server-side by onBidWritten.
     } else {
       navigate(`/ads/${ad!.id}/payment?bidId=${bid.id}`);
     }
@@ -174,16 +155,7 @@ export function AdDetailPage() {
 
   async function handleReject(bid: Bid) {
     await updateDoc(doc(bidsCol, bid.id), { status: "rejected" });
-    if (firebaseUser && ad && bid.providerId !== firebaseUser.uid) {
-      await createNotification({
-        recipientId: bid.providerId,
-        type: "bid_rejected",
-        actorId: firebaseUser.uid,
-        actorName: appUser?.displayName ?? ad.ownerName,
-        adId: ad.id,
-        adTitle: ad.title,
-      });
-    }
+    // The bid_rejected notification is created server-side by onBidWritten.
   }
 
   async function handleSetOpen() {
@@ -212,17 +184,8 @@ export function AdDetailPage() {
         createdAt: serverTimestamp(),
         read: false,
       } as never);
-      if (ad.ownerId !== firebaseUser.uid) {
-        await createNotification({
-          recipientId: ad.ownerId,
-          type: "message",
-          actorId: firebaseUser.uid,
-          actorName: appUser?.displayName ?? "",
-          adId: ad.id,
-          adTitle: ad.title,
-          conversationId,
-        });
-      }
+      // The message notification (and its email) is created server-side by
+      // the onMessageCreated trigger.
       setInlineMessageSent(true);
     } finally {
       setInlineMessageSending(false);
