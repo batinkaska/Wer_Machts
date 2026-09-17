@@ -2,12 +2,35 @@ import { useTranslation } from "react-i18next";
 import { Link } from "react-router-dom";
 import heroPeople from "../assets/hero-people.png";
 import logo from "../assets/logo.png";
+import dienstleistungenImg from "../assets/categories/dienstleistungen.jpg";
+import gartenAussenanlagenImg from "../assets/categories/garten-aussenanlagen.jpg";
+import gastronomieImg from "../assets/categories/gastronomie.jpg";
+import hausHandwerkImg from "../assets/categories/haus-handwerk.jpg";
+import itTechnikImg from "../assets/categories/it-technik.jpg";
+import reinigungImg from "../assets/categories/reinigung.jpg";
+import transportUmzugImg from "../assets/categories/transport-umzug.jpg";
+import unterrichtNachhilfeImg from "../assets/categories/unterricht-nachhilfe.jpg";
 import { CheckCircleIcon, ClockIcon, DiamondIcon, LightbulbIcon } from "../components/icons";
 import { ActiveAdsCarousel } from "../components/home/ActiveAdsCarousel";
 import { CategoryCard } from "../components/home/CategoryCard";
 // IntroAnimation geçici olarak kapatıldı — geri açmak için: import'u geri ekle ve
 // aşağıda <IntroAnimation /> satırının yorumunu kaldır.
 import { CATEGORY_GROUPS, CATEGORY_GROUP_ICONS, categoryGroupName } from "../lib/categories";
+
+// Sadece ana sayfanın "trend" ızgarasında gösterilen 8 grup için gerçek
+// fotoğraf var (kullanıcı tarafından sağlandı) — kalan gruplar (bkz.
+// HOME_HIDDEN_GROUP_KEYS) hâlâ ikon kullanıyor, CategoryCard bunu otomatik
+// yönetiyor (image verilmezse ikona düşer).
+const CATEGORY_GROUP_IMAGES: Partial<Record<string, string>> = {
+  hausHandwerk: hausHandwerkImg,
+  gartenAussenanlagen: gartenAussenanlagenImg,
+  reinigung: reinigungImg,
+  transportUmzug: transportUmzugImg,
+  itTechnik: itTechnikImg,
+  unterrichtNachhilfe: unterrichtNachhilfeImg,
+  gastronomie: gastronomieImg,
+  dienstleistungen: dienstleistungenImg,
+};
 
 const BENEFITS = [
   { icon: DiamondIcon, key: "compareOffers" },
@@ -87,6 +110,7 @@ export function HomePage() {
               to={`/ads?categories=${group.categories.map((c) => c.slug).join(",")}`}
               name={categoryGroupName(t, group.groupKey)}
               icon={CATEGORY_GROUP_ICONS[group.groupKey]}
+              image={CATEGORY_GROUP_IMAGES[group.groupKey]}
             />
           ))}
         </div>
