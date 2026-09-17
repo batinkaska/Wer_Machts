@@ -224,6 +224,11 @@
     "receivedEmpty": "You haven't received any pending offers on your listings yet.",
     "completedHeading": "Completed jobs",
     "completedEmpty": "You don't have any completed jobs yet.",
+    "pendingPaymentHeading": "Pending Payments",
+    "paymentPendingPayer": "Payment still pending – please complete it",
+    "paymentPendingRecipient": "Waiting for the other side to pay",
+    "settled": "Paid",
+    "enterBankDetails": "Add bank details",
     "toAd": "To listing",
     "withdraw": "Withdraw offer",
     "withdrawConfirm": "Really withdraw this offer?"

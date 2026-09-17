@@ -128,6 +128,7 @@ export function AdDetailPage() {
       tx.set(newBidRef, {
         adId: ad.id,
         adTitle: ad.title,
+        adKind: ad.adKind,
         providerId: firebaseUser.uid,
         providerName: appUser.displayName,
         amount: values.amount,

@@ -2,6 +2,7 @@ import { deleteDoc, doc, serverTimestamp, updateDoc } from "firebase/firestore";
 import { useMemo, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { Link, useNavigate } from "react-router-dom";
+import { CheckCircleIcon } from "../components/icons";
 import { useAuth } from "../contexts/AuthContext";
 import { adsCol, bidsCol } from "../firebase/converters";
 import { useAds } from "../hooks/useAds";
@@ -66,7 +67,7 @@ function GivenBidRow({ bid }: { bid: Bid }) {
   );
 }
 
-function CompletedDealRow({ bid }: { bid: Bid }) {
+function SettledDealRow({ bid }: { bid: Bid }) {
   const { t } = useTranslation();
 
   return (
@@ -80,12 +81,46 @@ function CompletedDealRow({ bid }: { bid: Bid }) {
         </Link>
         <p className="mt-1 text-sm text-gray-700 dark:text-gray-300">{bid.amount} €</p>
       </div>
-      <Link
-        to={`/ads/${bid.adId}/payment?bidId=${bid.id}`}
-        className="shrink-0 rounded-full bg-[#5fac5e] px-4 py-1.5 text-sm font-medium text-white hover:bg-[#4d9a4c]"
-      >
-        {t("adDetail.goToPayment")}
-      </Link>
+      <span className="flex shrink-0 items-center gap-1 rounded-full bg-green-50 px-3 py-1 text-xs font-medium text-[#4d9a4c] dark:bg-green-950 dark:text-green-400">
+        <CheckCircleIcon className="h-3.5 w-3.5" />
+        {t("myBids.settled")}
+      </span>
+    </li>
+  );
+}
+
+function PendingPaymentRow({ bid, isPayer }: { bid: Bid; isPayer: boolean }) {
+  const { t } = useTranslation();
+
+  return (
+    <li className="flex items-center justify-between gap-3 rounded border border-amber-200 bg-amber-50 p-3 dark:border-amber-900 dark:bg-amber-950">
+      <div>
+        <Link
+          to={`/ads/${bid.adId}`}
+          className="font-medium text-purple-700 hover:underline dark:text-purple-400"
+        >
+          {bid.adTitle ?? t("myBids.toAd")}
+        </Link>
+        <p className="mt-1 text-sm text-gray-700 dark:text-gray-300">{bid.amount} €</p>
+        <p className="mt-1 text-xs font-medium text-amber-700 dark:text-amber-400">
+          {isPayer ? t("myBids.paymentPendingPayer") : t("myBids.paymentPendingRecipient")}
+        </p>
+      </div>
+      {isPayer ? (
+        <Link
+          to={`/ads/${bid.adId}/payment?bidId=${bid.id}`}
+          className="shrink-0 rounded-full bg-[#5fac5e] px-4 py-1.5 text-sm font-medium text-white hover:bg-[#4d9a4c]"
+        >
+          {t("adDetail.goToPayment")}
+        </Link>
+      ) : (
+        <Link
+          to={`/ads/${bid.adId}/payment?bidId=${bid.id}`}
+          className="shrink-0 rounded-full border border-gray-300 bg-white px-4 py-1.5 text-sm font-medium text-gray-700 hover:bg-gray-50 dark:border-gray-600 dark:bg-gray-900 dark:text-gray-300 dark:hover:bg-gray-800"
+        >
+          {t("myBids.enterBankDetails")}
+        </Link>
+      )}
     </li>
   );
 }
@@ -154,14 +189,24 @@ export function MyBidsPage() {
   const receivedBids = bidsOnMyAds.filter(
     (bid) => bid.status === "pending" && bid.providerId !== firebaseUser?.uid,
   );
-  const completedDeals = [
-    ...givenBids.filter((bid) => bid.status === "accepted"),
-    ...bidsOnMyAds.filter((bid) => bid.status === "accepted" && bid.providerId !== firebaseUser?.uid),
-  ];
   const isDealSettled = (bid: Bid) =>
     bid.status === "accepted" &&
     (bid.paymentMethod === "cash" || (bid.paymentMethod === "card" && bid.paymentStatus === "paid"));
   const visibleGivenBids = givenBids.filter((bid) => !isDealSettled(bid));
+
+  // For bids I submitted (givenBids), I'm the payer on "biete" ads (I hired the ad owner)
+  // and the recipient on "suche" ads (the ad owner hired me).
+  const givenDeals = givenBids
+    .filter((bid) => bid.status === "accepted")
+    .map((bid) => ({ bid, isPayer: bid.adKind === "biete" }));
+  // For bids on my own ads (bidsOnMyAds), I'm the recipient on "biete" ads (someone hired me)
+  // and the payer on "suche" ads (I hired the bidder).
+  const receivedDeals = bidsOnMyAds
+    .filter((bid) => bid.status === "accepted" && bid.providerId !== firebaseUser?.uid)
+    .map((bid) => ({ bid, isPayer: adKindById.get(bid.adId) === "suche" }));
+  const allDeals = [...givenDeals, ...receivedDeals];
+  const settledDeals = allDeals.filter((d) => isDealSettled(d.bid));
+  const pendingPaymentDeals = allDeals.filter((d) => !isDealSettled(d.bid));
 
   async function handleAccept(bid: Bid) {
     if (!firebaseUser) return;
@@ -218,14 +263,27 @@ export function MyBidsPage() {
             )}
           </section>
 
+          {pendingPaymentDeals.length > 0 && (
+            <section>
+              <h2 className="mb-3 text-lg font-medium text-gray-900 dark:text-gray-100">
+                {t("myBids.pendingPaymentHeading")}
+              </h2>
+              <ul className="space-y-3">
+                {pendingPaymentDeals.map(({ bid, isPayer }) => (
+                  <PendingPaymentRow key={bid.id} bid={bid} isPayer={isPayer} />
+                ))}
+              </ul>
+            </section>
+          )}
+
           <section>
             <h2 className="mb-3 text-lg font-medium text-gray-900 dark:text-gray-100">
               {t("myBids.completedHeading")}
             </h2>
-            {completedDeals.length > 0 ? (
+            {settledDeals.length > 0 ? (
               <ul className="space-y-3">
-                {completedDeals.map((bid) => (
-                  <CompletedDealRow key={bid.id} bid={bid} />
+                {settledDeals.map(({ bid }) => (
+                  <SettledDealRow key={bid.id} bid={bid} />
                 ))}
               </ul>
             ) : (

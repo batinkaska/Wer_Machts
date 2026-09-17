@@ -226,6 +226,11 @@
     "receivedEmpty": "Пока нет ожидающих предложений по вашим объявлениям.",
     "completedHeading": "Завершённые заказы",
     "completedEmpty": "У вас пока нет завершённых заказов.",
+    "pendingPaymentHeading": "Ожидающие оплаты",
+    "paymentPendingPayer": "Оплата ещё не завершена — пожалуйста, заверши её",
+    "paymentPendingRecipient": "Ожидание оплаты от другой стороны",
+    "settled": "Оплачено",
+    "enterBankDetails": "Указать банковские реквизиты",
     "toAd": "К заказу",
     "withdraw": "Отозвать предложение",
     "withdrawConfirm": "Действительно отозвать это предложение?"

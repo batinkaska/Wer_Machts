@@ -224,6 +224,11 @@
     "receivedEmpty": "İlanlarına henüz bekleyen bir teklif gelmedi.",
     "completedHeading": "Biten Anlaşmalar",
     "completedEmpty": "Henüz biten bir anlaşman yok.",
+    "pendingPaymentHeading": "Bekleyen Ödemeler",
+    "paymentPendingPayer": "Ödeme henüz tamamlanmadı – lütfen tamamla",
+    "paymentPendingRecipient": "Karşı tarafın ödemesi bekleniyor",
+    "settled": "Ödendi",
+    "enterBankDetails": "Banka bilgilerini gir",
     "toAd": "İlana git",
     "withdraw": "Teklifi geri çek",
     "withdrawConfirm": "Teklifi gerçekten geri çekmek istiyor musun?"

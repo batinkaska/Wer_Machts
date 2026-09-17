@@ -224,6 +224,11 @@
     "receivedEmpty": "Du hast noch keine ausstehenden Angebote auf deine Anzeigen erhalten.",
     "completedHeading": "Abgeschlossene Aufträge",
     "completedEmpty": "Du hast noch keine abgeschlossenen Aufträge.",
+    "pendingPaymentHeading": "Ausstehende Zahlungen",
+    "paymentPendingPayer": "Zahlung noch ausstehend – bitte abschließen",
+    "paymentPendingRecipient": "Wartet auf Zahlung der Gegenseite",
+    "settled": "Bezahlt",
+    "enterBankDetails": "Bankverbindung hinterlegen",
     "toAd": "Zum Auftrag",
     "withdraw": "Angebot zurückziehen",
     "withdrawConfirm": "Angebot wirklich zurückziehen?"

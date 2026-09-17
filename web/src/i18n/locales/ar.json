@@ -225,6 +225,11 @@
     "receivedEmpty": "لم تستلم بعد أي عروض قيد الانتظار على إعلاناتك.",
     "completedHeading": "الصفقات المكتملة",
     "completedEmpty": "ليس لديك أي صفقات مكتملة بعد.",
+    "pendingPaymentHeading": "المدفوعات المعلقة",
+    "paymentPendingPayer": "الدفع لم يكتمل بعد - يرجى إكماله",
+    "paymentPendingRecipient": "في انتظار دفع الطرف الآخر",
+    "settled": "تم الدفع",
+    "enterBankDetails": "إدخال بيانات الحساب البنكي",
     "toAd": "إلى الإعلان",
     "withdraw": "سحب العرض",
     "withdrawConfirm": "هل تريد فعلاً سحب هذا العرض؟"
