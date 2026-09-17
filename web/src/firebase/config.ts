@@ -1,5 +1,5 @@
 import { initializeApp } from "firebase/app";
-import { ReCaptchaV3Provider, initializeAppCheck } from "firebase/app-check";
+import { ReCaptchaEnterpriseProvider, initializeAppCheck } from "firebase/app-check";
 import { getAuth } from "firebase/auth";
 import { getFirestore } from "firebase/firestore";
 import { getFunctions } from "firebase/functions";
@@ -33,7 +33,7 @@ if (appCheckSiteKey) {
   }
   try {
     initializeAppCheck(app, {
-      provider: new ReCaptchaV3Provider(appCheckSiteKey),
+      provider: new ReCaptchaEnterpriseProvider(appCheckSiteKey),
       isTokenAutoRefreshEnabled: true,
     });
   } catch {
