@@ -229,6 +229,12 @@
     "paymentPendingRecipient": "Karşı tarafın ödemesi bekleniyor",
     "settled": "Ödendi",
     "enterBankDetails": "Banka bilgilerini gir",
+    "deleteBid": "Sil",
+    "deleteConfirm": "Gerçekten silinsin mi?",
+    "cancelDeal": "Anlaşmayı iptal et",
+    "cancelDealConfirm": "Bu anlaşmayı gerçekten iptal etmek istiyor musun? Ödeme de iptal edilecek.",
+    "hideDeal": "Gizle",
+    "hideDealConfirm": "Bu tamamlanmış anlaşmayı listenden gizlemek istiyor musun?",
     "toAd": "İlana git",
     "withdraw": "Teklifi geri çek",
     "withdrawConfirm": "Teklifi gerçekten geri çekmek istiyor musun?"

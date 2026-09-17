@@ -230,6 +230,12 @@
     "paymentPendingRecipient": "في انتظار دفع الطرف الآخر",
     "settled": "تم الدفع",
     "enterBankDetails": "إدخال بيانات الحساب البنكي",
+    "deleteBid": "حذف",
+    "deleteConfirm": "هل تريد الحذف فعلاً؟",
+    "cancelDeal": "إلغاء الصفقة",
+    "cancelDealConfirm": "هل تريد حقًا إلغاء هذه الصفقة؟ سيتم إلغاء الدفع أيضًا.",
+    "hideDeal": "إخفاء",
+    "hideDealConfirm": "إخفاء هذه الصفقة المكتملة من قائمتك؟",
     "toAd": "إلى الإعلان",
     "withdraw": "سحب العرض",
     "withdrawConfirm": "هل تريد فعلاً سحب هذا العرض؟"

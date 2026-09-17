@@ -125,6 +125,55 @@ export const createPaymentIntent = onCall({ secrets: [stripeSecretKey] }, async 
   return { clientSecret: paymentIntent.client_secret };
 });
 
+export const cancelDeal = onCall({ secrets: [stripeSecretKey] }, async (request) => {
+  const uid = request.auth?.uid;
+  if (!uid) {
+    throw new HttpsError("unauthenticated", "Du musst angemeldet sein.");
+  }
+
+  const bidId = request.data?.bidId;
+  if (!bidId || typeof bidId !== "string") {
+    throw new HttpsError("invalid-argument", "bidId fehlt.");
+  }
+
+  const db = getFirestore();
+  const { bidRef, bid, adRef, ad } = await loadBidAndAd(db, bidId);
+
+  // Either party to the deal may cancel it — matches who is already allowed to
+  // delete the bid document itself (see firestore.rules). Reverting the ad's
+  // status back to "open" requires the Admin SDK since only the ad owner may
+  // normally write to their own ad, and the canceling party is often the
+  // *other* side of the deal.
+  if (uid !== bid.providerId && uid !== ad.ownerId) {
+    throw new HttpsError("permission-denied", "Du bist an diesem Angebot nicht beteiligt.");
+  }
+
+  // A settled deal is never canceled this way — it can only be hidden from a
+  // user's own list (see MyBidsPage), never destroyed, since it's the other
+  // party's real payment record too.
+  if (bid.paymentStatus === "paid") {
+    throw new HttpsError("failed-precondition", "Diese Zahlung wurde bereits abgeschlossen.");
+  }
+
+  if (bid.stripePaymentIntentId) {
+    const stripe = new Stripe(stripeSecretKey.value());
+    try {
+      await stripe.paymentIntents.cancel(bid.stripePaymentIntentId);
+    } catch {
+      // Already canceled, already expired, or never left "requires_payment_method" —
+      // none of that matters here since no money can move from an intent we're
+      // abandoning anyway. Best-effort cleanup, never blocks the cancellation.
+    }
+  }
+
+  if (bid.status === "accepted") {
+    await adRef.update({ status: "open", updatedAt: FieldValue.serverTimestamp() });
+  }
+  await bidRef.delete();
+
+  return { canceled: true };
+});
+
 export const confirmPaymentStatus = onCall({ secrets: [stripeSecretKey] }, async (request) => {
   const uid = request.auth?.uid;
   if (!uid) {

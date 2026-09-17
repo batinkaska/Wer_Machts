@@ -4,7 +4,7 @@ import { HttpsError, onCall } from "firebase-functions/v2/https";
 import { defineSecret } from "firebase-functions/params";
 import { contactMessageEmailHtml, passwordResetEmailHtml, verificationEmailHtml } from "./emailTemplate";
 
-export { confirmPaymentStatus, createPaymentIntent } from "./stripe";
+export { cancelDeal, confirmPaymentStatus, createPaymentIntent } from "./stripe";
 export { createProBillingPortalSession, createProCheckoutSession, setFeaturedAd } from "./proSubscription";
 export { stripeWebhook } from "./stripeWebhook";
 

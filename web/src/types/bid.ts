@@ -22,6 +22,9 @@ export interface Bid {
   stripePaymentIntentId?: string;
   supportAmount?: number;
   hiddenFromProfile?: boolean;
+  /** UIDs that chose to hide this settled deal from their own "Meine Angebote" list —
+   * per-viewer, unlike hiddenFromProfile which affects the shared public profile view. */
+  hiddenForUserIds?: string[];
   createdAt: Timestamp;
 }
 

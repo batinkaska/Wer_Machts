@@ -229,6 +229,12 @@
     "paymentPendingRecipient": "Waiting for the other side to pay",
     "settled": "Paid",
     "enterBankDetails": "Add bank details",
+    "deleteBid": "Delete",
+    "deleteConfirm": "Really delete?",
+    "cancelDeal": "Cancel deal",
+    "cancelDealConfirm": "Really cancel this deal? The payment will be canceled too.",
+    "hideDeal": "Hide",
+    "hideDealConfirm": "Hide this completed deal from your list?",
     "toAd": "To listing",
     "withdraw": "Withdraw offer",
     "withdrawConfirm": "Really withdraw this offer?"

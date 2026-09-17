@@ -229,6 +229,12 @@
     "paymentPendingRecipient": "Wartet auf Zahlung der Gegenseite",
     "settled": "Bezahlt",
     "enterBankDetails": "Bankverbindung hinterlegen",
+    "deleteBid": "Löschen",
+    "deleteConfirm": "Wirklich löschen?",
+    "cancelDeal": "Auftrag stornieren",
+    "cancelDealConfirm": "Diesen Auftrag wirklich stornieren? Die Zahlung wird ebenfalls storniert.",
+    "hideDeal": "Ausblenden",
+    "hideDealConfirm": "Diesen abgeschlossenen Auftrag aus deiner Liste ausblenden?",
     "toAd": "Zum Auftrag",
     "withdraw": "Angebot zurückziehen",
     "withdrawConfirm": "Angebot wirklich zurückziehen?"
