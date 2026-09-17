@@ -6,7 +6,8 @@ export type NotificationType =
   | "bid_accepted"
   | "bid_rejected"
   | "new_follower"
-  | "verify_phone";
+  | "verify_phone"
+  | "payment_confirmed";
 
 export interface Notification {
   id: string;

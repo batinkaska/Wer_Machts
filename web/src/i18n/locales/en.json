@@ -58,6 +58,7 @@
     "bidPlaced": "{{name}} placed an offer on \"{{title}}\"",
     "bidAccepted": "Your offer for \"{{title}}\" was accepted",
     "bidRejected": "Your offer for \"{{title}}\" was declined",
+    "paymentConfirmed": "Payment for \"{{title}}\" has arrived",
     "newFollower": "{{name}} is now following you",
     "generic": "New notification",
     "verifyPhone": "Verify your phone number now to unlock all features."

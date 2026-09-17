@@ -14,6 +14,7 @@ const ACTIVE_PAYMENT_INTENT_STATUSES = new Set([
 interface BidDoc {
   adId: string;
   providerId: string;
+  providerName: string;
   amount: number;
   status: string;
   paymentStatus?: string;
@@ -201,6 +202,7 @@ export const confirmPaymentStatus = onCall({ secrets: [stripeSecretKey] }, async
   }
 
   const wasAlreadyAccepted = bid.status === "accepted";
+  const wasAlreadyPaid = bid.paymentStatus === "paid";
   await bidRef.update({ paymentStatus: "paid", paymentMethod: "card", status: "accepted" });
 
   if (!wasAlreadyAccepted) {
@@ -211,6 +213,26 @@ export const confirmPaymentStatus = onCall({ secrets: [stripeSecretKey] }, async
         type: "bid_accepted",
         actorId: uid,
         actorName: ad.ownerName,
+        adId: adRef.id,
+        adTitle: ad.title,
+        bidId,
+        read: false,
+        createdAt: FieldValue.serverTimestamp(),
+      });
+    }
+  }
+
+  if (!wasAlreadyPaid) {
+    // The payer already sees an on-screen confirmation immediately — this
+    // notification (and its email) is for the recipient, who finds out
+    // asynchronously that the money has arrived.
+    const recipientId = uid === bid.providerId ? ad.ownerId : bid.providerId;
+    if (recipientId !== uid) {
+      await db.collection("notifications").add({
+        recipientId,
+        type: "payment_confirmed",
+        actorId: uid,
+        actorName: uid === bid.providerId ? ad.ownerName : bid.providerName,
         adId: adRef.id,
         adTitle: ad.title,
         bidId,

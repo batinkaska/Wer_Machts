@@ -2,49 +2,22 @@ import { initializeApp } from "firebase-admin/app";
 import { getAuth } from "firebase-admin/auth";
 import { HttpsError, onCall } from "firebase-functions/v2/https";
 import { defineSecret } from "firebase-functions/params";
+import { sendViaResend } from "./email";
 import { contactMessageEmailHtml, passwordResetEmailHtml, verificationEmailHtml } from "./emailTemplate";
 
 export { cancelDeal, confirmPaymentStatus, createPaymentIntent } from "./stripe";
 export { createProBillingPortalSession, createProCheckoutSession, setFeaturedAd } from "./proSubscription";
 export { stripeWebhook } from "./stripeWebhook";
+export { onBankDetailsWritten, onNotificationCreated } from "./notificationEmails";
 
 initializeApp();
 
 const resendApiKey = defineSecret("RESEND_API_KEY");
 
-const SENDER = "Wer Macht <info@wermacht.app>";
 const SUPPORT_INBOX = "info@wermacht.app";
 const VERIFY_URL = "https://wermacht.app/email-bestaetigen";
 const RESEND_URL = "https://wermacht.app/konto-aktivieren";
 const RESET_PASSWORD_URL = "https://wermacht.app/passwort-zuruecksetzen";
-
-async function sendViaResend(params: {
-  to: string;
-  subject: string;
-  html: string;
-  apiKey: string;
-  replyTo?: string;
-}) {
-  const response = await fetch("https://api.resend.com/emails", {
-    method: "POST",
-    headers: {
-      Authorization: `Bearer ${params.apiKey}`,
-      "Content-Type": "application/json",
-    },
-    body: JSON.stringify({
-      from: SENDER,
-      to: params.to,
-      subject: params.subject,
-      html: params.html,
-      ...(params.replyTo ? { reply_to: params.replyTo } : {}),
-    }),
-  });
-
-  if (!response.ok) {
-    const errorText = await response.text();
-    throw new HttpsError("internal", `Resend-Fehler: ${errorText}`);
-  }
-}
 
 const EMAIL_PATTERN = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 

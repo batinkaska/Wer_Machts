@@ -59,6 +59,7 @@
     "bidPlaced": "قدّم {{name}} عرضًا على \"{{title}}\"",
     "bidAccepted": "تم قبول عرضك على \"{{title}}\"",
     "bidRejected": "تم رفض عرضك على \"{{title}}\"",
+    "paymentConfirmed": "وصلت الدفعة الخاصة بـ \"{{title}}\"",
     "newFollower": "أصبح {{name}} يتابعك الآن",
     "generic": "إشعار جديد",
     "verifyPhone": "قم بتأكيد رقم هاتفك الآن لفتح جميع الميزات."

@@ -22,6 +22,8 @@ function notificationText(t: TFunction, n: Notification): string {
       return t("notifications.newFollower", { name: n.actorName });
     case "verify_phone":
       return t("notifications.verifyPhone");
+    case "payment_confirmed":
+      return t("notifications.paymentConfirmed", { title: n.adTitle });
     default:
       return t("notifications.generic");
   }
@@ -40,6 +42,8 @@ function notificationPath(n: Notification): string {
       return `/profile/${n.actorId}`;
     case "verify_phone":
       return "/settings?verifyPhone=1";
+    case "payment_confirmed":
+      return n.bidId ? `/ads/${n.adId}/payment?bidId=${n.bidId}` : `/ads/${n.adId}`;
     default:
       return "/";
   }

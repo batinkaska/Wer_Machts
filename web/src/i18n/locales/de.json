@@ -58,6 +58,7 @@
     "bidPlaced": "{{name}} hat ein Angebot für \"{{title}}\" abgegeben",
     "bidAccepted": "Dein Angebot für \"{{title}}\" wurde angenommen",
     "bidRejected": "Dein Angebot für \"{{title}}\" wurde abgelehnt",
+    "paymentConfirmed": "Zahlung für \"{{title}}\" ist eingegangen",
     "newFollower": "{{name}} folgt dir jetzt",
     "generic": "Neue Benachrichtigung",
     "verifyPhone": "Bestätige jetzt deine Telefonnummer, um alle Funktionen nutzen zu können."

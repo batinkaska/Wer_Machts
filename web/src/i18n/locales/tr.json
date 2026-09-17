@@ -58,6 +58,7 @@
     "bidPlaced": "{{name}}, \"{{title}}\" ilanına teklif verdi",
     "bidAccepted": "\"{{title}}\" için teklifin kabul edildi",
     "bidRejected": "\"{{title}}\" için teklifin reddedildi",
+    "paymentConfirmed": "\"{{title}}\" için ödeme ulaştı",
     "newFollower": "{{name}} artık seni takip ediyor",
     "generic": "Yeni bildirim",
     "verifyPhone": "Tüm özellikleri kullanabilmek için şimdi telefon numaranı onayla."
