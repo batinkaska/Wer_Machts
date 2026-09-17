@@ -31,6 +31,7 @@ const ERROR_KEY_BY_CODE: Record<string, string> = {
   "unavailable": "errors.networkError",
   "functions/failed-precondition": "errors.reviewNoSharedConversation",
   "functions/already-exists": "errors.reviewAlreadySubmitted",
+  "functions/resource-exhausted": "errors.tooManyRequests",
 };
 
 function getErrorCode(err: unknown): string | undefined {

@@ -6,6 +6,7 @@ import { defineSecret } from "firebase-functions/params";
 import { onBidWritten, onMessageCreated } from "./bidNotificationTriggers";
 import { sendViaResend } from "./email";
 import { contactMessageEmailHtml, passwordResetEmailHtml, verificationEmailHtml } from "./emailTemplate";
+import { enforceRateLimit } from "./rateLimit";
 
 export { cancelDeal, confirmPaymentStatus, createPaymentIntent } from "./stripe";
 export { createProBillingPortalSession, createProCheckoutSession, setFeaturedAd } from "./proSubscription";
@@ -112,6 +113,16 @@ export const sendContactMessage = onCall({ secrets: [resendApiKey] }, async (req
   if (message.length > 5000) {
     throw new HttpsError("invalid-argument", "Deine Nachricht ist zu lang.");
   }
+
+  // This is the one unauthenticated onCall function in the project (a contact
+  // form has to be), so it's the one most exposed to scripted spam beyond
+  // what the honeypot already catches.
+  await enforceRateLimit({
+    bucket: "contact",
+    key: email,
+    maxPerWindow: 3,
+    windowMs: 60 * 60 * 1000,
+  });
 
   const html = contactMessageEmailHtml({ name, email, subject, message });
 
