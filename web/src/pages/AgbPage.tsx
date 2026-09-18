@@ -121,10 +121,16 @@ export function AgbPage() {
           (3) Nach Bestätigung der erfolgreichen Ausführung der Dienstleistung durch den
           Auftraggeber überweist der Betreiber den Betrag (abzüglich einer eventuellen
           freiwilligen Plattform-Gebühr) innerhalb einer angemessenen Frist per Banküberweisung
-          an den Dienstleister. Anfallende Gebühren des Zahlungsdienstleisters trägt der
-          Betreiber.
+          an den Dienstleister.
         </p>
-        <p>(4) Stornierungen und Konfliktlösung:</p>
+        <p>
+          (4) Bei Kartenzahlung wird dem Auftraggeber zusätzlich zum Auftragsbetrag eine
+          geschätzte Zahlungsabwicklungsgebühr in Rechnung gestellt, die die anfallenden Gebühren
+          des externen Zahlungsdienstleisters abdeckt. Diese Gebühr wird vor Abschluss der Zahlung
+          transparent angezeigt. Der Dienstleister erhält stets den vollen im Inserat angegebenen
+          Betrag; die Zahlungsabwicklungsgebühr verbleibt beim Betreiber.
+        </p>
+        <p>(5) Stornierungen und Konfliktlösung:</p>
         <ul className="list-disc space-y-2 pl-5">
           <li>
             Wird ein Auftrag vor Arbeitsbeginn im beiderseitigen Einvernehmen storniert, erhält

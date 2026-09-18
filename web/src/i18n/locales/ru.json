@@ -459,6 +459,8 @@
     "paidMessageRecipient": "Вы получили платёж на сумму {{amount}} € от {{name}}.",
     "paidBreakdownService": "Услуга: {{amount}} €",
     "paidBreakdownSupport": "Добровольный взнос поддержки: {{amount}} €",
+  "paidBreakdownProcessingFee": "Комиссия за обработку платежа: {{amount}} €",
+  "processingFeeNote": "плюс ориентировочная комиссия за обработку платежа {{amount}} € (покрывает комиссию за карту, чтобы исполнитель получил полную сумму)",
     "supportHeading": "Добровольный взнос поддержки",
     "supportSubtitle": "Хотите добавить что-то ещё?",
     "supportNone": "Нет, спасибо",

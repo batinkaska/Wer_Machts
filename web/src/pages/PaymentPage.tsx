@@ -83,15 +83,19 @@ function PaidConfirmation({
   isPayer,
   amount,
   supportAmount,
+  processingFee,
   counterpartyName,
 }: {
   isPayer: boolean;
   amount: number;
   supportAmount?: number;
+  processingFee?: number;
   counterpartyName: string;
 }) {
   const { t } = useTranslation();
-  const total = amount + (supportAmount ?? 0);
+  // The processing-fee surcharge is what the payer's card was actually charged —
+  // the recipient never sees or receives it, they only ever get amount + support.
+  const total = amount + (supportAmount ?? 0) + (isPayer ? processingFee ?? 0 : 0);
 
   return (
     <div className="flex flex-col items-center gap-3 py-4 text-center">
@@ -107,10 +111,13 @@ function PaidConfirmation({
             ? t("payment.paidMessagePayer", { amount: total, name: counterpartyName })
             : t("payment.paidMessageRecipient", { amount: total, name: counterpartyName })}
         </p>
-        {!!supportAmount && (
+        {(!!supportAmount || (isPayer && !!processingFee)) && (
           <div className="mt-2 text-xs text-gray-500 dark:text-gray-400">
             <p>{t("payment.paidBreakdownService", { amount })}</p>
-            <p>{t("payment.paidBreakdownSupport", { amount: supportAmount })}</p>
+            {!!supportAmount && <p>{t("payment.paidBreakdownSupport", { amount: supportAmount })}</p>}
+            {isPayer && !!processingFee && (
+              <p>{t("payment.paidBreakdownProcessingFee", { amount: processingFee })}</p>
+            )}
           </div>
         )}
       </div>
@@ -355,6 +362,7 @@ export function PaymentPage() {
             isPayer={isPayer}
             amount={bid.amount}
             supportAmount={bid.supportAmount}
+            processingFee={bid.processingFee}
             counterpartyName={isPayer ? recipientName : payerName}
           />
         ) : bid.paymentMethod && !changingMethod ? (

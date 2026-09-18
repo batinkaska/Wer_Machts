@@ -447,6 +447,8 @@
     "paidMessageRecipient": "You received a payment of {{amount}} € from {{name}}.",
     "paidBreakdownService": "Service: {{amount}} €",
     "paidBreakdownSupport": "Voluntary support contribution: {{amount}} €",
+  "paidBreakdownProcessingFee": "Payment processing fee: {{amount}} €",
+  "processingFeeNote": "plus an estimated payment processing fee of {{amount}} € (covers card fees so the provider receives the full amount)",
     "supportHeading": "Voluntary support contribution",
     "supportSubtitle": "Would you like to add something extra?",
     "supportNone": "No thanks",

@@ -447,6 +447,8 @@
     "paidMessageRecipient": "{{name}} kişisinden {{amount}} € tutarında bir ödeme aldın.",
     "paidBreakdownService": "Hizmet: {{amount}} €",
     "paidBreakdownSupport": "Gönüllü destek payı: {{amount}} €",
+  "paidBreakdownProcessingFee": "Ödeme işlem ücreti: {{amount}} €",
+  "processingFeeNote": "buna ek olarak tahmini {{amount}} € ödeme işlem ücreti (hizmet sağlayıcının tam tutarı alabilmesi için kart komisyonunu karşılar)",
     "supportHeading": "Gönüllü Destek Payı",
     "supportSubtitle": "Ek olarak bir şey eklemek ister misin?",
     "supportNone": "Hayır teşekkürler",

@@ -11,6 +11,23 @@ const ACTIVE_PAYMENT_INTENT_STATUSES = new Set([
   "requires_action",
 ]);
 
+// Stripe's real cut is percentage + fixed, so it eats a disproportionate share of
+// small payments (e.g. ~28% of 1€). Rather than the platform absorbing that (which
+// isn't sustainable) or computing Stripe's exact rate per card (only known after the
+// charge posts), the payer is charged a fixed estimated processing fee on top of the
+// service amount, calculated with this approximation — the service provider still
+// receives the full listed amount either way.
+const PROCESSING_FEE_RATE = 0.025;
+const PROCESSING_FEE_FIXED = 0.25;
+
+function round2(value: number): number {
+  return Math.round(value * 100) / 100;
+}
+
+function calculateProcessingFee(serviceAmount: number): number {
+  return round2(serviceAmount * PROCESSING_FEE_RATE + PROCESSING_FEE_FIXED);
+}
+
 interface BidDoc {
   adId: string;
   providerId: string;
@@ -20,6 +37,7 @@ interface BidDoc {
   paymentStatus?: string;
   stripePaymentIntentId?: string;
   supportAmount?: number;
+  processingFee?: number;
 }
 
 interface AdDoc {
@@ -87,8 +105,10 @@ export const createPaymentIntent = onCall({ secrets: [stripeSecretKey] }, async 
   const rawSupportAmount = Number(request.data?.supportAmount) || 0;
   const supportAmount = Math.max(0, Math.min(rawSupportAmount, bid.amount));
 
+  const processingFee = calculateProcessingFee(bid.amount);
+
   const stripe = new Stripe(stripeSecretKey.value());
-  const amount = Math.round((bid.amount + supportAmount) * 100);
+  const amount = Math.round((bid.amount + supportAmount + processingFee) * 100);
 
   let paymentIntent: Stripe.PaymentIntent | undefined;
   if (bid.stripePaymentIntentId) {
@@ -119,11 +139,12 @@ export const createPaymentIntent = onCall({ secrets: [stripeSecretKey] }, async 
         stripePaymentIntentId: created.id,
         paymentStatus: "pending",
         supportAmount,
+        processingFee,
       });
     });
   }
 
-  return { clientSecret: paymentIntent.client_secret };
+  return { clientSecret: paymentIntent.client_secret, processingFee };
 });
 
 export const cancelDeal = onCall({ secrets: [stripeSecretKey] }, async (request) => {

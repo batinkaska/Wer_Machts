@@ -7,6 +7,11 @@ function round2(value: number): number {
   return Math.round(value * 100) / 100;
 }
 
+// Mirrors functions/src/stripe.ts's calculateProcessingFee exactly — server-side
+// is the source of truth for what's actually charged, this is just a preview.
+const PROCESSING_FEE_RATE = 0.025;
+const PROCESSING_FEE_FIXED = 0.25;
+
 export function SupportContributionStep({
   serviceAmount,
   onContinue,
@@ -24,7 +29,8 @@ export function SupportContributionStep({
   const tenPercent = round2(serviceAmount * 0.1);
   const supportAmount =
     choice === "5" ? fivePercent : choice === "10" ? tenPercent : choice === "custom" ? Math.max(0, Number(customAmount) || 0) : 0;
-  const total = round2(serviceAmount + supportAmount);
+  const processingFee = round2(serviceAmount * PROCESSING_FEE_RATE + PROCESSING_FEE_FIXED);
+  const total = round2(serviceAmount + supportAmount + processingFee);
 
   const optionClass = (active: boolean) =>
     `rounded-full border px-3 py-2 text-sm font-medium ${
@@ -71,6 +77,9 @@ export function SupportContributionStep({
         />
       )}
 
+      <p className="text-xs text-gray-500 dark:text-gray-400">
+        {t("payment.processingFeeNote", { amount: processingFee.toFixed(2) })}
+      </p>
       <p className="text-sm font-semibold text-gray-900 dark:text-gray-100">
         {t("payment.supportTotal", { amount: total.toFixed(2) })}
       </p>

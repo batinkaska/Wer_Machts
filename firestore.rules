@@ -72,7 +72,8 @@ service cloud.firestore {
         // a plain client write must never be able to change them.
         && request.resource.data.get('paymentStatus', null) == resource.data.get('paymentStatus', null)
         && request.resource.data.get('stripePaymentIntentId', null) == resource.data.get('stripePaymentIntentId', null)
-        && request.resource.data.get('supportAmount', null) == resource.data.get('supportAmount', null);
+        && request.resource.data.get('supportAmount', null) == resource.data.get('supportAmount', null)
+        && request.resource.data.get('processingFee', null) == resource.data.get('processingFee', null);
       allow delete: if isSignedIn() && (
         resource.data.providerId == request.auth.uid ||
         get(/databases/$(database)/documents/ads/$(resource.data.adId)).data.ownerId == request.auth.uid

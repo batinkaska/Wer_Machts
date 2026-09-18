@@ -454,6 +454,8 @@
     "paidMessageRecipient": "لقد استلمت دفعة بقيمة {{amount}} € من {{name}}.",
     "paidBreakdownService": "الخدمة: {{amount}} €",
     "paidBreakdownSupport": "مساهمة دعم طوعية: {{amount}} €",
+  "paidBreakdownProcessingFee": "رسوم معالجة الدفع: {{amount}} €",
+  "processingFeeNote": "بالإضافة إلى رسوم معالجة دفع تقديرية قدرها {{amount}} € (تغطي رسوم البطاقة حتى يحصل مقدّم الخدمة على المبلغ كاملاً)",
     "supportHeading": "مساهمة دعم طوعية",
     "supportSubtitle": "هل تود إضافة شيء إضافي؟",
     "supportNone": "لا شكرًا",

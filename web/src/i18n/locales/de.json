@@ -447,6 +447,8 @@
     "paidMessageRecipient": "Du hast eine Zahlung von {{amount}} € von {{name}} erhalten.",
     "paidBreakdownService": "Service: {{amount}} €",
     "paidBreakdownSupport": "Freiwilliger Unterstützungsbeitrag: {{amount}} €",
+  "paidBreakdownProcessingFee": "Zahlungsabwicklungsgebühr: {{amount}} €",
+  "processingFeeNote": "zzgl. geschätzter Zahlungsabwicklungsgebühr von {{amount}} € (deckt die Kartengebühren ab, damit der Anbieter den vollen Betrag erhält)",
     "supportHeading": "Freiwilliger Unterstützungsbeitrag",
     "supportSubtitle": "Möchtest du zusätzlich etwas dazugeben?",
     "supportNone": "Kein Dank",

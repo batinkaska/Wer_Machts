@@ -21,6 +21,9 @@ export interface Bid {
   paymentStatus?: PaymentStatus;
   stripePaymentIntentId?: string;
   supportAmount?: number;
+  /** Estimated Stripe processing-fee surcharge, charged to the payer on top of
+   * the service amount so the recipient always receives the full listed price. */
+  processingFee?: number;
   hiddenFromProfile?: boolean;
   /** UIDs that chose to hide this settled deal from their own "Meine Angebote" list —
    * per-viewer, unlike hiddenFromProfile which affects the shared public profile view. */
