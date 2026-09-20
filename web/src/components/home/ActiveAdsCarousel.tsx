@@ -84,9 +84,12 @@ export function ActiveAdsCarousel() {
   return (
     <div className="mx-auto max-w-4xl rounded-b-xl bg-white px-5 pb-5 pt-3 text-left shadow-lg dark:bg-gray-800">
       <div className="mb-3 flex items-center justify-between">
-        <h2 className="text-base font-semibold text-gray-900 dark:text-gray-100">
+        <Link
+          to="/ads"
+          className="text-base font-semibold text-gray-900 hover:underline dark:text-gray-100"
+        >
           {t("home.activeAdsHeading")}
-        </h2>
+        </Link>
         {totalPages > 1 && (
           <div className="flex items-center gap-2">
             <button
