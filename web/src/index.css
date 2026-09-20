@@ -14,3 +14,15 @@ body {
   margin: 0;
   font-family: system-ui, "Segoe UI", Roboto, sans-serif;
 }
+
+/* iOS auto-zooms the page on focus when a form field's font-size is under
+   16px. Forcing 16px on mobile widths prevents that jump (and the stuck
+   zoomed-in state some WKWebViews leave you in) without touching the
+   Tailwind text-sm sizing used everywhere else. */
+@media (max-width: 640px) {
+  input,
+  select,
+  textarea {
+    font-size: 16px;
+  }
+}
