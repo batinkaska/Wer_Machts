@@ -1,4 +1,5 @@
 import { type FormEvent, useEffect, useRef, useState } from "react";
+import { createPortal } from "react-dom";
 import { useTranslation } from "react-i18next";
 import { PinIcon, SearchIcon } from "../icons";
 import { type PlzSuggestion, searchPostalCodes } from "../../lib/postalCodes";
@@ -31,17 +32,45 @@ export function SearchBar({
   const [suggestions, setSuggestions] = useState<PlzSuggestion[]>([]);
   const [showSuggestions, setShowSuggestions] = useState(false);
   const [wholeCountrySelected, setWholeCountrySelected] = useState(false);
+  const [dropdownRect, setDropdownRect] = useState<{ top: number; left: number; width: number } | null>(
+    null,
+  );
   const plzContainerRef = useRef<HTMLDivElement>(null);
+  const dropdownRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     function handleClickOutside(e: MouseEvent) {
-      if (plzContainerRef.current && !plzContainerRef.current.contains(e.target as Node)) {
+      const target = e.target as Node;
+      const insideInput = plzContainerRef.current?.contains(target);
+      const insideDropdown = dropdownRef.current?.contains(target);
+      if (!insideInput && !insideDropdown) {
         setShowSuggestions(false);
       }
     }
     document.addEventListener("mousedown", handleClickOutside);
     return () => document.removeEventListener("mousedown", handleClickOutside);
   }, []);
+
+  useEffect(() => {
+    if (!showSuggestions) return;
+    function closeOnScroll() {
+      setShowSuggestions(false);
+    }
+    window.addEventListener("scroll", closeOnScroll, true);
+    window.addEventListener("resize", closeOnScroll);
+    return () => {
+      window.removeEventListener("scroll", closeOnScroll, true);
+      window.removeEventListener("resize", closeOnScroll);
+    };
+  }, [showSuggestions]);
+
+  function openSuggestions() {
+    const rect = plzContainerRef.current?.getBoundingClientRect();
+    if (rect) {
+      setDropdownRect({ top: rect.bottom + 4, left: rect.left, width: Math.max(rect.width, 224) });
+    }
+    setShowSuggestions(true);
+  }
 
   useEffect(() => {
     if (!plz) {
@@ -99,31 +128,38 @@ export function SearchBar({
                 setWholeCountrySelected(false);
                 onPlzChange(e.target.value);
               }}
-              onFocus={() => setShowSuggestions(true)}
+              onFocus={openSuggestions}
               placeholder={t("search.plzPlaceholder")}
               className="w-full min-w-0 bg-transparent text-sm text-gray-900 placeholder:text-gray-400 focus:outline-none dark:text-gray-100 sm:w-28 sm:py-2"
             />
-            {showSuggestions && (
-              <div className="absolute left-0 top-full z-20 mt-2 max-h-72 w-56 overflow-y-auto rounded-lg border border-gray-200 bg-white py-1 text-sm shadow-lg dark:border-gray-700 dark:bg-gray-800">
-                <button
-                  type="button"
-                  onClick={handleSelectGermany}
-                  className="block w-full px-3 py-1.5 text-left font-medium text-gray-900 hover:bg-gray-50 dark:text-gray-100 dark:hover:bg-gray-700"
+            {showSuggestions &&
+              dropdownRect &&
+              createPortal(
+                <div
+                  ref={dropdownRef}
+                  style={{ top: dropdownRect.top, left: dropdownRect.left, width: dropdownRect.width }}
+                  className="fixed z-50 max-h-72 overflow-y-auto rounded-lg border border-gray-200 bg-white py-1 text-sm shadow-lg dark:border-gray-700 dark:bg-gray-800"
                 >
-                  {t("search.wholeCountry")}
-                </button>
-                {suggestions.map((s) => (
                   <button
-                    key={s.plz}
                     type="button"
-                    onClick={() => handleSelectPlz(s.plz)}
-                    className="block w-full px-3 py-1.5 text-left text-gray-700 hover:bg-gray-50 dark:text-gray-300 dark:hover:bg-gray-700"
+                    onClick={handleSelectGermany}
+                    className="block w-full px-3 py-1.5 text-left font-medium text-gray-900 hover:bg-gray-50 dark:text-gray-100 dark:hover:bg-gray-700"
                   >
-                    {s.plz} {s.placeName}
+                    {t("search.wholeCountry")}
                   </button>
-                ))}
-              </div>
-            )}
+                  {suggestions.map((s) => (
+                    <button
+                      key={s.plz}
+                      type="button"
+                      onClick={() => handleSelectPlz(s.plz)}
+                      className="block w-full px-3 py-1.5 text-left text-gray-700 hover:bg-gray-50 dark:text-gray-300 dark:hover:bg-gray-700"
+                    >
+                      {s.plz} {s.placeName}
+                    </button>
+                  ))}
+                </div>,
+                document.body,
+              )}
           </div>
           <div className="flex items-center rounded-lg bg-gray-50 px-3 py-2 dark:bg-gray-900/40 sm:rounded-none sm:bg-transparent sm:py-0 sm:px-3 sm:dark:bg-transparent">
             <select
