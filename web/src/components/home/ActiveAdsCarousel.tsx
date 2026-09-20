@@ -1,4 +1,4 @@
-import { useMemo, useState } from "react";
+import { type TouchEvent, useMemo, useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { Link } from "react-router-dom";
 import { priceLabel } from "../ads/AdCard";
@@ -49,12 +49,33 @@ export function ActiveAdsCarousel() {
   const { t } = useTranslation();
   const { ads, loading } = useAds({ hideReserved: true });
   const [page, setPage] = useState(0);
+  const touchStartRef = useRef<{ x: number; y: number } | null>(null);
 
   const visibleAds = useMemo(() => ads.slice(0, MAX_ADS), [ads]);
   const totalPages = Math.ceil(visibleAds.length / PAGE_SIZE);
   const currentPage = Math.min(page, Math.max(totalPages - 1, 0));
 
   if (loading || visibleAds.length === 0) return null;
+
+  function handleTouchStart(e: TouchEvent) {
+    const touch = e.touches[0];
+    touchStartRef.current = { x: touch.clientX, y: touch.clientY };
+  }
+
+  function handleTouchEnd(e: TouchEvent) {
+    const start = touchStartRef.current;
+    touchStartRef.current = null;
+    if (!start || totalPages <= 1) return;
+    const touch = e.changedTouches[0];
+    const dx = touch.clientX - start.x;
+    const dy = touch.clientY - start.y;
+    if (Math.abs(dx) < 50 || Math.abs(dx) < Math.abs(dy)) return;
+    if (dx < 0) {
+      setPage((p) => Math.min(p + 1, totalPages - 1));
+    } else {
+      setPage((p) => Math.max(p - 1, 0));
+    }
+  }
 
   const pageAds = visibleAds.slice(currentPage * PAGE_SIZE, currentPage * PAGE_SIZE + PAGE_SIZE);
   const buttonClass =
@@ -89,7 +110,11 @@ export function ActiveAdsCarousel() {
           </div>
         )}
       </div>
-      <div className="grid grid-cols-2 gap-4 lg:grid-cols-4">
+      <div
+        className="grid grid-cols-2 gap-4 lg:grid-cols-4"
+        onTouchStart={handleTouchStart}
+        onTouchEnd={handleTouchEnd}
+      >
         {pageAds.map((ad) => (
           <CompactAdCard key={ad.id} ad={ad} />
         ))}

@@ -119,9 +119,9 @@ function EditableRow({
 
   return (
     <div className="flex items-center justify-between gap-3 px-4 py-3">
-      <div>
+      <div className="min-w-0">
         <p className="text-sm text-gray-500 dark:text-gray-400">{label}</p>
-        <p className="text-sm text-gray-900 dark:text-gray-100">{value || placeholder}</p>
+        <p className="break-words text-sm text-gray-900 dark:text-gray-100">{value || placeholder}</p>
       </div>
       <div className="flex shrink-0 items-center gap-3">
         {extraAction}
@@ -202,9 +202,11 @@ function EditableTextareaRow({
 
   return (
     <div className="flex items-start justify-between gap-3 px-4 py-3">
-      <div>
+      <div className="min-w-0">
         <p className="text-sm text-gray-500 dark:text-gray-400">{label}</p>
-        <p className="whitespace-pre-wrap text-sm text-gray-900 dark:text-gray-100">{value || placeholder}</p>
+        <p className="whitespace-pre-wrap break-words text-sm text-gray-900 dark:text-gray-100">
+          {value || placeholder}
+        </p>
       </div>
       <button
         type="button"
@@ -300,11 +302,11 @@ function EmailRow({
 
   return (
     <div className="flex items-center justify-between gap-3 px-4 py-3">
-      <div>
+      <div className="min-w-0">
         <p className="text-sm text-gray-500 dark:text-gray-400">{t("settings.emailLabel")}</p>
-        <p className="text-sm text-gray-900 dark:text-gray-100">{email}</p>
+        <p className="break-words text-sm text-gray-900 dark:text-gray-100">{email}</p>
         {pendingEmail && (
-          <p className="mt-1 text-xs text-gray-500 dark:text-gray-400">
+          <p className="mt-1 break-words text-xs text-gray-500 dark:text-gray-400">
             {t("settings.emailPending", { email: pendingEmail })}
           </p>
         )}
@@ -962,7 +964,7 @@ export function SettingsPage() {
               rel="noopener noreferrer"
               className="flex items-center justify-between gap-3 px-4 py-3 hover:bg-gray-50 dark:hover:bg-gray-800"
             >
-              <span className="whitespace-pre-line text-sm font-medium text-gray-900 dark:text-gray-100">
+              <span className="min-w-0 whitespace-pre-line text-sm font-medium text-gray-900 dark:text-gray-100">
                 {link.label}
               </span>
               <span className="flex shrink-0 items-center gap-1 text-sm font-medium text-[#5fac5e]">
