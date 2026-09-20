@@ -1,3 +1,5 @@
+import { FirebaseAuthentication } from "@capacitor-firebase/authentication";
+import { Capacitor } from "@capacitor/core";
 import {
   type User as FirebaseUser,
   EmailAuthProvider,
@@ -8,6 +10,7 @@ import {
   reauthenticateWithCredential,
   reauthenticateWithPopup,
   reload,
+  signInWithCredential,
   signInWithEmailAndPassword,
   signInWithPopup,
   signOut,
@@ -168,8 +171,19 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     await signInWithEmailAndPassword(auth, email, password);
   }
 
+  async function getNativeGoogleCredential() {
+    const result = await FirebaseAuthentication.signInWithGoogle();
+    const idToken = result.credential?.idToken;
+    if (!idToken) throw new Error("Google-Anmeldung fehlgeschlagen");
+    return GoogleAuthProvider.credential(idToken, result.credential?.accessToken);
+  }
+
   async function loginWithGoogle() {
-    await signInWithPopup(auth, new GoogleAuthProvider());
+    if (Capacitor.isNativePlatform()) {
+      await signInWithCredential(auth, await getNativeGoogleCredential());
+    } else {
+      await signInWithPopup(auth, new GoogleAuthProvider());
+    }
   }
 
   async function resetPassword(email: string) {
@@ -321,7 +335,11 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     if (!firebaseUser) throw new Error("No authenticated user");
     const isGoogleUser = firebaseUser.providerData.some((p) => p.providerId === "google.com");
     if (isGoogleUser) {
-      await reauthenticateWithPopup(firebaseUser, new GoogleAuthProvider());
+      if (Capacitor.isNativePlatform()) {
+        await reauthenticateWithCredential(firebaseUser, await getNativeGoogleCredential());
+      } else {
+        await reauthenticateWithPopup(firebaseUser, new GoogleAuthProvider());
+      }
       return;
     }
     if (!currentPassword || !firebaseUser.email) {

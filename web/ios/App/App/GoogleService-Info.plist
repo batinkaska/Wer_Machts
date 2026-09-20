@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>CLIENT_ID</key>
+	<string>159623614880-d40lm4pgklgdq1keknm0gqi7f4d0824h.apps.googleusercontent.com</string>
+	<key>REVERSED_CLIENT_ID</key>
+	<string>com.googleusercontent.apps.159623614880-d40lm4pgklgdq1keknm0gqi7f4d0824h</string>
+	<key>API_KEY</key>
+	<string>AIzaSyA6B2mEVNZPjbsXg5-P5EsNrtlB6BHMsQA</string>
+	<key>GCM_SENDER_ID</key>
+	<string>159623614880</string>
+	<key>PLIST_VERSION</key>
+	<string>1</string>
+	<key>BUNDLE_ID</key>
+	<string>com.wermacht.app</string>
+	<key>PROJECT_ID</key>
+	<string>wermacht-7764c</string>
+	<key>STORAGE_BUCKET</key>
+	<string>wermacht-7764c.firebasestorage.app</string>
+	<key>IS_ADS_ENABLED</key>
+	<false></false>
+	<key>IS_ANALYTICS_ENABLED</key>
+	<false></false>
+	<key>IS_APPINVITE_ENABLED</key>
+	<true></true>
+	<key>IS_GCM_ENABLED</key>
+	<true></true>
+	<key>IS_SIGNIN_ENABLED</key>
+	<true></true>
+	<key>GOOGLE_APP_ID</key>
+	<string>1:159623614880:ios:f7474e1fae854a62f994c5</string>
+</dict>
+</plist>
