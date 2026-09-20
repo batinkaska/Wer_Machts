@@ -36,11 +36,7 @@ export function LoginPage() {
       await loginWithGoogle();
       navigate("/");
     } catch (err) {
-      const raw =
-        err && typeof err === "object"
-          ? JSON.stringify(err, Object.getOwnPropertyNames(err))
-          : String(err);
-      setError(`${friendlyErrorMessage(err, t, "auth.loginFailed")} [DEBUG: ${raw}]`);
+      setError(friendlyErrorMessage(err, t, "auth.loginFailed"));
     }
   }
 
