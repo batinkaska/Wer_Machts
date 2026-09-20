@@ -792,7 +792,7 @@ export function SettingsPage() {
   const followersVisible = appUser.followersVisible ?? true;
 
   return (
-    <div className="mx-auto max-w-2xl space-y-6 px-4 py-10">
+    <div className="mx-auto max-w-2xl space-y-6 px-4 pb-10 pt-6">
       <h1 className="text-2xl font-semibold text-gray-900 dark:text-gray-100">{t("settings.pageTitle")}</h1>
 
       <ProSettingsSection appUser={appUser} refreshAppUser={refreshAppUser} />

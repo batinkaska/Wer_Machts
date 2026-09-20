@@ -308,7 +308,7 @@ export function MyBidsPage() {
   const loading = givenLoading || receivedLoading;
 
   return (
-    <div className="mx-auto max-w-3xl px-4 py-10">
+    <div className="mx-auto max-w-3xl px-4 pb-10 pt-6">
       <h1 className="mb-6 text-2xl font-semibold text-gray-900 dark:text-gray-100">{t("myBids.pageTitle")}</h1>
       {loading && <p className="text-gray-500 dark:text-gray-400">{t("common.loading")}</p>}
       {!loading && (
