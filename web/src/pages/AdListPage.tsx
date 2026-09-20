@@ -81,7 +81,7 @@ export function AdListPage() {
   }
 
   return (
-    <div className="mx-auto max-w-5xl px-4 py-10">
+    <div className="mx-auto max-w-5xl px-4 pb-10 pt-6">
       <h1 className="mb-6 text-2xl font-semibold text-gray-900 dark:text-gray-100">{t("adList.pageTitle")}</h1>
       <div className="mb-4 flex flex-wrap items-start justify-center gap-3">
         <CategoryFilter
