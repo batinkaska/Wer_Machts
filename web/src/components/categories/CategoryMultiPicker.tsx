@@ -10,7 +10,6 @@ import {
   categoryLabels,
 } from "../../lib/categories";
 import { ChevronDownIcon, ChevronRightIcon } from "../icons";
-import { useDelayedHover } from "./useDelayedHover";
 
 interface CategoryMultiPickerProps {
   selected: string[];
@@ -40,19 +39,18 @@ export function CategoryMultiPicker({
 }: CategoryMultiPickerProps) {
   const { t } = useTranslation();
   const [open, setOpen] = useState(false);
+  const [expandedGroup, setExpandedGroup] = useState<string | null>(null);
   const containerRef = useRef<HTMLDivElement>(null);
-  const { hoveredKey: hoveredGroup, open: openSubmenu, scheduleClose, cancelClose, closeNow } = useDelayedHover();
 
   useEffect(() => {
     function handleClickOutside(e: MouseEvent) {
       if (containerRef.current && !containerRef.current.contains(e.target as Node)) {
         setOpen(false);
-        closeNow();
+        setExpandedGroup(null);
       }
     }
     document.addEventListener("mousedown", handleClickOutside);
     return () => document.removeEventListener("mousedown", handleClickOutside);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   function toggle(slug: string) {
@@ -104,14 +102,14 @@ export function CategoryMultiPicker({
           </button>
 
           {open && (
-            <div className="absolute left-0 top-full z-30 mt-2 w-72 rounded-lg border border-gray-200 bg-white py-2 shadow-lg dark:border-gray-700 dark:bg-gray-800">
+            <div className="absolute left-0 top-full z-30 mt-2 max-h-96 w-72 max-w-[calc(100vw-2rem)] overflow-y-auto rounded-lg border border-gray-200 bg-white py-2 shadow-lg dark:border-gray-700 dark:bg-gray-800">
               {showAllOption && (
                 <button
                   type="button"
                   onClick={() => {
                     onChange([]);
                     setOpen(false);
-                    closeNow();
+                    setExpandedGroup(null);
                   }}
                   className={`block w-full border-b border-gray-100 px-4 py-2.5 text-left text-sm font-semibold hover:bg-gray-50 dark:border-gray-700 dark:hover:bg-gray-700 ${
                     selected.length === 0 ? "text-[#4d9a4c]" : "text-gray-900 dark:text-gray-100"
@@ -125,15 +123,11 @@ export function CategoryMultiPicker({
                 const Icon = CATEGORY_GROUP_ICONS[group.groupKey];
                 const groupSelected = group.categories.every((c) => selected.includes(c.slug));
                 const anySelected = group.categories.some((c) => selected.includes(c.slug));
+                const isExpanded = expandedGroup === group.groupKey;
 
                 return (
-                  <div
-                    key={group.groupKey}
-                    className="relative"
-                    onMouseEnter={() => openSubmenu(group.groupKey)}
-                    onMouseLeave={() => scheduleClose(group.groupKey)}
-                  >
-                    <div className="flex items-center justify-between gap-3 px-4 py-2.5 text-sm text-gray-900 hover:bg-gray-50 dark:text-gray-100 dark:hover:bg-gray-700">
+                  <div key={group.groupKey}>
+                    <div className="flex items-center justify-between gap-2 px-4 py-2.5 text-sm text-gray-900 hover:bg-gray-50 dark:text-gray-100 dark:hover:bg-gray-700">
                       {allowGroupSelect ? (
                         <button
                           type="button"
@@ -155,15 +149,20 @@ export function CategoryMultiPicker({
                           {anySelected && <span className="h-1.5 w-1.5 shrink-0 rounded-full bg-[#5fac5e]" />}
                         </span>
                       )}
-                      <ChevronRightIcon className="h-4 w-4 shrink-0 text-gray-400 dark:text-gray-500" />
+                      <button
+                        type="button"
+                        onClick={() => setExpandedGroup(isExpanded ? null : group.groupKey)}
+                        aria-label={categoryGroupName(t, group.groupKey)}
+                        className="shrink-0 rounded p-1 text-gray-400 hover:bg-gray-100 dark:text-gray-500 dark:hover:bg-gray-700"
+                      >
+                        <ChevronRightIcon
+                          className={`h-4 w-4 transition-transform ${isExpanded ? "rotate-90" : ""}`}
+                        />
+                      </button>
                     </div>
 
-                    {hoveredGroup === group.groupKey && (
-                      <div
-                        className="absolute left-full top-0 z-30 ml-1 w-64 rounded-lg border border-gray-200 bg-white py-2 shadow-lg dark:border-gray-700 dark:bg-gray-800"
-                        onMouseEnter={cancelClose}
-                        onMouseLeave={() => scheduleClose(group.groupKey)}
-                      >
+                    {isExpanded && (
+                      <div className="space-y-0.5 bg-gray-50 py-1.5 pl-11 pr-4 dark:bg-gray-900/40">
                         {group.categories.map((c) => {
                           const isSelected = selected.includes(c.slug);
                           return (
@@ -171,7 +170,7 @@ export function CategoryMultiPicker({
                               key={c.slug}
                               type="button"
                               onClick={() => toggle(c.slug)}
-                              className={`block w-full px-4 py-2 text-left text-sm hover:bg-gray-50 dark:hover:bg-gray-700 ${
+                              className={`block w-full py-1.5 text-left text-sm ${
                                 isSelected ? "font-medium text-[#4d9a4c]" : "text-gray-700 dark:text-gray-300"
                               }`}
                             >
@@ -190,7 +189,7 @@ export function CategoryMultiPicker({
                   type="button"
                   onClick={() => {
                     setOpen(false);
-                    closeNow();
+                    setExpandedGroup(null);
                   }}
                   className="w-full rounded bg-gray-900 px-3 py-1.5 text-xs font-medium text-white hover:bg-gray-700 dark:bg-gray-100 dark:text-gray-900 dark:hover:bg-gray-300"
                 >
