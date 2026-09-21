@@ -1,46 +1,84 @@
 import { useEffect, useRef, useState } from "react";
+import { createPortal } from "react-dom";
 import { useTranslation } from "react-i18next";
 import { Link } from "react-router-dom";
 import { CATEGORY_GROUPS, CATEGORY_GROUP_ICONS, categoryGroupName, categoryLabel } from "../../lib/categories";
 import { ChevronDownIcon, ChevronRightIcon } from "../icons";
-import { useDelayedHover } from "./useDelayedHover";
+
+const MENU_WIDTH = 288;
+const VIEWPORT_MARGIN = 16;
 
 export function CategoryMegaMenu() {
   const { t } = useTranslation();
   const [open, setOpen] = useState(false);
+  const [expandedGroup, setExpandedGroup] = useState<string | null>(null);
+  const [menuPos, setMenuPos] = useState<{ top: number; left: number } | null>(null);
   const containerRef = useRef<HTMLDivElement>(null);
-  const { hoveredKey: hoveredGroup, open: openSubmenu, scheduleClose, cancelClose, closeNow } = useDelayedHover();
+  const menuRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     function handleClickOutside(e: MouseEvent) {
-      if (containerRef.current && !containerRef.current.contains(e.target as Node)) {
+      const target = e.target as Node;
+      const insideTrigger = containerRef.current?.contains(target);
+      const insideMenu = menuRef.current?.contains(target);
+      if (!insideTrigger && !insideMenu) {
         setOpen(false);
-        closeNow();
+        setExpandedGroup(null);
       }
     }
     document.addEventListener("mousedown", handleClickOutside);
     return () => document.removeEventListener("mousedown", handleClickOutside);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
+
+  useEffect(() => {
+    if (!open) return;
+    function closeOnScroll() {
+      setOpen(false);
+      setExpandedGroup(null);
+    }
+    window.addEventListener("scroll", closeOnScroll, true);
+    window.addEventListener("resize", closeOnScroll);
+    return () => {
+      window.removeEventListener("scroll", closeOnScroll, true);
+      window.removeEventListener("resize", closeOnScroll);
+    };
+  }, [open]);
 
   function closeMenu() {
     setOpen(false);
-    closeNow();
+    setExpandedGroup(null);
+  }
+
+  function toggleOpen() {
+    if (!open) {
+      const rect = containerRef.current?.getBoundingClientRect();
+      if (rect) {
+        const maxLeft = window.innerWidth - MENU_WIDTH - VIEWPORT_MARGIN;
+        setMenuPos({ top: rect.bottom + 8, left: Math.max(VIEWPORT_MARGIN, Math.min(rect.left, maxLeft)) });
+      }
+    }
+    setOpen((v) => !v);
   }
 
   return (
     <div ref={containerRef} className="relative">
       <button
         type="button"
-        onClick={() => setOpen((v) => !v)}
+        onClick={toggleOpen}
         className="flex items-center gap-2 rounded-full border border-gray-200 bg-white px-4 py-2 text-sm font-medium text-gray-900 shadow-sm hover:bg-gray-50 dark:border-gray-700 dark:bg-gray-800 dark:text-gray-100 dark:hover:bg-gray-700"
       >
         {t("categoryPicker.allCategories")}
         <ChevronDownIcon className="h-4 w-4" />
       </button>
 
-      {open && (
-        <div className="absolute left-0 top-full z-30 mt-2 w-72 rounded-lg border border-gray-200 bg-white py-2 shadow-lg dark:border-gray-700 dark:bg-gray-800">
+      {open &&
+        menuPos &&
+        createPortal(
+          <div
+            ref={menuRef}
+            style={{ top: menuPos.top, left: menuPos.left, width: MENU_WIDTH }}
+            className="fixed z-30 max-h-96 overflow-y-auto rounded-lg border border-gray-200 bg-white py-2 shadow-lg dark:border-gray-700 dark:bg-gray-800"
+          >
           <Link
             to="/ads"
             onClick={closeMenu}
@@ -52,40 +90,41 @@ export function CategoryMegaMenu() {
             const Icon = CATEGORY_GROUP_ICONS[group.groupKey];
             const hasSubmenu = group.categories.length > 1;
             const groupHref = `/ads?categories=${group.categories.map((c) => c.slug).join(",")}`;
+            const isExpanded = expandedGroup === group.groupKey;
 
             return (
-              <div
-                key={group.groupKey}
-                className="relative"
-                onMouseEnter={() => hasSubmenu && openSubmenu(group.groupKey)}
-                onMouseLeave={() => hasSubmenu && scheduleClose(group.groupKey)}
-              >
-                <Link
-                  to={groupHref}
-                  onClick={closeMenu}
-                  className="flex items-center justify-between gap-3 px-4 py-2.5 text-sm text-gray-900 hover:bg-gray-50 dark:text-gray-100 dark:hover:bg-gray-700"
-                >
-                  <span className="flex items-center gap-3">
+              <div key={group.groupKey}>
+                <div className="flex items-center gap-1 pr-2">
+                  <Link
+                    to={groupHref}
+                    onClick={closeMenu}
+                    className="flex flex-1 items-center gap-3 px-4 py-2.5 text-sm text-gray-900 hover:bg-gray-50 dark:text-gray-100 dark:hover:bg-gray-700"
+                  >
                     {Icon && <Icon className="h-5 w-5 shrink-0 text-[#5fac5e]" />}
                     {categoryGroupName(t, group.groupKey)}
-                  </span>
+                  </Link>
                   {hasSubmenu && (
-                    <ChevronRightIcon className="h-4 w-4 shrink-0 text-gray-400 dark:text-gray-500" />
+                    <button
+                      type="button"
+                      onClick={() => setExpandedGroup(isExpanded ? null : group.groupKey)}
+                      aria-label={categoryGroupName(t, group.groupKey)}
+                      className="shrink-0 rounded p-1 text-gray-400 hover:bg-gray-100 dark:text-gray-500 dark:hover:bg-gray-700"
+                    >
+                      <ChevronRightIcon
+                        className={`h-4 w-4 transition-transform ${isExpanded ? "rotate-90" : ""}`}
+                      />
+                    </button>
                   )}
-                </Link>
+                </div>
 
-                {hasSubmenu && hoveredGroup === group.groupKey && (
-                  <div
-                    className="absolute left-full top-0 z-30 ml-1 w-64 rounded-lg border border-gray-200 bg-white py-2 shadow-lg dark:border-gray-700 dark:bg-gray-800"
-                    onMouseEnter={cancelClose}
-                    onMouseLeave={() => scheduleClose(group.groupKey)}
-                  >
+                {hasSubmenu && isExpanded && (
+                  <div className="space-y-0.5 bg-gray-50 py-1.5 pl-11 pr-4 dark:bg-gray-900/40">
                     {group.categories.map((c) => (
                       <Link
                         key={c.slug}
                         to={`/ads?categories=${c.slug}`}
                         onClick={closeMenu}
-                        className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-50 dark:text-gray-300 dark:hover:bg-gray-700"
+                        className="block py-1.5 text-sm text-gray-700 dark:text-gray-300"
                       >
                         {categoryLabel(t, c.slug)}
                       </Link>
@@ -95,8 +134,9 @@ export function CategoryMegaMenu() {
               </div>
             );
           })}
-        </div>
-      )}
+          </div>,
+          document.body,
+        )}
     </div>
   );
 }

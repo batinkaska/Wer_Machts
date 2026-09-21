@@ -1,4 +1,5 @@
 import { useEffect, useRef, useState } from "react";
+import { createPortal } from "react-dom";
 import { useTranslation } from "react-i18next";
 import {
   CATEGORY_GROUPS,
@@ -40,11 +41,18 @@ export function CategoryMultiPicker({
   const { t } = useTranslation();
   const [open, setOpen] = useState(false);
   const [expandedGroup, setExpandedGroup] = useState<string | null>(null);
+  const [menuPos, setMenuPos] = useState<{ top: number; left: number } | null>(null);
   const containerRef = useRef<HTMLDivElement>(null);
+  const menuRef = useRef<HTMLDivElement>(null);
+  const menuWidth = variant === "menu" ? 288 : 320;
+  const viewportMargin = 16;
 
   useEffect(() => {
     function handleClickOutside(e: MouseEvent) {
-      if (containerRef.current && !containerRef.current.contains(e.target as Node)) {
+      const target = e.target as Node;
+      const insideTrigger = containerRef.current?.contains(target);
+      const insideMenu = menuRef.current?.contains(target);
+      if (!insideTrigger && !insideMenu) {
         setOpen(false);
         setExpandedGroup(null);
       }
@@ -52,6 +60,31 @@ export function CategoryMultiPicker({
     document.addEventListener("mousedown", handleClickOutside);
     return () => document.removeEventListener("mousedown", handleClickOutside);
   }, []);
+
+  useEffect(() => {
+    if (!open) return;
+    function closeOnScroll() {
+      setOpen(false);
+      setExpandedGroup(null);
+    }
+    window.addEventListener("scroll", closeOnScroll, true);
+    window.addEventListener("resize", closeOnScroll);
+    return () => {
+      window.removeEventListener("scroll", closeOnScroll, true);
+      window.removeEventListener("resize", closeOnScroll);
+    };
+  }, [open]);
+
+  function toggleOpen() {
+    if (!open) {
+      const rect = containerRef.current?.getBoundingClientRect();
+      if (rect) {
+        const maxLeft = window.innerWidth - menuWidth - viewportMargin;
+        setMenuPos({ top: rect.bottom + 8, left: Math.max(viewportMargin, Math.min(rect.left, maxLeft)) });
+      }
+    }
+    setOpen((v) => !v);
+  }
 
   function toggle(slug: string) {
     onChange(selected.includes(slug) ? selected.filter((s) => s !== slug) : [...selected, slug]);
@@ -94,15 +127,21 @@ export function CategoryMultiPicker({
         <div ref={containerRef} className="relative inline-block">
           <button
             type="button"
-            onClick={() => setOpen((v) => !v)}
+            onClick={toggleOpen}
             className="flex items-center gap-2 rounded-full border border-gray-200 bg-white px-4 py-2 text-sm font-medium text-gray-900 shadow-sm hover:bg-gray-50 dark:border-gray-700 dark:bg-gray-800 dark:text-gray-100 dark:hover:bg-gray-700"
           >
             {summary}
             <ChevronDownIcon className="h-4 w-4" />
           </button>
 
-          {open && (
-            <div className="absolute left-0 top-full z-30 mt-2 max-h-96 w-72 max-w-[calc(100vw-2rem)] overflow-y-auto rounded-lg border border-gray-200 bg-white py-2 shadow-lg dark:border-gray-700 dark:bg-gray-800">
+          {open &&
+            menuPos &&
+            createPortal(
+              <div
+                ref={menuRef}
+                style={{ top: menuPos.top, left: menuPos.left, width: menuWidth }}
+                className="fixed z-30 max-h-96 overflow-y-auto rounded-lg border border-gray-200 bg-white py-2 shadow-lg dark:border-gray-700 dark:bg-gray-800"
+              >
               {showAllOption && (
                 <button
                   type="button"
@@ -196,8 +235,9 @@ export function CategoryMultiPicker({
                   {t("categoryPicker.done")}
                 </button>
               </div>
-            </div>
-          )}
+              </div>,
+              document.body,
+            )}
         </div>
         {noteField}
       </div>
@@ -209,13 +249,19 @@ export function CategoryMultiPicker({
       <div ref={containerRef} className="relative">
         <button
           type="button"
-          onClick={() => setOpen((v) => !v)}
+          onClick={toggleOpen}
           className="text-sm font-medium text-[#5fac5e] hover:underline"
         >
           {summary}
         </button>
-        {open && (
-          <div className="absolute left-0 top-full z-20 mt-2 max-h-80 w-80 overflow-y-auto rounded-lg border border-gray-200 bg-white p-3 shadow-lg dark:border-gray-700 dark:bg-gray-800">
+        {open &&
+          menuPos &&
+          createPortal(
+            <div
+              ref={menuRef}
+              style={{ top: menuPos.top, left: menuPos.left, width: menuWidth }}
+              className="fixed z-20 max-h-80 overflow-y-auto rounded-lg border border-gray-200 bg-white p-3 shadow-lg dark:border-gray-700 dark:bg-gray-800"
+            >
             {showAllOption && (
               <button
                 type="button"
@@ -303,8 +349,9 @@ export function CategoryMultiPicker({
             >
               {t("categoryPicker.done")}
             </button>
-          </div>
-        )}
+            </div>,
+            document.body,
+          )}
       </div>
       {noteField}
     </div>
