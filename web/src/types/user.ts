@@ -56,3 +56,35 @@ export interface AppUser {
   featuredAdId?: string | null;
   createdAt: Timestamp;
 }
+
+/**
+ * The subset of a user's data that anyone may read — mirrored from `users/{uid}`
+ * into `publicProfiles/{uid}` by the `onUserWritten` Cloud Function. The full
+ * `users/{uid}` document (email, phone, address, Stripe IDs, favorites, …) is
+ * readable only by its owner. Keep this list in sync with PUBLIC_PROFILE_FIELDS
+ * in functions/src/publicProfiles.ts.
+ */
+export type PublicProfile = Pick<
+  AppUser,
+  | "uid"
+  | "displayName"
+  | "photoURL"
+  | "bio"
+  | "accountType"
+  | "businessName"
+  | "impressum"
+  | "taxId"
+  | "withdrawalPolicy"
+  | "businessTerms"
+  | "galleryUrls"
+  | "emailVerified"
+  | "phoneVerified"
+  | "city"
+  | "categories"
+  | "categoryNote"
+  | "followingIds"
+  | "followersVisible"
+  | "sectionVisibility"
+  | "isPro"
+  | "createdAt"
+>;

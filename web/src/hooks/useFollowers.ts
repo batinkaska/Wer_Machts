@@ -1,10 +1,10 @@
 import { onSnapshot, query, where } from "firebase/firestore";
 import { useEffect, useState } from "react";
-import { usersCol } from "../firebase/converters";
-import type { AppUser } from "../types/user";
+import { publicProfilesCol } from "../firebase/converters";
+import type { PublicProfile } from "../types/user";
 
 export function useFollowers(uid: string | undefined) {
-  const [users, setUsers] = useState<AppUser[]>([]);
+  const [users, setUsers] = useState<PublicProfile[]>([]);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
@@ -14,7 +14,7 @@ export function useFollowers(uid: string | undefined) {
       return;
     }
     setLoading(true);
-    const q = query(usersCol, where("followingIds", "array-contains", uid));
+    const q = query(publicProfilesCol, where("followingIds", "array-contains", uid));
     return onSnapshot(q, (snap) => {
       setUsers(snap.docs.map((d) => d.data()));
       setLoading(false);

@@ -13,6 +13,7 @@ export { createProBillingPortalSession, createProCheckoutSession, setFeaturedAd 
 export { stripeWebhook } from "./stripeWebhook";
 export { onBankDetailsWritten, onNotificationCreated } from "./notificationEmails";
 export { onBidWritten, onMessageCreated };
+export { onUserWritten } from "./publicProfiles";
 
 initializeApp();
 

@@ -20,8 +20,18 @@ service cloud.firestore {
       return ad.adKind == 'biete' ? ad.ownerId : bid.providerId;
     }
 
+    // Full user document — email, phone, delivery address, Stripe IDs, favorites,
+    // blocked users… — is private to its owner. Everything other people may see
+    // lives in publicProfiles/{uid}, mirrored server-side by onUserWritten.
+    // The payer is the bidder on a "biete" ad (they buy the offered service)
+    // and the ad owner on a "suche" ad (they hire the bidder).
+    function bidPayerId(bid) {
+      let ad = get(/databases/$(database)/documents/ads/$(bid.adId)).data;
+      return ad.adKind == 'biete' ? bid.providerId : ad.ownerId;
+    }
+
     match /users/{uid} {
-      allow read: if true;
+      allow read: if isSignedIn() && request.auth.uid == uid;
       allow create: if isSignedIn() && request.auth.uid == uid;
       // Pro/Stripe fields are only ever trustworthy when written by the Cloud
       // Functions (webhook/callables, Admin SDK bypasses rules) — a plain
@@ -38,6 +48,11 @@ service cloud.firestore {
         && request.resource.data.get('stripeSubscriptionId', null) == resource.data.get('stripeSubscriptionId', null)
         && request.resource.data.get('featuredAdId', null) == resource.data.get('featuredAdId', null);
       allow delete: if isSignedIn() && request.auth.uid == uid;
+    }
+
+    match /publicProfiles/{uid} {
+      allow read: if true;
+      allow write: if false;
     }
 
     match /ads/{adId} {
@@ -61,19 +76,59 @@ service cloud.firestore {
 
     match /bids/{bidId} {
       allow read: if true;
+      // A new bid always starts as a plain pending offer — payment/acceptance
+      // fields can never be pre-filled (otherwise anyone could fabricate an
+      // "accepted + paid" deal that shows up as completed work on a profile).
       allow create: if isSignedIn()
-        && request.resource.data.providerId == request.auth.uid;
+        && request.resource.data.providerId == request.auth.uid
+        && request.resource.data.keys().hasOnly(
+          ['adId', 'adTitle', 'adKind', 'providerId', 'providerName', 'amount', 'message', 'status', 'createdAt'])
+        && request.resource.data.status == 'pending'
+        && request.resource.data.amount is number
+        && request.resource.data.amount > 0
+        && get(/databases/$(database)/documents/ads/$(request.resource.data.adId)).data.ownerId != request.auth.uid;
+
+      // Clients may only ever touch these four fields, each under its own
+      // condition. Everything else — amount, providerId, adId, and all payment
+      // fields (paymentStatus, stripePaymentIntentId, supportAmount,
+      // processingFee) — is immutable from the client: payment state is only
+      // ever set by the Cloud Functions (Admin SDK) after verifying with Stripe,
+      // and the amount can never be changed after the fact (a payer could
+      // otherwise lower it to 1 € right before paying).
       allow update: if isSignedIn() && (
         resource.data.providerId == request.auth.uid ||
         get(/databases/$(database)/documents/ads/$(resource.data.adId)).data.ownerId == request.auth.uid
       )
-        // paymentStatus / stripePaymentIntentId are only ever trustworthy when set by
-        // the Cloud Functions (Admin SDK, bypasses rules) after verifying with Stripe —
-        // a plain client write must never be able to change them.
-        && request.resource.data.get('paymentStatus', null) == resource.data.get('paymentStatus', null)
-        && request.resource.data.get('stripePaymentIntentId', null) == resource.data.get('stripePaymentIntentId', null)
-        && request.resource.data.get('supportAmount', null) == resource.data.get('supportAmount', null)
-        && request.resource.data.get('processingFee', null) == resource.data.get('processingFee', null);
+        && request.resource.data.diff(resource.data).affectedKeys()
+          .hasOnly(['status', 'paymentMethod', 'hiddenFromProfile', 'hiddenForUserIds'])
+        // Only the ad owner decides on a pending bid, and only once.
+        && (
+          !request.resource.data.diff(resource.data).affectedKeys().hasAny(['status']) || (
+            get(/databases/$(database)/documents/ads/$(resource.data.adId)).data.ownerId == request.auth.uid
+            && resource.data.status == 'pending'
+            && request.resource.data.status in ['accepted', 'rejected']
+          )
+        )
+        // Only the payer may switch to cash, only on an accepted (or being
+        // accepted) deal, and never once a card payment has gone through.
+        && (
+          !request.resource.data.diff(resource.data).affectedKeys().hasAny(['paymentMethod']) || (
+            request.auth.uid == bidPayerId(resource.data)
+            && request.resource.data.paymentMethod == 'cash'
+            && request.resource.data.status == 'accepted'
+            && resource.data.get('paymentStatus', null) != 'paid'
+          )
+        )
+        // Each party can only add themselves to their own hide-list.
+        && (
+          !request.resource.data.diff(resource.data).affectedKeys().hasAny(['hiddenForUserIds']) ||
+          request.resource.data.hiddenForUserIds.toSet()
+            == resource.data.get('hiddenForUserIds', []).toSet().union([request.auth.uid].toSet())
+        )
+        && (
+          !request.resource.data.diff(resource.data).affectedKeys().hasAny(['hiddenFromProfile']) ||
+          request.resource.data.hiddenFromProfile == true
+        );
       allow delete: if isSignedIn() && (
         resource.data.providerId == request.auth.uid ||
         get(/databases/$(database)/documents/ads/$(resource.data.adId)).data.ownerId == request.auth.uid

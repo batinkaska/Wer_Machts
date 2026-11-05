@@ -8,7 +8,7 @@ import { MessageInput } from "../components/messaging/MessageInput";
 import { MessageThread } from "../components/messaging/MessageThread";
 import { ReviewBox } from "../components/reviews/ReviewBox";
 import { useAuth } from "../contexts/AuthContext";
-import { adsCol, messagesCol, reportsCol, usersCol } from "../firebase/converters";
+import { adsCol, messagesCol, reportsCol, publicProfilesCol } from "../firebase/converters";
 import { useConversationSummaries } from "../hooks/useConversationSummaries";
 import { useMessages } from "../hooks/useMessages";
 
@@ -76,7 +76,7 @@ export function MessagesPage() {
         setFallbackAdStatus(snap.data().status);
       }
     });
-    getDoc(doc(usersCol, otherUid)).then((snap) => {
+    getDoc(doc(publicProfilesCol, otherUid)).then((snap) => {
       if (snap.exists()) setFallbackOtherName(snap.data().displayName);
     });
   }, [active, adId, otherUid]);

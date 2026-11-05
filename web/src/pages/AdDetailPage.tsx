@@ -19,7 +19,7 @@ import { ReviewBox } from "../components/reviews/ReviewBox";
 import { ProBadge } from "../components/ProBadge";
 import { VerifiedBadge } from "../components/VerifiedBadge";
 import { useAuth } from "../contexts/AuthContext";
-import { adsCol, bidsCol, messagesCol, reportsCol, usersCol } from "../firebase/converters";
+import { adsCol, bidsCol, messagesCol, reportsCol, publicProfilesCol } from "../firebase/converters";
 import { db } from "../firebase/config";
 import { useAd } from "../hooks/useAd";
 import { useAds } from "../hooks/useAds";
@@ -29,7 +29,7 @@ import { categoryLabels } from "../lib/categories";
 import { useDateFormatter } from "../lib/useDateFormatter";
 import { republishAd } from "../lib/republishAd";
 import { makeConversationId } from "../types/message";
-import type { AppUser } from "../types/user";
+import type { PublicProfile } from "../types/user";
 import type { Bid } from "../types/bid";
 
 function statusLabel(t: TFunction, status: string): string {
@@ -61,7 +61,7 @@ export function AdDetailPage() {
   const navigate = useNavigate();
   const { ads: sellerAds } = useAds({ ownerId: ad?.ownerId });
 
-  const [owner, setOwner] = useState<AppUser | null>(null);
+  const [owner, setOwner] = useState<PublicProfile | null>(null);
   const [reportOpen, setReportOpen] = useState(false);
   const [reportReason, setReportReason] = useState("");
   const [reportSubmitted, setReportSubmitted] = useState(false);
@@ -74,12 +74,12 @@ export function AdDetailPage() {
 
   useEffect(() => {
     if (!ad) return;
-    getDoc(doc(usersCol, ad.ownerId))
+    getDoc(doc(publicProfilesCol, ad.ownerId))
       .then((snap) => {
         if (snap.exists()) setOwner(snap.data());
       })
       .catch(() => {
-        // Anonymous visitors can't read user profiles — the "Aktiv seit" line is skipped for them.
+        // Profile missing (e.g. deleted account) — the "Aktiv seit" line is skipped.
       });
   }, [ad]);
 

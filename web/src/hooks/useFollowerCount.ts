@@ -1,6 +1,6 @@
 import { getCountFromServer, query, where } from "firebase/firestore";
 import { useEffect, useState } from "react";
-import { usersCol } from "../firebase/converters";
+import { publicProfilesCol } from "../firebase/converters";
 
 export function useFollowerCount(uid: string | undefined) {
   const [count, setCount] = useState(0);
@@ -14,7 +14,7 @@ export function useFollowerCount(uid: string | undefined) {
     }
     let cancelled = false;
     setLoading(true);
-    getCountFromServer(query(usersCol, where("followingIds", "array-contains", uid)))
+    getCountFromServer(query(publicProfilesCol, where("followingIds", "array-contains", uid)))
       .then((snap) => {
         if (!cancelled) setCount(snap.data().count);
       })

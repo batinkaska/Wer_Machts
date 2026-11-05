@@ -13,7 +13,7 @@ import { ProBadge } from "../components/ProBadge";
 import { VerifiedBadge } from "../components/VerifiedBadge";
 import { useAuth } from "../contexts/AuthContext";
 import { storage } from "../firebase/config";
-import { adsCol, bidsCol, usersCol } from "../firebase/converters";
+import { adsCol, bidsCol, publicProfilesCol } from "../firebase/converters";
 import { useAds } from "../hooks/useAds";
 import { useMyBids } from "../hooks/useBids";
 import { useFollowerCount } from "../hooks/useFollowerCount";
@@ -21,7 +21,7 @@ import { useReviewsForUser } from "../hooks/useReviewsForUser";
 import { SONSTIGES_SLUG, categoryLabel } from "../lib/categories";
 import { useDateFormatter } from "../lib/useDateFormatter";
 import { makeConversationId } from "../types/message";
-import type { AppUser, ProfileSectionVisibility, ProfileVisibility } from "../types/user";
+import type { PublicProfile, ProfileSectionVisibility, ProfileVisibility } from "../types/user";
 
 function VisibilitySelect({
   value,
@@ -49,7 +49,7 @@ export function PublicProfilePage() {
   const { firebaseUser, appUser, toggleFollow, updateProfile, addGalleryPhoto, removeGalleryPhoto } =
     useAuth();
 
-  const [profileUser, setProfileUser] = useState<AppUser | null>(null);
+  const [profileUser, setProfileUser] = useState<PublicProfile | null>(null);
   const [loading, setLoading] = useState(true);
   const [bioDraft, setBioDraft] = useState("");
   const [editingBio, setEditingBio] = useState(false);
@@ -108,7 +108,7 @@ export function PublicProfilePage() {
       setLoading(false);
       return;
     }
-    getDoc(doc(usersCol, uid))
+    getDoc(doc(publicProfilesCol, uid))
       .then((snap) => {
         setProfileUser(snap.exists() ? snap.data() : null);
       })

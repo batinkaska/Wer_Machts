@@ -1,6 +1,6 @@
 import { doc, getDoc } from "firebase/firestore";
 import { useEffect, useMemo, useState } from "react";
-import { adsCol, usersCol } from "../firebase/converters";
+import { adsCol, publicProfilesCol } from "../firebase/converters";
 import type { ChatMessage } from "../types/message";
 import { useMyConversations } from "./useMessages";
 
@@ -56,7 +56,7 @@ export function useConversationSummaries(uid: string | undefined) {
       rawSummaries.map(async (raw) => {
         const [adSnap, userSnap] = await Promise.all([
           getDoc(doc(adsCol, raw.adId)),
-          getDoc(doc(usersCol, raw.otherUid)),
+          getDoc(doc(publicProfilesCol, raw.otherUid)),
         ]);
         return {
           ...raw,

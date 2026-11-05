@@ -1,12 +1,12 @@
 import { documentId, getDocs, query, where } from "firebase/firestore";
 import { useEffect, useState } from "react";
-import { usersCol } from "../firebase/converters";
-import type { AppUser } from "../types/user";
+import { publicProfilesCol } from "../firebase/converters";
+import type { PublicProfile } from "../types/user";
 
 const MAX_IN_CLAUSE = 30;
 
 export function useUsersByIds(ids: string[]) {
-  const [users, setUsers] = useState<AppUser[]>([]);
+  const [users, setUsers] = useState<PublicProfile[]>([]);
   const [loading, setLoading] = useState(true);
   const key = ids.join(",");
 
@@ -23,7 +23,7 @@ export function useUsersByIds(ids: string[]) {
       chunks.push(ids.slice(i, i + MAX_IN_CLAUSE));
     }
     Promise.all(
-      chunks.map((chunk) => getDocs(query(usersCol, where(documentId(), "in", chunk)))),
+      chunks.map((chunk) => getDocs(query(publicProfilesCol, where(documentId(), "in", chunk)))),
     ).then((snaps) => {
       if (!cancelled) setUsers(snaps.flatMap((snap) => snap.docs.map((d) => d.data())));
     }).finally(() => {

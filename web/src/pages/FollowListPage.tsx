@@ -3,17 +3,17 @@ import { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { Link, useParams } from "react-router-dom";
 import { useAuth } from "../contexts/AuthContext";
-import { usersCol } from "../firebase/converters";
+import { publicProfilesCol } from "../firebase/converters";
 import { useFollowers } from "../hooks/useFollowers";
 import { useUsersByIds } from "../hooks/useUsersByIds";
-import type { AppUser } from "../types/user";
+import type { PublicProfile } from "../types/user";
 
 export function FollowListPage() {
   const { t } = useTranslation();
   const { uid, kind } = useParams<{ uid: string; kind: string }>();
   const { firebaseUser, appUser } = useAuth();
 
-  const [profileUser, setProfileUser] = useState<AppUser | null>(null);
+  const [profileUser, setProfileUser] = useState<PublicProfile | null>(null);
   const [loading, setLoading] = useState(true);
 
   const isOwnProfile = firebaseUser?.uid === uid;
@@ -24,7 +24,7 @@ export function FollowListPage() {
       setLoading(false);
       return;
     }
-    getDoc(doc(usersCol, uid))
+    getDoc(doc(publicProfilesCol, uid))
       .then((snap) => setProfileUser(snap.exists() ? snap.data() : null))
       .finally(() => setLoading(false));
   }, [uid, isOwnProfile]);

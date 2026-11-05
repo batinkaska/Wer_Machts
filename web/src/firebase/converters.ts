@@ -10,7 +10,7 @@ import type { ChatMessage } from "../types/message";
 import type { Notification } from "../types/notification";
 import type { Report } from "../types/report";
 import type { Review } from "../types/review";
-import type { AppUser } from "../types/user";
+import type { AppUser, PublicProfile } from "../types/user";
 import { db } from "./config";
 
 function makeConverter<T extends { id: string }>(): FirestoreDataConverter<T> {
@@ -52,7 +52,22 @@ export const reportConverter = makeConverter<Report>();
 export const notificationConverter = makeConverter<Notification>();
 export const reviewConverter = makeConverter<Review>();
 
+const publicProfileConverter: FirestoreDataConverter<PublicProfile> = {
+  toFirestore(value: PublicProfile) {
+    const { uid: _uid, ...rest } = value;
+    return rest;
+  },
+  fromFirestore(snapshot: QueryDocumentSnapshot) {
+    return { uid: snapshot.id, ...snapshot.data() } as PublicProfile;
+  },
+};
+
+/** Only readable by the owner — use publicProfilesCol to look at anyone else. */
 export const usersCol = collection(db, "users").withConverter<AppUser>(userConverter);
+/** Public, read-only mirror of users/{uid}, written by the onUserWritten Cloud Function. */
+export const publicProfilesCol = collection(db, "publicProfiles").withConverter<PublicProfile>(
+  publicProfileConverter,
+);
 export const adsCol = collection(db, "ads").withConverter(adConverter);
 export const bidsCol = collection(db, "bids").withConverter(bidConverter);
 export const messagesCol = collection(db, "messages").withConverter(messageConverter);
