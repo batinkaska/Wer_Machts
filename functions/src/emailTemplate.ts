@@ -329,6 +329,72 @@ export function bankDetailsAdminAlertHtml(params: {
   );
 }
 
+export interface CancellationSummary {
+  name: string;
+  email: string;
+  contract: string;
+  kind: "ordinary" | "extraordinary";
+  reason: string;
+  receivedAt: string;
+  /** Human-readable end date if an active subscription was found and canceled. */
+  effectiveDate: string | null;
+}
+
+function cancellationDetailsBlock(c: CancellationSummary): string {
+  const kindLabel =
+    c.kind === "extraordinary" ? "Außerordentliche Kündigung" : "Ordentliche Kündigung zum nächstmöglichen Zeitpunkt";
+  const rows: [string, string][] = [
+    ["Eingegangen am", c.receivedAt],
+    ["Vertrag", c.contract],
+    ["Art der Kündigung", kindLabel],
+    ["Name", c.name || "—"],
+    ["E-Mail", c.email],
+  ];
+  if (c.reason) rows.push(["Grund", c.reason]);
+  const rowsHtml = rows
+    .map(
+      ([label, value]) =>
+        `<tr><td style="padding:4px 12px 4px 0;color:#6b7280;vertical-align:top;white-space:nowrap;">${escapeHtml(label)}</td><td style="padding:4px 0;white-space:pre-wrap;">${escapeHtml(value)}</td></tr>`,
+    )
+    .join("");
+  return `<tr><td style="padding:0 32px 16px 32px;"><table role="presentation" cellpadding="0" cellspacing="0" style="width:100%;font-size:14px;color:#374151;background-color:#f9fafb;border:1px solid #e5e7eb;border-radius:8px;padding:12px;">${rowsHtml}</table></td></tr>`;
+}
+
+/** Confirmation of receipt required by § 312k (4) BGB — sent immediately to the person who canceled. */
+export function cancellationConfirmationEmailHtml(c: CancellationSummary): string {
+  const outcome = c.effectiveDate
+    ? `Deine Pro-Mitgliedschaft wurde gekündigt und endet am <strong>${escapeHtml(c.effectiveDate)}</strong>. Bis dahin kannst du alle Pro-Funktionen weiter nutzen. Danach wird nichts mehr abgebucht.`
+    : `Wir haben unter dieser E-Mail-Adresse keine aktive Pro-Mitgliedschaft automatisch gefunden. Wir prüfen deine Kündigung manuell und melden uns, falls wir weitere Angaben brauchen.`;
+  return emailShell(
+    "Bestätigung deiner Kündigung",
+    textBlock([
+      greetingLine(c.name),
+      "wir bestätigen hiermit den Eingang deiner Kündigung mit folgendem Inhalt:",
+    ]) +
+      cancellationDetailsBlock(c) +
+      textBlock([
+        outcome,
+        ...(c.kind === "extraordinary"
+          ? [
+              "Da du eine außerordentliche Kündigung erklärt hast, prüfen wir den angegebenen Grund zusätzlich manuell und melden uns, falls die Mitgliedschaft früher enden soll.",
+            ]
+          : []),
+        "Falls du diese Kündigung nicht selbst abgegeben hast, kannst du sie in deinen Einstellungen unter „Pro-Mitgliedschaft verwalten“ rückgängig machen oder uns einfach antworten.",
+      ]),
+  );
+}
+
+export function cancellationAdminAlertHtml(c: CancellationSummary): string {
+  return emailShell(
+    "Neue Kündigung eingegangen",
+    textBlock([
+      c.effectiveDate
+        ? `Die Pro-Mitgliedschaft wurde automatisch zum <strong>${escapeHtml(c.effectiveDate)}</strong> gekündigt.`
+        : "<strong>Keine aktive Pro-Mitgliedschaft automatisch gefunden — bitte manuell prüfen.</strong>",
+    ]) + cancellationDetailsBlock(c),
+  );
+}
+
 function escapeHtml(value: string): string {
   return value
     .replace(/&/g, "&amp;")

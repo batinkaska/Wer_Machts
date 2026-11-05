@@ -7,7 +7,7 @@ export function ImpressumPage() {
       <h1 className="text-2xl font-semibold text-gray-900 dark:text-gray-100">{t("legal.impressum")}</h1>
 
       <section className="space-y-2">
-        <h2 className="text-lg font-medium text-gray-900 dark:text-gray-100">Angaben gemäß § 5 TMG</h2>
+        <h2 className="text-lg font-medium text-gray-900 dark:text-gray-100">Angaben gemäß § 5 DDG</h2>
         <p>
           Batin Kaska
           <br />
@@ -26,6 +26,11 @@ export function ImpressumPage() {
         </p>
       </section>
 
+      {/*
+        Hidden on purpose: no USt-IdNr has been issued yet, and § 5 DDG only
+        requires this line once one exists. Remove this comment wrapper and fill
+        in the real number as soon as it is issued.
+
       <section className="space-y-2">
         <h2 className="text-lg font-medium text-gray-900 dark:text-gray-100">Umsatzsteuer-ID</h2>
         <p>
@@ -34,24 +39,10 @@ export function ImpressumPage() {
           [DE ile başlayan vergi numaran]
         </p>
       </section>
+      */}
 
-      <section className="space-y-2">
-        <h2 className="text-lg font-medium text-gray-900 dark:text-gray-100">EU-Streitschlichtung</h2>
-        <p>
-          Die Europäische Kommission stellt eine Plattform zur Online-Streitbeilegung (OS) bereit:{" "}
-          <a
-            href="https://ec.europa.eu/consumers/odr/"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="text-[#5fac5e] underline"
-          >
-            https://ec.europa.eu/consumers/odr/
-          </a>
-          .
-          <br />
-          Unsere E-Mail-Adresse finden Sie oben im Impressum.
-        </p>
-      </section>
+      {/* The EU Online Dispute Resolution (ODR) platform was shut down on
+          20 July 2025, so the former "EU-Streitschlichtung" link section is gone. */}
 
       <section className="space-y-2">
         <h2 className="text-lg font-medium text-gray-900 dark:text-gray-100">

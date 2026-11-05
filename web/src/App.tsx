@@ -11,6 +11,7 @@ import { AdDetailPage } from "./pages/AdDetailPage";
 import { AgbPage } from "./pages/AgbPage";
 import { AdListPage } from "./pages/AdListPage";
 import { ContactPage } from "./pages/ContactPage";
+import { ContractCancellationPage } from "./pages/ContractCancellationPage";
 import { CreateAdPage } from "./pages/CreateAdPage";
 import { EmailActionPage } from "./pages/EmailActionPage";
 import { FavoritesPage } from "./pages/FavoritesPage";
@@ -53,6 +54,7 @@ function App() {
           <Route path="/profile/:uid/:kind" element={<FollowListPage />} />
           <Route path="/impressum" element={<ImpressumPage />} />
           <Route path="/kontakt" element={<ContactPage />} />
+          <Route path="/vertraege-kuendigen" element={<ContractCancellationPage />} />
           <Route path="/datenschutz" element={<PrivacyPage />} />
           <Route path="/nutzungsbedingungen" element={<TermsPage />} />
           <Route path="/agb" element={<AgbPage />} />

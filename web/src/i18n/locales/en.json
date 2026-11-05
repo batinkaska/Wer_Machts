@@ -447,8 +447,8 @@
     "paidMessageRecipient": "You received a payment of {{amount}} € from {{name}}.",
     "paidBreakdownService": "Service: {{amount}} €",
     "paidBreakdownSupport": "Voluntary support contribution: {{amount}} €",
-  "paidBreakdownProcessingFee": "Payment processing fee: {{amount}} €",
-  "processingFeeNote": "plus an estimated payment processing fee of {{amount}} € (covers card fees so the provider receives the full amount)",
+    "paidBreakdownProcessingFee": "Payment processing fee: {{amount}} €",
+    "processingFeeNote": "plus an estimated payment processing fee of {{amount}} € (covers card fees so the provider receives the full amount)",
     "supportHeading": "Voluntary support contribution",
     "supportSubtitle": "Would you like to add something extra?",
     "supportNone": "No thanks",
@@ -491,7 +491,12 @@
     "profilePromoHeading": "Become Pro",
     "profilePromoUnlimited": "Unlimited listings",
     "profilePromoFeatured": "Feature your ad",
-    "profilePromoBadge": "Pro badge"
+    "profilePromoBadge": "Pro badge",
+    "termsConsentBefore": "I have read and accept the",
+    "termsConsentAgb": "Terms",
+    "termsConsentMiddle": "and the",
+    "termsConsentWithdrawal": "cancellation policy",
+    "termsConsentAfter": ""
   },
   "auth": {
     "login": "Sign in",
@@ -713,5 +718,28 @@
     "sending": "Sending...",
     "successMessage": "Thanks! Your message has been sent. We'll get back to you as soon as possible.",
     "error": "Your message could not be sent. Please try again or email us directly."
+  },
+  "cancellation": {
+    "footerLink": "Cancel contracts here",
+    "pageTitle": "Cancel contracts here",
+    "intro": "You can cancel your Pro membership here – even without logging in. Enter the email address of your Wer Macht account. You will immediately receive a confirmation of receipt by email.",
+    "contractLabel": "Contract",
+    "contractPro": "Wer Macht Pro membership",
+    "nameLabel": "Name",
+    "emailLabel": "Email address",
+    "emailHint": "The email address you registered with on Wer Macht.",
+    "kindLabel": "Type of cancellation",
+    "kind": {
+      "ordinary": "Regular cancellation at the earliest possible date",
+      "extraordinary": "Extraordinary cancellation (for good cause)"
+    },
+    "reasonLabel": "Reason for the extraordinary cancellation",
+    "submit": "Cancel now",
+    "submitting": "Sending…",
+    "error": "Your cancellation could not be sent. Please try again or write to info@wermacht.app.",
+    "receivedTitle": "We have received your cancellation",
+    "receivedAtLabel": "Received on",
+    "receivedNote": "We have sent a confirmation with this content to your email address. Please save or print this page for your records.",
+    "print": "Print / save page"
   }
 }

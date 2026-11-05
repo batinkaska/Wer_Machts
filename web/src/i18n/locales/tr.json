@@ -447,8 +447,8 @@
     "paidMessageRecipient": "{{name}} kişisinden {{amount}} € tutarında bir ödeme aldın.",
     "paidBreakdownService": "Hizmet: {{amount}} €",
     "paidBreakdownSupport": "Gönüllü destek payı: {{amount}} €",
-  "paidBreakdownProcessingFee": "Ödeme işlem ücreti: {{amount}} €",
-  "processingFeeNote": "buna ek olarak tahmini {{amount}} € ödeme işlem ücreti (hizmet sağlayıcının tam tutarı alabilmesi için kart komisyonunu karşılar)",
+    "paidBreakdownProcessingFee": "Ödeme işlem ücreti: {{amount}} €",
+    "processingFeeNote": "buna ek olarak tahmini {{amount}} € ödeme işlem ücreti (hizmet sağlayıcının tam tutarı alabilmesi için kart komisyonunu karşılar)",
     "supportHeading": "Gönüllü Destek Payı",
     "supportSubtitle": "Ek olarak bir şey eklemek ister misin?",
     "supportNone": "Hayır teşekkürler",
@@ -491,7 +491,12 @@
     "profilePromoHeading": "Pro'ya Geç",
     "profilePromoUnlimited": "Sınırsız ilan",
     "profilePromoFeatured": "İlanı öne çıkar",
-    "profilePromoBadge": "Pro rozeti"
+    "profilePromoBadge": "Pro rozeti",
+    "termsConsentBefore": "",
+    "termsConsentAgb": "Genel Şartlar'ı (AGB)",
+    "termsConsentMiddle": "ve",
+    "termsConsentWithdrawal": "cayma hakkı bilgilendirmesini",
+    "termsConsentAfter": "okudum ve kabul ediyorum."
   },
   "auth": {
     "login": "Giriş yap",
@@ -713,5 +718,28 @@
     "sending": "Gönderiliyor...",
     "successMessage": "Teşekkürler! Mesajın bize ulaştı. En kısa sürede dönüş yapacağız.",
     "error": "Mesajın gönderilemedi. Lütfen tekrar dene veya bize doğrudan e-posta at."
+  },
+  "cancellation": {
+    "footerLink": "Sözleşmeleri buradan feshet",
+    "pageTitle": "Sözleşmeleri buradan feshet",
+    "intro": "Pro üyeliğini buradan, giriş yapmadan da iptal edebilirsin. Wer Macht hesabının e-posta adresini gir. Hemen e-posta ile bir alındı onayı alacaksın.",
+    "contractLabel": "Sözleşme",
+    "contractPro": "Wer Macht Pro üyeliği",
+    "nameLabel": "Ad",
+    "emailLabel": "E-posta adresi",
+    "emailHint": "Wer Macht'a kayıt olduğun e-posta adresi.",
+    "kindLabel": "Fesih türü",
+    "kind": {
+      "ordinary": "Mümkün olan en erken tarihte olağan fesih",
+      "extraordinary": "Olağanüstü fesih (haklı sebeple)"
+    },
+    "reasonLabel": "Olağanüstü feshin sebebi",
+    "submit": "Şimdi feshet",
+    "submitting": "Gönderiliyor…",
+    "error": "Fesih talebin gönderilemedi. Lütfen tekrar dene ya da info@wermacht.app adresine yaz.",
+    "receivedTitle": "Fesih talebin bize ulaştı",
+    "receivedAtLabel": "Alınma zamanı",
+    "receivedNote": "Bu içerikle bir onayı e-posta adresine gönderdik. Lütfen bu sayfayı kayıtların için kaydet veya yazdır.",
+    "print": "Sayfayı yazdır / kaydet"
   }
 }

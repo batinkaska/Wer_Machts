@@ -34,6 +34,10 @@ export function Footer() {
           <Link to="/kontakt" className={linkClass}>
             {t("contact.pageTitle")}
           </Link>
+          {/* § 312k BGB: the cancellation button must be permanently and easily reachable. */}
+          <Link to="/vertraege-kuendigen" className={`${linkClass} font-medium`}>
+            {t("cancellation.footerLink")}
+          </Link>
           <button type="button" onClick={reopenCookieBanner} className={linkClass}>
             {t("cookies.footerLink")}
           </button>

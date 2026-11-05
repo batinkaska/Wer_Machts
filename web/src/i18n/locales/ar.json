@@ -454,8 +454,8 @@
     "paidMessageRecipient": "لقد استلمت دفعة بقيمة {{amount}} € من {{name}}.",
     "paidBreakdownService": "الخدمة: {{amount}} €",
     "paidBreakdownSupport": "مساهمة دعم طوعية: {{amount}} €",
-  "paidBreakdownProcessingFee": "رسوم معالجة الدفع: {{amount}} €",
-  "processingFeeNote": "بالإضافة إلى رسوم معالجة دفع تقديرية قدرها {{amount}} € (تغطي رسوم البطاقة حتى يحصل مقدّم الخدمة على المبلغ كاملاً)",
+    "paidBreakdownProcessingFee": "رسوم معالجة الدفع: {{amount}} €",
+    "processingFeeNote": "بالإضافة إلى رسوم معالجة دفع تقديرية قدرها {{amount}} € (تغطي رسوم البطاقة حتى يحصل مقدّم الخدمة على المبلغ كاملاً)",
     "supportHeading": "مساهمة دعم طوعية",
     "supportSubtitle": "هل تود إضافة شيء إضافي؟",
     "supportNone": "لا شكرًا",
@@ -498,7 +498,12 @@
     "profilePromoHeading": "كن Pro",
     "profilePromoUnlimited": "إعلانات غير محدودة",
     "profilePromoFeatured": "إبراز الإعلان",
-    "profilePromoBadge": "شارة Pro"
+    "profilePromoBadge": "شارة Pro",
+    "termsConsentBefore": "لقد قرأت وأوافق على",
+    "termsConsentAgb": "الشروط العامة (AGB)",
+    "termsConsentMiddle": "و",
+    "termsConsentWithdrawal": "سياسة حق الانسحاب",
+    "termsConsentAfter": ""
   },
   "auth": {
     "login": "تسجيل الدخول",
@@ -722,5 +727,28 @@
     "sending": "جارٍ الإرسال...",
     "successMessage": "شكرًا! تم إرسال رسالتك إلينا. سنرد عليك في أقرب وقت ممكن.",
     "error": "تعذّر إرسال رسالتك. يرجى المحاولة مرة أخرى أو مراسلتنا مباشرة عبر البريد الإلكتروني."
+  },
+  "cancellation": {
+    "footerLink": "إلغاء العقود من هنا",
+    "pageTitle": "إلغاء العقود من هنا",
+    "intro": "يمكنك إلغاء عضوية Pro من هنا – حتى بدون تسجيل الدخول. أدخل عنوان البريد الإلكتروني لحسابك في Wer Macht. ستتلقى تأكيد الاستلام فورًا عبر البريد الإلكتروني.",
+    "contractLabel": "العقد",
+    "contractPro": "عضوية Wer Macht Pro",
+    "nameLabel": "الاسم",
+    "emailLabel": "البريد الإلكتروني",
+    "emailHint": "البريد الإلكتروني الذي سجلت به في Wer Macht.",
+    "kindLabel": "نوع الإلغاء",
+    "kind": {
+      "ordinary": "إلغاء عادي في أقرب موعد ممكن",
+      "extraordinary": "إلغاء استثنائي (لسبب وجيه)"
+    },
+    "reasonLabel": "سبب الإلغاء الاستثنائي",
+    "submit": "إلغاء الآن",
+    "submitting": "جارٍ الإرسال…",
+    "error": "تعذر إرسال طلب الإلغاء. يرجى المحاولة مرة أخرى أو الكتابة إلى info@wermacht.app.",
+    "receivedTitle": "تم استلام طلب الإلغاء",
+    "receivedAtLabel": "تاريخ الاستلام",
+    "receivedNote": "أرسلنا تأكيدًا بهذا المحتوى إلى بريدك الإلكتروني. يرجى حفظ هذه الصفحة أو طباعتها للاحتفاظ بها.",
+    "print": "طباعة / حفظ الصفحة"
   }
 }

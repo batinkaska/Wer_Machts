@@ -624,6 +624,7 @@ function ProSettingsSection({
   const [error, setError] = useState<string | null>(null);
   const [activating, setActivating] = useState(false);
   const [activationTimedOut, setActivationTimedOut] = useState(false);
+  const [termsAccepted, setTermsAccepted] = useState(false);
 
   useEffect(() => {
     if (searchParams.get("pro") !== "success" || appUser.isPro) return;
@@ -726,19 +727,43 @@ function ProSettingsSection({
               >
                 {portalLoading ? t("adDetail.sending") : t("pro.manageCta")}
               </button>
+              <p className="text-xs text-gray-500 dark:text-gray-400">
+                <Link to="/vertraege-kuendigen" className="underline hover:text-gray-700 dark:hover:text-gray-300">
+                  {t("cancellation.footerLink")}
+                </Link>
+              </p>
             </>
           ) : (
             <>
               {!appUser.proTrialUsed && (
                 <p className="text-sm font-medium text-[#5fac5e]">{t("pro.trialNotice")}</p>
               )}
+              <label className="flex items-start gap-2 text-sm text-gray-700 dark:text-gray-300">
+                <input
+                  type="checkbox"
+                  checked={termsAccepted}
+                  onChange={(e) => setTermsAccepted(e.target.checked)}
+                  className="mt-0.5"
+                />
+                <span>
+                  {t("pro.termsConsentBefore")}{" "}
+                  <Link to="/agb" target="_blank" className="font-medium text-[#5fac5e] underline">
+                    {t("pro.termsConsentAgb")}
+                  </Link>{" "}
+                  {t("pro.termsConsentMiddle")}{" "}
+                  <Link to="/agb#widerruf-pro" target="_blank" className="font-medium text-[#5fac5e] underline">
+                    {t("pro.termsConsentWithdrawal")}
+                  </Link>{" "}
+                  {t("pro.termsConsentAfter")}
+                </span>
+              </label>
               <div className="grid grid-cols-1 gap-3 sm:grid-cols-3">
                 {PRO_PLANS.map((plan) => (
                   <button
                     key={plan.id}
                     type="button"
                     onClick={() => handleUpgrade(plan.id)}
-                    disabled={checkoutLoading !== null}
+                    disabled={checkoutLoading !== null || !termsAccepted}
                     className="rounded-lg border border-gray-200 p-3 text-left hover:border-[#5fac5e] disabled:opacity-50 dark:border-gray-700"
                   >
                     <p className="text-sm font-semibold text-gray-900 dark:text-gray-100">

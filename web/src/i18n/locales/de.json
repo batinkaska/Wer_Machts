@@ -447,8 +447,8 @@
     "paidMessageRecipient": "Du hast eine Zahlung von {{amount}} € von {{name}} erhalten.",
     "paidBreakdownService": "Service: {{amount}} €",
     "paidBreakdownSupport": "Freiwilliger Unterstützungsbeitrag: {{amount}} €",
-  "paidBreakdownProcessingFee": "Zahlungsabwicklungsgebühr: {{amount}} €",
-  "processingFeeNote": "zzgl. geschätzter Zahlungsabwicklungsgebühr von {{amount}} € (deckt die Kartengebühren ab, damit der Anbieter den vollen Betrag erhält)",
+    "paidBreakdownProcessingFee": "Zahlungsabwicklungsgebühr: {{amount}} €",
+    "processingFeeNote": "zzgl. geschätzter Zahlungsabwicklungsgebühr von {{amount}} € (deckt die Kartengebühren ab, damit der Anbieter den vollen Betrag erhält)",
     "supportHeading": "Freiwilliger Unterstützungsbeitrag",
     "supportSubtitle": "Möchtest du zusätzlich etwas dazugeben?",
     "supportNone": "Kein Dank",
@@ -491,7 +491,12 @@
     "profilePromoHeading": "Werde Pro",
     "profilePromoUnlimited": "Unbegrenzte Inserate",
     "profilePromoFeatured": "Anzeige hervorheben",
-    "profilePromoBadge": "Pro-Abzeichen"
+    "profilePromoBadge": "Pro-Abzeichen",
+    "termsConsentBefore": "Ich habe die",
+    "termsConsentAgb": "AGB",
+    "termsConsentMiddle": "und die",
+    "termsConsentWithdrawal": "Widerrufsbelehrung",
+    "termsConsentAfter": "gelesen und akzeptiere sie."
   },
   "auth": {
     "login": "Anmelden",
@@ -713,5 +718,28 @@
     "sending": "Wird gesendet...",
     "successMessage": "Danke! Deine Nachricht wurde an uns gesendet. Wir melden uns so schnell wie möglich.",
     "error": "Deine Nachricht konnte nicht gesendet werden. Bitte versuche es erneut oder schreib uns direkt eine E-Mail."
+  },
+  "cancellation": {
+    "footerLink": "Verträge hier kündigen",
+    "pageTitle": "Verträge hier kündigen",
+    "intro": "Hier kannst du deine Pro-Mitgliedschaft kündigen – auch ohne Anmeldung. Gib dazu die E-Mail-Adresse deines Wer-Macht-Kontos an. Du erhältst sofort eine Eingangsbestätigung per E-Mail.",
+    "contractLabel": "Vertrag",
+    "contractPro": "Wer Macht Pro-Mitgliedschaft",
+    "nameLabel": "Name",
+    "emailLabel": "E-Mail-Adresse",
+    "emailHint": "Die E-Mail-Adresse, mit der du bei Wer Macht registriert bist.",
+    "kindLabel": "Art der Kündigung",
+    "kind": {
+      "ordinary": "Ordentliche Kündigung zum nächstmöglichen Zeitpunkt",
+      "extraordinary": "Außerordentliche Kündigung (aus wichtigem Grund)"
+    },
+    "reasonLabel": "Grund der außerordentlichen Kündigung",
+    "submit": "Jetzt kündigen",
+    "submitting": "Wird gesendet…",
+    "error": "Deine Kündigung konnte nicht gesendet werden. Bitte versuche es erneut oder schreib an info@wermacht.app.",
+    "receivedTitle": "Deine Kündigung ist bei uns eingegangen",
+    "receivedAtLabel": "Eingegangen am",
+    "receivedNote": "Eine Bestätigung mit diesem Inhalt haben wir an deine E-Mail-Adresse gesendet. Bitte speichere oder drucke diese Seite für deine Unterlagen.",
+    "print": "Seite drucken / speichern"
   }
 }

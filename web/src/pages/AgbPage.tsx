@@ -1,7 +1,17 @@
+import { useEffect } from "react";
 import { useTranslation } from "react-i18next";
+import { useLocation } from "react-router-dom";
 
 export function AgbPage() {
   const { t } = useTranslation();
+  const { hash } = useLocation();
+
+  // Deep links like /agb#widerruf-pro (from the Pro checkout consent) — the SPA
+  // renders after the browser's own anchor jump, so scroll explicitly.
+  useEffect(() => {
+    if (hash) document.getElementById(hash.slice(1))?.scrollIntoView();
+  }, [hash]);
+
   return (
     <div className="mx-auto max-w-3xl space-y-6 px-4 py-10 text-sm leading-relaxed text-gray-700 dark:text-gray-300">
       <h1 className="text-2xl font-semibold text-gray-900 dark:text-gray-100">{t("legal.agb")}</h1>
@@ -89,18 +99,101 @@ export function AgbPage() {
           abgeben) ist für private und gewerbliche Nutzer kostenlos.
         </p>
         <p>
-          (2) Premium-Pakete: Nutzer können ein kostenpflichtiges Premium-Paket (PRO) erwerben.
-          Dieses beinhaltet erweiterte Funktionen (z. B. unbegrenzte Inserate, unbegrenzte Gebote,
-          Top-Platzierung). Der erste Monat ist kostenlos. Danach wandelt sich das Paket in ein
-          kostenpflichtiges Abonnement (monatlich, halbjährlich oder jährlich), welches jederzeit
-          zum Ende der Laufzeit kündbar ist.
+          (2) Pro-Mitgliedschaft: Ohne Pro-Mitgliedschaft können Nutzer bis zu drei aktive Inserate
+          gleichzeitig veröffentlichen. Nutzer können eine kostenpflichtige Pro-Mitgliedschaft
+          („Wer Macht Pro“) abschließen. Diese umfasst: eine unbegrenzte Anzahl aktiver Inserate,
+          die Möglichkeit, jeweils ein eigenes Inserat hervorzuheben (bevorzugte Platzierung auf der
+          Startseite und in den Suchergebnissen), sowie ein „Pro“-Abzeichen im Profil und an den
+          Inseraten.
         </p>
         <p>
-          (3) Freiwillige Plattform-Gebühr: Bei der Zahlungsabwicklung eines erfolgreich
+          (3) Preise und Laufzeit: Die Pro-Mitgliedschaft kostet 9,99 € pro Monat (monatliche
+          Laufzeit), 49,99 € pro sechs Monate (halbjährliche Laufzeit) oder 89,99 € pro Jahr
+          (jährliche Laufzeit). Für Nutzer, die noch keine Pro-Mitgliedschaft hatten, sind die
+          ersten 30 Tage kostenlos; die erste Zahlung wird erst nach Ablauf dieses Testzeitraums
+          fällig. Die Mitgliedschaft verlängert sich jeweils automatisch um die gewählte Laufzeit,
+          sofern sie nicht vor Ablauf gekündigt wird. Die Abrechnung erfolgt über den
+          Zahlungsdienstleister Stripe.
+        </p>
+        <p>
+          (4) Kündigung: Die Pro-Mitgliedschaft kann jederzeit zum Ende der laufenden Laufzeit bzw.
+          des Testzeitraums gekündigt werden — entweder in den Einstellungen unter
+          „Pro-Mitgliedschaft verwalten“ oder ohne Anmeldung über die Schaltfläche{" "}
+          <a href="/vertraege-kuendigen" className="text-[#5fac5e] underline">
+            „Verträge hier kündigen“
+          </a>{" "}
+          am Ende jeder Seite. Das Recht zur außerordentlichen Kündigung aus wichtigem Grund bleibt
+          unberührt.
+        </p>
+        <p>
+          (5) Freiwillige Plattform-Gebühr: Bei der Zahlungsabwicklung eines erfolgreich
           vermittelten Auftrags haben die Nutzer die Möglichkeit, der Plattform eine freiwillige
           Gebühr (z. B. 0 %, 5 % oder 10 % der Auftragssumme) als Unterstützung ("Trinkgeld")
           zukommen zu lassen.
         </p>
+      </section>
+
+      <section id="widerruf-pro" className="scroll-mt-20 space-y-2">
+        <h2 className="text-lg font-medium text-gray-900 dark:text-gray-100">
+          § 5a Widerrufsbelehrung für die Pro-Mitgliedschaft
+        </h2>
+        <p>
+          Die folgende Belehrung gilt für Verbraucher (§ 13 BGB), die eine Pro-Mitgliedschaft
+          abschließen.
+        </p>
+        <h3 className="font-medium text-gray-900 dark:text-gray-100">Widerrufsrecht</h3>
+        <p>
+          Sie haben das Recht, binnen vierzehn Tagen ohne Angabe von Gründen diesen Vertrag zu
+          widerrufen. Die Widerrufsfrist beträgt vierzehn Tage ab dem Tag des Vertragsabschlusses.
+        </p>
+        <p>
+          Um Ihr Widerrufsrecht auszuüben, müssen Sie uns (Batin Kaska, Görgen Str. 4, 56068
+          Koblenz, Telefon: +49 178 2487624, E-Mail: info@wermacht.app) mittels einer eindeutigen
+          Erklärung (z. B. ein mit der Post versandter Brief oder eine E-Mail) über Ihren
+          Entschluss, diesen Vertrag zu widerrufen, informieren. Sie können dafür das unten
+          stehende Muster-Widerrufsformular verwenden, das jedoch nicht vorgeschrieben ist. Zur
+          Wahrung der Widerrufsfrist reicht es aus, dass Sie die Mitteilung über die Ausübung des
+          Widerrufsrechts vor Ablauf der Widerrufsfrist absenden.
+        </p>
+        <h3 className="font-medium text-gray-900 dark:text-gray-100">Folgen des Widerrufs</h3>
+        <p>
+          Wenn Sie diesen Vertrag widerrufen, haben wir Ihnen alle Zahlungen, die wir von Ihnen
+          erhalten haben, unverzüglich und spätestens binnen vierzehn Tagen ab dem Tag
+          zurückzuzahlen, an dem die Mitteilung über Ihren Widerruf dieses Vertrags bei uns
+          eingegangen ist. Für diese Rückzahlung verwenden wir dasselbe Zahlungsmittel, das Sie bei
+          der ursprünglichen Transaktion eingesetzt haben, es sei denn, mit Ihnen wurde
+          ausdrücklich etwas anderes vereinbart; in keinem Fall werden Ihnen wegen dieser
+          Rückzahlung Entgelte berechnet.
+        </p>
+        <p>
+          Haben Sie verlangt, dass die Dienstleistungen während der Widerrufsfrist beginnen sollen,
+          so haben Sie uns einen angemessenen Betrag zu zahlen, der dem Anteil der bis zu dem
+          Zeitpunkt, zu dem Sie uns von der Ausübung des Widerrufsrechts hinsichtlich dieses
+          Vertrags unterrichten, bereits erbrachten Dienstleistungen im Vergleich zum
+          Gesamtumfang der im Vertrag vorgesehenen Dienstleistungen entspricht. Während des
+          kostenlosen Testzeitraums fallen keine Kosten an.
+        </p>
+        <h3 className="font-medium text-gray-900 dark:text-gray-100">Muster-Widerrufsformular</h3>
+        <p className="text-xs text-gray-500 dark:text-gray-400">
+          (Wenn Sie den Vertrag widerrufen wollen, dann füllen Sie bitte dieses Formular aus und
+          senden Sie es zurück.)
+        </p>
+        <div className="rounded border border-gray-200 p-3 dark:border-gray-700">
+          <p>
+            An: Batin Kaska, Görgen Str. 4, 56068 Koblenz, E-Mail: info@wermacht.app
+          </p>
+          <p className="mt-2">
+            Hiermit widerrufe(n) ich/wir (*) den von mir/uns (*) abgeschlossenen Vertrag über die
+            Erbringung der folgenden Dienstleistung: Wer Macht Pro-Mitgliedschaft
+          </p>
+          <p className="mt-2">Bestellt am (*)</p>
+          <p>Name des/der Verbraucher(s)</p>
+          <p>Anschrift des/der Verbraucher(s)</p>
+          <p>E-Mail-Adresse des Nutzerkontos</p>
+          <p>Unterschrift des/der Verbraucher(s) (nur bei Mitteilung auf Papier)</p>
+          <p>Datum</p>
+          <p className="mt-2 text-xs text-gray-500 dark:text-gray-400">(*) Unzutreffendes streichen.</p>
+        </div>
       </section>
 
       <section className="space-y-2">
